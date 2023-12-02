@@ -4,12 +4,12 @@ def first_non_repeating_letter(s: str) -> str:
         return ''
     if len(s) == 1:
         return s
-    out = ""
     ss = list(s)
-    for i in ss:
-        if i not in ss[ss.index(i) + 1:]:
-            return i
-        print(f'{i in ss[ss.index(i):]}')
+    sss = ss.copy()
+    for i in sss:
+        if i not in sss[sss.index(i) + 1:]:
+            return ss.pop(ss.index(i))
+        print(f'{i in sss[sss.index(i):]}')
         continue
 
 
