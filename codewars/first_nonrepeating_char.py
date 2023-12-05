@@ -1,27 +1,31 @@
 def first_non_repeating_letter(s: str) -> str:
-    """Return the first non-repeating character in a string"""
-    if not s:
-        return ''
-    elif len(s) == 1:
-        return s
-    elif len(list(s)) / 2 == len(set((list(s)))):
-        return ''
-    # check for upper and lower case
-    elif any(i.isupper() for i in s) and any(i.islower() for i in s):
-        ss = list(s)
-        sss = ss.copy()
-        for i in sss:
-            if i.lower() not in sss[sss.index(i) + 1:] and i.upper() not in sss[sss.index(i) + 1:]:
-                return ss.pop(ss.index(i))
-            continue
-    else:
-        ss = list(s)
-        sss = ss.copy()
-        for i in sss:
-            if i not in sss[sss.index(i) + 1:]:
-                return ss.pop(ss.index(i))
-            print(f'{i in sss[sss.index(i):]}')
-            continue
+    """
+    Return the first non-repeating character in a string.
+
+    Args:
+        s (str): The input string to be evaluated.
+
+    Returns:
+        str: The first non-repeating character in the input string, or an
+        empty string if no such character exists.
+
+    Example:
+        >>> first_non_repeating_letter("stress")
+        't'
+        >>> first_non_repeating_letter("moonmen")
+        'e'
+        >>> first_non_repeating_letter("")
+        ''
+        >>> first_non_repeating_letter("abba")
+        ''
+    """
+    char_count = {}
+    for char in s:
+        lower_char = char.lower()
+        char_count[lower_char] = char_count.get(lower_char, 0) + 1
+
+    return next((char for char in s if char_count[char.lower()] == 1), '')
+
 
 
 a = first_non_repeating_letter('a')  # 'a')
