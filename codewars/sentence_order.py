@@ -22,11 +22,11 @@ def order(sentence: str) -> str:
         - Words are defined as sequences of characters separated by spaces.
         - The order of words in the output is determined by the numerical order of the digits in the words.
     """
-    if sentence == "":
+    if not sentence:
         return ""
 
     key = (i + 1 for i in range(len(sentence.split(" "))))
-    val = (None for i in range(len(sentence.split(" "))))
+    val = (None for _ in range(len(sentence.split(" "))))
     out = dict(zip(key, val))
 
     for wds in sentence.split(" "):
