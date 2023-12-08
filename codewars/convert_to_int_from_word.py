@@ -1,14 +1,25 @@
-def parse_int(string):
-    # quick check for single word
+def parse_int(string: str) -> int:
+    """
+    Takes in a string of words and returns the number that the string represents
+    Args:
+        string (): string of words
+
+    Returns: int: number
+
+    """
     split_string = string.split(" ")
-    print(f"split string is: {split_string}")
-    if string in words_to_ints:
-        return words_to_ints[string]
+    # remove unnecessary words
     for word in split_string[:]:  # Using slicing to create a copy of split_string
         if word not in words_to_ints.keys():
             split_string.remove(word)
-        print(f"split string is: {split_string}")
-    return  # number
+    print(f"split string is: {split_string}")
+    # quick check for single word
+    if string in words_to_ints:
+        return words_to_ints[string]
+
+    # number = ["".join(word for word )]
+
+    return
 
 
 words_to_ints = {
