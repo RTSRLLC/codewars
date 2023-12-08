@@ -1,8 +1,13 @@
 def parse_int(string):
     # quick check for single word
-    if string.isnumeric():
-        return int(string)
-
+    split_string = string.split(" ")
+    print(f"split string is: {split_string}")
+    if string in words_to_ints:
+        return words_to_ints[string]
+    for word in split_string[:]:  # Using slicing to create a copy of split_string
+        if word not in words_to_ints.keys():
+            split_string.remove(word)
+        print(f"split string is: {split_string}")
     return  # number
 
 
@@ -43,3 +48,4 @@ words_to_ints = {
 a = parse_int('one')  # , 1)
 b = parse_int('twenty')  # , 20)
 c = parse_int('two hundred forty-six')  # , 246)
+d = parse_int("seven hundred eighty-three thousand nine hundred and nineteen")  # , 783919)
