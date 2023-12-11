@@ -71,36 +71,53 @@ def parse_int(string: str) -> int:
         if word not in words_to_ints.keys():
             split_string.remove(word)
 
-    print(f"split_string: {split_string}")
     the_number = [
         words_to_ints[number]
         for number in split_string
         if number in words_to_ints
     ]
 
-    result = []
+    print(f"the_number: {the_number}")
+
     for idx, num in enumerate(the_number[:]):
-        print(f"the number is: {the_number}")
-        print(f"result is: {result}")
-        print(the_number[idx + 1] if idx + 1 < len(the_number) - 1 else None)
-        print(f"if idx + 1 > len(the_number) - 1: {idx + 1 > len(the_number) - 1}")
-        if idx + 1 > len(the_number) - 1:
-            break
-        # resolve for numbers less than 100
-        print(f"the_number[idx + 2:]: {the_number[idx + 2:]}")
-        print(f"any(the_number[idx + 2:]) > 100: {any(x > 100 for x in the_number[idx + 2:])}\n{'*' * 50}")
-        if (100 <= the_number[idx + 1] < 1000) and (any(x > 100 for x in the_number[idx + 2:])):
-            result.append(num * the_number[idx + 1])
-            the_number.pop(idx + 1)
-            result.append(sum(the_number[idx + 1:]))
+        if num % 100 == 0:
+            the_number.remove(num)
+            print(f"the_number_2: {the_number}")
+        elif num % 10 == 0:
+            new_num = int(list(str(num))[0])
+            the_number[idx] = new_num
+            print(f"new_num: {the_number[idx]}")
+            the_number.remove(num)
+            print(f"the_number_3: {the_number}")
+        elif num < 10:
+            print(f"num: {num}")
+            print(f"the_number_4: {the_number}")
+            the_number.append(num)
 
-        elif (100 <= the_number[idx + 1] < 1000) and (all(x < 100 for x in the_number[idx + 2:])):
-            result.append(num * the_number[idx + 1])
-            the_number.pop(idx + 1)
-            result.append(sum(the_number[idx + 1:]))
-            break
 
-    return sum(result)
+    # result = []
+    # for idx, num in enumerate(the_number[:]):
+    #     print(f"the number is: {the_number}")
+    #     print(f"result is: {result}")
+    #     print(the_number[idx + 1] if idx + 1 < len(the_number) - 1 else None)
+    #     print(f"if idx + 1 > len(the_number) - 1: {idx + 1 > len(the_number) - 1}")
+    #     if idx + 1 > len(the_number) - 1:
+    #         break
+    #     # resolve for numbers less than 100
+    #     print(f"the_number[idx + 2:]: {the_number[idx + 2:]}")
+    #     print(f"any(the_number[idx + 2:]) > 100: {any(x > 100 for x in the_number[idx + 2:])}\n{'*' * 50}")
+    #     if (100 <= the_number[idx + 1] < 1000) and (any(x > 100 for x in the_number[idx + 2:])):
+    #         result.append(num * the_number[idx + 1])
+    #         the_number.pop(idx + 1)
+    #         result.append(sum(the_number[idx + 1:]))
+    #
+    #     elif (100 <= the_number[idx + 1] < 1000) and (all(x < 100 for x in the_number[idx + 2:])):
+    #         result.append(num * the_number[idx + 1])
+    #         the_number.pop(idx + 1)
+    #         result.append(sum(the_number[idx + 1:]))
+    #         break
+
+    return
 
 
 a = parse_int('one')  # , 1)
