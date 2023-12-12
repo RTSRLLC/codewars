@@ -77,7 +77,7 @@ def parse_int(string: str) -> int:
         for number in split_string
         if number in words_to_ints
     ]
-
+    # attach first number to output
     output = [the_number[0]]  # [7, 100, 80, 3, 1000, 9, 100, 19]
     for idx, num in enumerate(the_number[1:]):
         print(f"\n{'*' * 72}\nthe_number entering for loop: {the_number}\nand the num: {num}\n")
