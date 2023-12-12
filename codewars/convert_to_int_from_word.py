@@ -60,70 +60,39 @@ def parse_int(string: str) -> int:
 
     split_string = string.split(" ")  # split string into list of words
 
+    # split words with hyphens
     for idx, word in enumerate(split_string):
         if '-' in word:
             split_string[idx] = word.split('-')
-
     split_string = flatten_list(split_string)  # flatten list
 
     # remove unnecessary words
-    for word in split_string[:]:  # Using slicing to create a copy of split_string
+    for word in split_string[:]:
         if word not in words_to_ints.keys():
             split_string.remove(word)
 
+    # replace words with ints
     the_number = [
         words_to_ints[number]
         for number in split_string
         if number in words_to_ints
     ]
 
-    print(f"the_number: {the_number}")
+    output = [the_number[0]]  # [7, 100, 80, 3, 1000, 9, 100, 19]
+    for idx, num in enumerate(the_number[1:]):
+        print(f"\n{'*' * 72}\nthe_number entering for loop: {the_number}\nand the num: {num}\n")
+        print(f"current output: {output}\n")
+        if idx < 10:
+            if (idx + 1 % 100 == 0) or (idx + 1 % 1000 == 0):
+                output.append(num * the_number[idx + 1])
+                print(f"output is: {output}")
+            if idx + 1 % 10 == 0:
+                pass
 
-    for idx, num in enumerate(the_number[:]):
-        if num % 100 == 0:
-            the_number.remove(num)
-            print(f"the_number_2: {the_number}")
-        elif num % 10 == 0:
-            new_num = int(list(str(num))[0])
-            the_number[idx] = new_num
-            print(f"new_num: {the_number[idx]}")
-            the_number.remove(num)
-            print(f"the_number_3: {the_number}")
-        elif num < 10:
-            print(f"num: {num}")
-            print(f"the_number_4: {the_number}")
-            the_number.append(num)
+    return sum(output)
 
 
-    # result = []
-    # for idx, num in enumerate(the_number[:]):
-    #     print(f"the number is: {the_number}")
-    #     print(f"result is: {result}")
-    #     print(the_number[idx + 1] if idx + 1 < len(the_number) - 1 else None)
-    #     print(f"if idx + 1 > len(the_number) - 1: {idx + 1 > len(the_number) - 1}")
-    #     if idx + 1 > len(the_number) - 1:
-    #         break
-    #     # resolve for numbers less than 100
-    #     print(f"the_number[idx + 2:]: {the_number[idx + 2:]}")
-    #     print(f"any(the_number[idx + 2:]) > 100: {any(x > 100 for x in the_number[idx + 2:])}\n{'*' * 50}")
-    #     if (100 <= the_number[idx + 1] < 1000) and (any(x > 100 for x in the_number[idx + 2:])):
-    #         result.append(num * the_number[idx + 1])
-    #         the_number.pop(idx + 1)
-    #         result.append(sum(the_number[idx + 1:]))
-    #
-    #     elif (100 <= the_number[idx + 1] < 1000) and (all(x < 100 for x in the_number[idx + 2:])):
-    #         result.append(num * the_number[idx + 1])
-    #         the_number.pop(idx + 1)
-    #         result.append(sum(the_number[idx + 1:]))
-    #         break
-
-    return
-
-
-a = parse_int('one')  # , 1)
-b = parse_int('twenty')  # , 20)
-c = parse_int('two hundred forty-six')  # , 246)
-print("*" * 50)
-print("*" * 50)
-print("*" * 50)
+# a = parse_int('one')  # , 1)
+# b = parse_int('twenty')  # , 20)
+# c = parse_int('two hundred forty-six')  # , 246)
 d = parse_int("seven hundred eighty-three thousand nine hundred and nineteen")  # , 783919)
