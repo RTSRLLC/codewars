@@ -88,6 +88,8 @@ def parse_int(string: str) -> int:
                 print(f"output is: {output}")
             if idx + 1 % 10 == 0:
                 pass
+        if num % 100 == 0 or num % 1000 == 0:
+            pass
 
     return sum(output)
 
