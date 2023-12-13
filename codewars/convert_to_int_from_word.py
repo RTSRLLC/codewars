@@ -89,7 +89,7 @@ def parse_int(string: str) -> int:
         if not tracking_idx:
             tracking_idx = True
             continue
-        if num % 100 == 0 or num % 1000 == 0:
+        elif num % 100 == 0 or num % 1000 == 0:
             output *= num
             print(f"output is: {output}")
             if num == the_number[-1]:
