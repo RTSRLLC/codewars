@@ -53,6 +53,7 @@ def parse_int(string: str) -> int:
         'thousand': 1000,
         'million': 1000000
     }
+    print(f"string is: {string}")
 
     # quick check for single word
     if string in words_to_ints:
@@ -77,24 +78,64 @@ def parse_int(string: str) -> int:
         for number in split_string
         if number in words_to_ints
     ]
+
+    print(f"the_number is: {the_number}")
+
     # attach first number to output
-    output = [the_number[0]]  # [7, 100, 80, 3, 1000, 9, 100, 19]
-    for idx, num in enumerate(the_number[1:]):
-        print(f"\n{'*' * 72}\nthe_number entering for loop: {the_number}\nand the num: {num}\n")
-        print(f"current output: {output}\n")
-        if idx < 10:
-            if (idx + 1 % 100 == 0) or (idx + 1 % 1000 == 0):
-                output.append(num * the_number[idx + 1])
-                print(f"output is: {output}")
-            if idx + 1 % 10 == 0:
-                pass
+    output = int(the_number[0])
+    tracking_idx = True
+    for idx, num in enumerate(the_number[1:], start=1): # [90, 9, 1000, 9, 100, 90, 9]
+        print(f"idx: {idx}, num: {num}")
+        if not tracking_idx:
+            tracking_idx = True
+            continue
         if num % 100 == 0 or num % 1000 == 0:
-            pass
+            output *= num
+            print(f"output is: {output}")
+            if num == the_number[-1]:
+                return output
+        elif num % 10 == 0:
+            output += num
+            print(f"output is: {output}")
+        elif num < 10:
+            if num == the_number[-1]:
+                if len(the_number[idx:]) > 1:
+                    if the_number[idx - 1] % 100 == 0:
+                        if the_number[idx + 1] % 100 == 0:
+                            num *= the_number[idx + 1]
+                            print(f"output is: {output}")
+                            output += num
+                            print(f"num is: {num}")
+                            tracking_idx = False
+                            continue
+                    output += num
+                    continue
+                output += num
+                return output
+            if the_number[idx + 1] % 100 == 0:
+                if the_number[idx - 1] % 100 == 0:
+                    if the_number[idx + 1] % 100 == 0:
+                        num *= the_number[idx + 1]
+                        print(f"output is: {output}")
+                        output += num
+                        print(f"num is: {num}")
+                        tracking_idx = False
+                        continue
+                output = (output + num) * the_number[idx + 1]
+                tracking_idx = False
+                print(f"output is: {output}")
+        elif 11 < num < 20:
+            output += num
+            print(f"output is: {output}")
 
-    return sum(output)
+    return output
 
 
-# a = parse_int('one')  # , 1)
-# b = parse_int('twenty')  # , 20)
-# c = parse_int('two hundred forty-six')  # , 246)
+a = parse_int('one')  # , 1)
+b = parse_int('twenty')  # , 20)
+c = parse_int('two hundred forty-six')  # , 246)
 d = parse_int("seven hundred eighty-three thousand nine hundred and nineteen")  # , 783919)
+e = parse_int("one hundred")  # , 100)
+f = parse_int("two thousand")  # , 2000)
+g = parse_int("thirty-five thousand")  # , 35000)
+h = parse_int("ninety-nine thousand nine hundred and ninety-nine")  # , 999999)
