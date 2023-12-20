@@ -1,3 +1,16 @@
+def subtraction(a_list: list, larger: int, smaller: int) -> list:
+    while a_list[larger] > a_list[smaller]:
+        print(f"subtraction: {a_list}, larger: {a_list[larger]}, smaller: {a_list[smaller]}")
+        if a_list[larger] < a_list[smaller + 2]:
+            print(f"subtraction: {a_list}, larger: {a_list[larger + 1]}, smaller: {a_list[smaller + 1]}")
+            a_list = subtraction(a_list, larger + 1, smaller + 1)
+            larger -= 1
+            smaller -= 1
+            a_list = subtraction(a_list, larger + 1, smaller + 1)
+
+    return a_list
+
+
 def solution(a: list) -> int:
     """
     Apply this algorithm, if X[i] > X[j] then X[i] = X[i] - X[j], recursively until it can not be done any more.
@@ -23,34 +36,18 @@ def solution(a: list) -> int:
     Returns: the sum of the remaining numbers
 
         """
+    print(f"input: {a}")
     if len(a) == 1:
-        return a[0]
-    if len(a) == 2:
-        while a[1] > a[0]:
-            a[1] -= a[0]
         return sum(a)
-    a_reverse = a[::-1]
-    for i, num in enumerate(a_reverse):
-        print(f"In the for loop and a_reverse: {a_reverse}")
-        T_or_F = True
-        idx = i
-        while T_or_F:
-            print("In the while loop")
-            print(f"    idx: {idx}, num: {num}")
-            print(f"idx + 1: {idx + 1}, num: {a_reverse[idx + 1]}")
-            print(f"is greater than: {a_reverse[idx] > a_reverse[idx + 1]}")
-            if idx == len(a_reverse) - 1:
-                print("Breaking")
-                break
-            if a_reverse[idx] > a_reverse[idx + 1]:
-                print("Still needing to subtract")
-                a_reverse[idx] = num - a_reverse[idx + 1]
-            if idx + 1 < a_reverse[idx + 1]:
-                print("Going to False")
-                T_or_F = False
-            print(f"a_reverse: {a_reverse}")
-        T_or_F = True
-    return sum(a_reverse)
+    length = len(a)
+    idx = -1
+    while length > 1:
+        b = subtraction(a_list=a, larger=idx, smaller=idx - 1)
+        a = b
+        length -= 1
+        idx -= 1
+
+    return sum(a)
 
 
 # a = solution([9])  # , 9)
