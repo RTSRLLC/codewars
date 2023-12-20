@@ -1,12 +1,17 @@
 def subtraction(a_list: list, larger: int, smaller: int) -> list:
     while a_list[larger] > a_list[smaller]:
-        print(f"subtraction: {a_list}, larger: {a_list[larger]}, smaller: {a_list[smaller]}")
+        print(f"subtraction: {a_list}, larger = {larger} : {a_list[larger]}, smaller = {smaller} : {a_list[smaller]}")
         if a_list[larger] < a_list[smaller + 2]:
             print(f"subtraction: {a_list}, larger: {a_list[larger + 1]}, smaller: {a_list[smaller + 1]}")
             a_list = subtraction(a_list, larger + 1, smaller + 1)
             larger -= 1
             smaller -= 1
             a_list = subtraction(a_list, larger + 1, smaller + 1)
+        try:
+            print(f"subtraction: {a_list}, larger = {larger} : {a_list[larger]}, smaller = {smaller} : {a_list[smaller]}")
+            a_list[larger] = a_list[larger] - a_list[smaller]
+        except IndexError:
+            break
 
     return a_list
 
@@ -50,6 +55,6 @@ def solution(a: list) -> int:
     return sum(a)
 
 
-# a = solution([9])  # , 9)
-# b = solution([6, 9, 21])  # , 9)
+a = solution([9])  # , 9)
+b = solution([6, 9, 21])  # , 9)
 c = solution([1, 21, 55])  # , 3)
