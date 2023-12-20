@@ -29,14 +29,30 @@ def solution(a: list) -> int:
         while a[1] > a[0]:
             a[1] -= a[0]
         return sum(a)
-    if len(a) > 2:
-        print(f"i: {i}")
-        while a[-1] > a[-2]:
-            a[-1] -= a[-2]
-            print(f"a[-1]: {a[-1]}")
-            print(f"a: {a}")
+    a_reverse = a[::-1]
+    for i, num in enumerate(a_reverse):
+        print(f"In the for loop and a_reverse: {a_reverse}")
+        T_or_F = True
+        idx = i
+        while T_or_F:
+            print("In the while loop")
+            print(f"    idx: {idx}, num: {num}")
+            print(f"idx + 1: {idx + 1}, num: {a_reverse[idx + 1]}")
+            print(f"is greater than: {a_reverse[idx] > a_reverse[idx + 1]}")
+            if idx == len(a_reverse) - 1:
+                print("Breaking")
+                break
+            if a_reverse[idx] > a_reverse[idx + 1]:
+                print("Still needing to subtract")
+                a_reverse[idx] = num - a_reverse[idx + 1]
+            if idx + 1 < a_reverse[idx + 1]:
+                print("Going to False")
+                T_or_F = False
+            print(f"a_reverse: {a_reverse}")
+        T_or_F = True
+    return sum(a_reverse)
 
 
 # a = solution([9])  # , 9)
-b = solution([6, 9, 21])  # , 9)
-# c = solution([1, 21, 55])  # , 3)
+# b = solution([6, 9, 21])  # , 9)
+c = solution([1, 21, 55])  # , 3)
