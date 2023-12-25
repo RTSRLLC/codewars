@@ -1,19 +1,22 @@
-def subtraction(a_list: list, larger: int, smaller: int) -> list:
-    while a_list[larger] > a_list[smaller]:
-        print(f"subtraction: {a_list}, larger = {larger} : {a_list[larger]}, smaller = {smaller} : {a_list[smaller]}")
-        if a_list[larger] < a_list[smaller + 2]:
-            print(f"subtraction: {a_list}, larger: {a_list[larger + 1]}, smaller: {a_list[smaller + 1]}")
-            a_list = subtraction(a_list, larger + 1, smaller + 1)
-            larger -= 1
-            smaller -= 1
-            a_list = subtraction(a_list, larger + 1, smaller + 1)
-        try:
-            print(f"subtraction: {a_list}, larger = {larger} : {a_list[larger]}, smaller = {smaller} : {a_list[smaller]}")
-            a_list[larger] = a_list[larger] - a_list[smaller]
-        except IndexError:
-            break
+from typing import Any, Tuple
 
-    return a_list
+
+def subtraction(a_list: list, large: int, small: int) -> tuple[Any, Any]:
+    """
+    Subtracting the larger index of a_list from the smaller index of a_list.
+    The length of the list will prevent IndexError: list index out of range.
+    Args:
+        a_list (): a list greater than length 1
+        large (): the larger index of a_list
+        small (): the smaller index of a_list
+        previous_num (): the previous number in the list
+
+    Returns: the portion of the larger list with larger index less than smaller index, which is reinserted into the list
+    """
+    while a_list[large] > a_list[small]:
+        a_list[large] = a_list[large] - a_list[small]
+        print(f"a_list: {a_list}, large: {a_list[large]}, small: {a_list[small]}")
+    return a_list[0], a_list[1]
 
 
 def solution(a: list) -> int:
@@ -41,20 +44,23 @@ def solution(a: list) -> int:
     Returns: the sum of the remaining numbers
 
         """
-    print(f"input: {a}")
     if len(a) == 1:
         return sum(a)
-    length = len(a)
-    idx = -1
-    while length > 1:
-        b = subtraction(a_list=a, larger=idx, smaller=idx - 1)
-        a = b
-        length -= 1
-        idx -= 1
+    idx_lg = -1
+    idx_sm = -2
+    for idx, num in enumerate(a):
+        if idx == len(a) - 1:
+            return sum(a)
+        print(f"a[idx_lg]: {a[idx_lg]}, a[idx_sm]: {a[idx_sm]}")
+        if a[idx_lg] > a[idx_sm]:
+            x, y = subtraction(a, idx_lg, idx_sm)
+            idx_lg -= 1
+            idx_sm -= 1
+            print(f"a: {a}")
+            # if a[idx_lg] < a[idx_lg - 1]:
+            #     x, y = subtraction(a, idx_lg, idx_sm)
 
-    return sum(a)
 
-
-a = solution([9])  # , 9)
+# a = solution([9])  # , 9)
 b = solution([6, 9, 21])  # , 9)
-c = solution([1, 21, 55])  # , 3)
+# c = solution([1, 21, 55])  # , 3)
