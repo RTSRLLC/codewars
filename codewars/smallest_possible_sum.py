@@ -1,22 +1,4 @@
-from typing import Any, Tuple
-
-
-def subtraction(a_list: list, large: int, small: int) -> tuple[Any, Any]:
-    """
-    Subtracting the larger index of a_list from the smaller index of a_list.
-    The length of the list will prevent IndexError: list index out of range.
-    Args:
-        a_list (): a list greater than length 1
-        large (): the larger index of a_list
-        small (): the smaller index of a_list
-        previous_num (): the previous number in the list
-
-    Returns: the portion of the larger list with larger index less than smaller index, which is reinserted into the list
-    """
-    while a_list[large] > a_list[small]:
-        a_list[large] = a_list[large] - a_list[small]
-        print(f"a_list: {a_list}, large: {a_list[large]}, small: {a_list[small]}")
-    return a_list[0], a_list[1]
+from math import gcd
 
 
 def solution(a: list) -> int:
@@ -43,24 +25,16 @@ def solution(a: list) -> int:
 
     Returns: the sum of the remaining numbers
 
-        """
+    """
+    let = "b"
     if len(a) == 1:
-        return sum(a)
-    idx_lg = -1
-    idx_sm = -2
-    for idx, num in enumerate(a):
-        if idx == len(a) - 1:
-            return sum(a)
-        print(f"a[idx_lg]: {a[idx_lg]}, a[idx_sm]: {a[idx_sm]}")
-        if a[idx_lg] > a[idx_sm]:
-            x, y = subtraction(a, idx_lg, idx_sm)
-            idx_lg -= 1
-            idx_sm -= 1
-            print(f"a: {a}")
-            # if a[idx_lg] < a[idx_lg - 1]:
-            #     x, y = subtraction(a, idx_lg, idx_sm)
+        return a[0]
+    elif len(a) == 2:
+        return math.gcd(a[0], a[1]) + math.gcd(a[0], a[1])
+    elif len(a) >= 3:
+        return gcd(*a) * len(a)
 
 
-# a = solution([9])  # , 9)
+a = solution([9])  # , 9)
 b = solution([6, 9, 21])  # , 9)
-# c = solution([1, 21, 55])  # , 3)
+c = solution([1, 21, 55])  # , 3)
