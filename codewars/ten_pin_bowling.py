@@ -2,12 +2,13 @@ def bowling_score(frames):
     # Split the input string into frames
     split_frames = frames.split()
     score_frames = []
-
+    score = 0
     # Iterate through each frame to calculate scores
     for idx, frame in enumerate(split_frames):
         # Check for the 10th frame and handle special scoring
         if idx == 9 and frame == 'XXX':
             score_frames.append(30)
+            score += 30
             # Handle strikes or spares
         elif 'X' in frame or '/' in frame:
             score_frames.append(10)
@@ -15,10 +16,8 @@ def bowling_score(frames):
         else:
             score_frames.append(sum(int(pin) for pin in frame if pin.isdigit()))
 
-    # Debugging: print the score for each frame
     print(score_frames)
 
-    # Return the total score (optional, if you want total score)
     return sum(score_frames)
 
 
