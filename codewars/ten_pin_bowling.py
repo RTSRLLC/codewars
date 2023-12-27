@@ -1,28 +1,23 @@
 def bowling_score(frames):
-    # Split the input string into frames
-    split_frames = frames.split()
-    score_frames = []
-    score = 0
-    # Iterate through each frame to calculate scores
-    for idx, frame in enumerate(split_frames):
-        # Check for the 10th frame and handle special scoring
-        if idx == 9 and frame == 'XXX':
-            score_frames.append(30)
-            score += 30
-            # Handle strikes or spares
-        elif 'X' in frame or '/' in frame:
-            score_frames.append(10)
-        # Handle open frames with no strikes or spares
+    bowl_frames = frames.split()
+    bowl_frame_types = []
+    for num in bowl_frames:
+        print(list(num))
+        if '/' in list(num):
+            bowl_frame_types.append(('spare', 10, num))
+        elif 'X' in list(num) and any('X' not in x for x in bowl_frames):
+            bowl_frame_types.append(('strike', 10, num))
         else:
-            score_frames.append(sum(int(pin) for pin in frame if pin.isdigit()))
+            bowl_frame_types.append(('regular', sum(int(x) for x in num)), num)
+        print(bowl_frame_types)
+    print(bowl_frame_types)
+    return
 
-    print(score_frames)
 
-    return sum(score_frames)
-
-
-a = bowling_score('11 11 11 11 11 11 11 11 11 11')  # , 20)
-b = bowling_score('X X X X X X X X X XXX')  # , 300)
+# a = bowling_score('11 11 11 11 11 11 11 11 11 11')  # , 20)
+print('*' * 50)
+# b = bowling_score('X X X X X X X X X XXX')  # , 300)
+print('*' * 50)
 c = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44')
 
 """
