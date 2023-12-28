@@ -1,17 +1,93 @@
+def score_frames(frames):
+    """
+    Calculate the score for each frame in a game of ten-pin bowling.
+
+    This function takes a list of frames as input and calculates the score for each frame based on the rules of
+    ten-pin bowling. The frames can contain either a number of pins knocked down (e.g., '7', '9') or special
+    symbols ('X' for a strike, '/' for a spare). The function returns a list of tuples, where each tuple contains
+    the score, type of frame (strike, spare, or regular), and the frame itself.
+
+    Args:
+        frames (list): A list of frames representing the rolls in a game of ten-pin bowling.
+
+    Returns:
+        list: A list of tuples, where each tuple contains the score, type of frame, and the frame itself.
+
+    Examples:
+        >>> score_frames(['X', '7/', '9-', 'X', '-8', '8/', 'X', 'X', 'X', '9/7'])
+        [(10, 'strike', 'X'), (10, 'spare', [7, 3]), (9, 'regular', [9, 0]), (10, 'strike', 'X'), (8, 'regular', [0, 8]), (10, 'spare', [8, 2]), (10, 'strike', 'X'), (10, 'strike', 'X'), (10, 'strike', 'X'), (9, 'spare', [9, 1])]
+    """
+    scoring = []
+    for frame in frames:
+        print(f'frame: {frame}')
+        # frame = frames.pop(0)
+        if frame[-1]:
+            print(f"final frame accessed: {frame}")
+            if frame == 'X':
+                # ex. (10, 'strike', 10)
+                scoring.append((10, 'strike', 10))
+            elif frame[1] == '/':
+                # ex. (10, 'spare', 7)
+                scoring.append((10, 'spare', [int(i) for i in list(frame) if i != '/'][0]))
+            else:
+                # ex. (8, 'regular', [8, 0])
+                print(f'frame: {frame}')
+            scoring.append((int(frame[0]) + int(frame[1]), 'regular', [int(i) for i in list(frame)]))
+    return scoring
+
+
+def frame_type(frame: tuple) -> str:
+    """
+    Determine the type of a frame in a game of ten-pin bowling.
+
+    This function takes a frame as input and returns the type of the frame for scoring purposes.
+    The frame can be represented as a string, where the first character represents the number of pins knocked down
+    and the second character represents the type of frame ('/' for a spare). The function returns the second character
+    of the frame.
+
+    Args:
+        frame (str): A string representing a frame in a game of ten-pin bowling.
+
+    Returns:
+        str: The type of the frame.
+
+    Examples:
+        >>> frame_type((10, 'spare', 9))
+        'spare''
+        >>> frame_type((10, 'strike', 10))
+        'strike'
+    """
+    return frame[1]
+
+
+def final_frame(frame):
+    """
+    Determine final frame score in a game of ten-pin bowling.
+    This frame can have length 2 or 3 depending on whether the player scored a strike, spare, or neither in the final
+    frame. The function returns the score for each roll of the final frame.
+    Args:
+        list(frame (): a string representing the final frame in a game of ten-pin bowling.
+
+    Returns: the score for each roll of the final frame.
+
+    """
+    pass
+
+
 def bowling_score(frames):
     bowl_frames = frames.split()
-    bowl_frame_types = []
-    for num in bowl_frames:
-        print(list(num))
-        if '/' in list(num):
-            bowl_frame_types.append(('spare', 10, num))
-        elif 'X' in list(num) and any('X' not in x for x in bowl_frames):
-            bowl_frame_types.append(('strike', 10, num))
+    scores = score_frames(bowl_frames)
+    print(scores)
+    for i, score in enumerate(scores):
+        print(f"i: {i}, score: {score}")
+        if frame_type(score) == 'strike':
+            scores[i] = score[0] + scores[i + 1][0] + scores[i + 2][0]
+        elif frame_type(score) == 'spare':
+            scores[i] = score[0] + scores[i + 1][0]
         else:
-            bowl_frame_types.append(('regular', sum(int(x) for x in num)), num)
-        print(bowl_frame_types)
-    print(bowl_frame_types)
-    return
+            scores[i] = score[0]
+    print(scores)
+    return sum(scores)
 
 
 # a = bowling_score('11 11 11 11 11 11 11 11 11 11')  # , 20)
