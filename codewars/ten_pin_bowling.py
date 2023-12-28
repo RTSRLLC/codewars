@@ -18,21 +18,21 @@ def score_frames(frames):
         [(10, 'strike', 'X'), (10, 'spare', [7, 3]), (9, 'regular', [9, 0]), (10, 'strike', 'X'), (8, 'regular', [0, 8]), (10, 'spare', [8, 2]), (10, 'strike', 'X'), (10, 'strike', 'X'), (10, 'strike', 'X'), (9, 'spare', [9, 1])]
     """
     scoring = []
-    for frame in frames:
-        print(f'frame: {frame}')
-        # frame = frames.pop(0)
-        if frame[-1]:
-            print(f"final frame accessed: {frame}")
-            if frame == 'X':
-                # ex. (10, 'strike', 10)
-                scoring.append((10, 'strike', 10))
-            elif frame[1] == '/':
-                # ex. (10, 'spare', 7)
-                scoring.append((10, 'spare', [int(i) for i in list(frame) if i != '/'][0]))
-            else:
-                # ex. (8, 'regular', [8, 0])
-                print(f'frame: {frame}')
+    for idx, frame in enumerate(frames):
+        if idx == 9:
+            print(f"final frame accessed: {frames[-1]}")
+            final = final_frame(frames[-1])
+        elif frame == 'X':
+            # ex. (10, 'strike', 10)
+            scoring.append((10, 'strike', 10))
+        elif frame[1] == '/':
+            # ex. (10, 'spare', 7)
+            scoring.append((10, 'spare', [int(i) for i in list(frame) if i != '/'][0]))
+        else:
+            # ex. (8, 'regular', [8, 0])
+            print(f'frame: {frame}')
             scoring.append((int(frame[0]) + int(frame[1]), 'regular', [int(i) for i in list(frame)]))
+        print(f'frame: {frame}')
     return scoring
 
 
@@ -71,7 +71,19 @@ def final_frame(frame):
     Returns: the score for each roll of the final frame.
 
     """
-    pass
+    final_frame = list(frame)
+    print(f'final_frame: {final_frame}')
+    score = 0
+    out_frame = []
+    for roll in final_frame:
+        if roll == 'X':
+            out_frame.append(10)
+        elif roll == '/':
+            out_frame.append(10 - out_frame[-1])
+        else:
+            out_frame.append(int(roll))
+    print(f'out_frame: {out_frame}')
+    return
 
 
 def bowling_score(frames):
@@ -94,7 +106,9 @@ def bowling_score(frames):
 print('*' * 50)
 # b = bowling_score('X X X X X X X X X XXX')  # , 300)
 print('*' * 50)
-c = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44')
+# c = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44')
+print('*' * 50)
+d = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44/')  # , 0)
 
 """
 Bowling scoring can seem complex at first, but it's straightforward once you break it down. Here's a simplified explanation:
