@@ -1,3 +1,33 @@
+def bowling_score(frames: str) -> int:
+    """
+    Calculate the total score for a single game of ten-pin bowling.
+
+    This function takes a string of bowling frames and calculates the total score. Each frame is represented
+    by a space-separated string. 'X' denotes a strike, '/' denotes a spare, and '-' represents zero or a miss.
+    A perfect game (only strikes) will immediately return a score of 300. Otherwise, it calculates the score
+    frame by frame using score_frames and score functions to handle different scenarios in the game.
+
+    Args:
+        frames (str): A single string representing all ten frames of a bowling game. Each frame is separated
+                      by spaces. For example, 'X X 9/ 80 X X 90 8/ 7/ 44'.
+
+    Returns:
+        int: The total score for the game.
+
+    Examples:
+        >>> bowling_score('X X X X X X X X X XXX')
+        300
+        >>> bowling_score('9- 9- 9- 9- 9- 9- 9- 9- 9- 9-')
+        90
+    """
+    bowl_frames = frames.split()
+    if all(i == 'X' for i in bowl_frames[:-1]) and bowl_frames[-1] == 'XXX':
+        return 300
+    scores = score_frames(bowl_frames)
+    return score(scores)
+
+
+
 def score_frames(frames):
     """
     Calculate the score for each frame in a game of ten-pin bowling.
@@ -20,19 +50,18 @@ def score_frames(frames):
     scoring = []
     for idx, frame in enumerate(frames):
         if idx == 9:
-            print(f"final frame accessed: {frames[-1]}")
-            final = scoring.append(final_frame(frames[-1]))
+            scoring.append(final_frame(frames[-1]))
         elif frame == 'X':
             # ex. (10, 'strike', 10)
             scoring.append((10, 'strike', [10]))
         elif frame[1] == '/':
             # ex. (10, 'spare', [7])
-            scoring.append((10, 'spare', [int(i) for i in list(frame) if i != '/']))
+            spare_frame = list(frame)
+            spare_frame[1] = 10 - int(spare_frame[0])
+            scoring.append((10, 'spare', [int(i) for i in list(spare_frame)]))
         else:
             # ex. (8, 'regular', [8, 0])
-            print(f'frame: {frame}')
             scoring.append((int(frame[0]) + int(frame[1]), 'regular', [int(i) for i in list(frame)]))
-        print(f'frame: {frame}')
     return scoring
 
 
@@ -72,8 +101,6 @@ def final_frame(frame):
 
     """
     final_frame = list(frame)
-    print(f'final_frame: {final_frame}')
-    score = 0
     out_frame = []
     for roll in final_frame:
         if roll == 'X':
@@ -82,7 +109,6 @@ def final_frame(frame):
             out_frame.append(10 - out_frame[-1])
         else:
             out_frame.append(int(roll))
-        print(f'out_frame: {out_frame}')
     return sum(out_frame), 'final frame', out_frame
 
 
@@ -121,9 +147,7 @@ def score(some_scores: list[tuple[int, str, list[int]]]) -> int:
 
     """
     updated_scores = []
-    print(some_scores)
     for i, score in enumerate(some_scores):
-        print(f"i: {i}, score: {score}")
         if i == 9:
             updated_scores.append(final_frame(score[-1]))  # Assuming final_frame is a function defined elsewhere
         if score[1] == 'strike':
@@ -133,34 +157,28 @@ def score(some_scores: list[tuple[int, str, list[int]]]) -> int:
                 updated_scores.append(10 + sum(some_scores[i + 1][2]))
             elif some_scores[i + 1][1] == 'regular':
                 updated_scores.append(10 + sum(some_scores[i + 1][2]))
+            elif some_scores[i + 1][1] == 'final frame':
+                if score[1] == 'strike':
+                    updated_scores.append(10 + sum(some_scores[i + 1][2][:2]))
+                elif score[1] == 'spare':
+                    updated_scores.append(10 + some_scores[i + 1][2][0])
         elif score[1] == 'spare':
             updated_scores.append(score[0] + some_scores[i + 1][2][0])
         elif score[1] == 'regular':
             updated_scores.append(score[0])
-        print(f"updated_scores: {updated_scores}\n{'*' * 50}")
-    print(f"length updated_scores: {len(updated_scores)} ::: updated_scores: {updated_scores}")
     return sum(updated_scores[:-1]) + sum(updated_scores[-1][-1])
 
 
-
-
-def bowling_score(frames):
-    bowl_frames = frames.split()
-    print(f"bowl_frames: {bowl_frames}")
-    if all(i == 'X' for i in bowl_frames[:-1]) and bowl_frames[-1] == 'XXX':
-        return 300
-    scores = score_frames(bowl_frames)
-    return score(scores)
-
-
-# a = bowling_score('11 11 11 11 11 11 11 11 11 11')  # , 20)
+a = bowling_score('11 11 11 11 11 11 11 11 11 11')  # , 20)
 print('*' * 50)
-# b = bowling_score('X X X X X X X X X XXX')  # , 300)
+b = bowling_score('X X X X X X X X X XXX')  # , 300)
 print('*' * 50)
-# c = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44')
+c = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44')
 print('*' * 50)
-# d = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44/')  # , 0)
+d = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44/')  # , 0)
 print('*' * 50)
-# e = bowling_score('00 5/ 4/ 53 33 22 4/ 5/ 45 XXX')
+e = bowling_score('00 5/ 4/ 53 33 22 4/ 5/ 45 XXX')
 print('*' * 50)
-f = bowling_score('5/ 4/ 3/ 2/ 1/ 0/ X 9/ 4/ 8/8')
+f = bowling_score('5/ 4/ 3/ 2/ 1/ 0/ X 9/ 4/ 8/8')  # 150
+print('*' * 50)
+g = bowling_score('00 00 00 00 00 00 00 00 X 0/X')  # 40
