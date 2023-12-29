@@ -82,29 +82,60 @@ def final_frame(frame):
             out_frame.append(10 - out_frame[-1])
         else:
             out_frame.append(int(roll))
-    print(f'out_frame: {out_frame}')
+        print(f'out_frame: {out_frame}')
     return sum(out_frame), 'final frame', out_frame
+
+
+def get_next_rolls(tup: tuple, roll: str) -> int:
+    """
+    Take in a tuple of the form (8, 'regular', [4, 4]) and returns the third index of the tuple, which is a list of
+    the rolls in the frame. This function is used to determine the next roll(s) to add to the score of a strike or spare.
+    Args:
+        tup (): a tuple of the form (int, bowl roll, [rolls])
+        roll (): a string representing the roll of bowl (strike, spare, regular)
+
+    Returns: int to add to the score of a strike or spare.
+
+    """
+    if roll == 'strike':
+        return sum(i for i in tup[2] if tup[1] != 'strike')
+    if roll == 'spare':
+        return tup[2][0]
+    if roll =='regular':
+        return tup[2][0]
 
 
 def bowling_score(frames):
     bowl_frames = frames.split()
     scores = score_frames(bowl_frames)
+    updated_scores = []
     print(scores)
+    # [(10, 'strike', [10]), (10, 'strike', [10]), (10, 'spare', [9]), (8, 'regular', [8, 0]), (10, 'strike', [10]), (10, 'strike', [10]), (9, 'regular', [9, 0]), (10, 'spare', [8]), (10, 'spare', [7]), (14, 'final frame', [4, 4, 6])]
     for i, score in enumerate(scores):
         print(f"i: {i}, score: {score}")
-        if frame_type(score) == 'strike':
-            scores[i] = score[0] + scores[i + 1][0] + scores[i + 2][0]
-        elif frame_type(score) == 'spare':
-            scores[i] = score[0] + scores[i + 1][0]
-        else:
-            scores[i] = score[0]
-    print(scores)
-    return sum(scores)
+        if i == 9:
+            print(f"final frame accessed: {frames[-1]}")
+            updated_scores.append(final_frame(score[-1]))
+        if score[1] == 'strike':
+            if scores[i + 1][1] == 'strike':
+                updated_scores.append(20 + scores[i + 2][2][0])
+            elif scores[i + 1][1] == 'spare':
+                updated_scores.append(10 + sum(scores[i + 1][2]))
+            elif scores[i + 1][1] == 'regular':
+                updated_scores.append(10 + sum(scores[i + 1][2]))
+        elif score[1] == 'spare':
+            updated_scores.append(score[0] + scores[i + 1][2][0])
+        elif score[1] == 'regular':
+            updated_scores.append(score[0])
+        print(f"updated_scores: {updated_scores}\n{'*' * 50}")
+    print(f"length updated_scores: {len(updated_scores)} ::: updated_scores: {updated_scores}")
+    print(scores[:-1])
+    return sum(updated_scores[:-1]) + sum(updated_scores[-1][-1])
 
 
-# a = bowling_score('11 11 11 11 11 11 11 11 11 11')  # , 20)
+a = bowling_score('11 11 11 11 11 11 11 11 11 11')  # , 20)
 print('*' * 50)
-# b = bowling_score('X X X X X X X X X XXX')  # , 300)
+b = bowling_score('X X X X X X X X X XXX')  # , 300)
 print('*' * 50)
 # c = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44')
 print('*' * 50)
