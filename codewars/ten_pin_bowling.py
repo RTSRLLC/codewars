@@ -105,34 +105,52 @@ def get_next_rolls(tup: tuple, roll: str) -> int:
         return tup[2][0]
 
 
-def bowling_score(frames):
-    bowl_frames = frames.split()
-    print(f"bowl_frames: {bowl_frames}")
-    print(f"all strikes: {all(i for i in bowl_frames if i == 'X')} and last frame: {bowl_frames[-1] == 'XXX'}")
-    if all(i == 'X' for i in bowl_frames[:-1]) and bowl_frames[-1] == 'XXX':
-        return 300
-    scores = score_frames(bowl_frames)
+def score(some_scores: list[tuple[int, str, list[int]]]) -> int:
+    """
+    Calculate the total score for a series of bowling frames.
+
+    Args:
+        some_scores (list of tuple): A list of tuples, each representing a frame.
+            Each tuple contains:
+            - Total score for the frame (int)
+            - Type of score: 'strike', 'spare', or 'regular' (str)
+            - A list of integers representing the pins knocked down in each roll (list of int)
+
+    Returns:
+        int: The total score for the series of frames.
+
+    """
     updated_scores = []
-    print(scores)
-    for i, score in enumerate(scores):
+    print(some_scores)
+    for i, score in enumerate(some_scores):
         print(f"i: {i}, score: {score}")
         if i == 9:
-            print(f"final frame accessed: {frames[-1]}")
-            updated_scores.append(final_frame(score[-1]))
+            updated_scores.append(final_frame(score[-1]))  # Assuming final_frame is a function defined elsewhere
         if score[1] == 'strike':
-            if scores[i + 1][1] == 'strike':
-                updated_scores.append(20 + scores[i + 2][2][0])
-            elif scores[i + 1][1] == 'spare':
-                updated_scores.append(10 + sum(scores[i + 1][2]))
-            elif scores[i + 1][1] == 'regular':
-                updated_scores.append(10 + sum(scores[i + 1][2]))
+            if some_scores[i + 1][1] == 'strike':
+                updated_scores.append(20 + some_scores[i + 2][2][0])
+            elif some_scores[i + 1][1] == 'spare':
+                updated_scores.append(10 + sum(some_scores[i + 1][2]))
+            elif some_scores[i + 1][1] == 'regular':
+                updated_scores.append(10 + sum(some_scores[i + 1][2]))
         elif score[1] == 'spare':
-            updated_scores.append(score[0] + scores[i + 1][2][0])
+            updated_scores.append(score[0] + some_scores[i + 1][2][0])
         elif score[1] == 'regular':
             updated_scores.append(score[0])
         print(f"updated_scores: {updated_scores}\n{'*' * 50}")
     print(f"length updated_scores: {len(updated_scores)} ::: updated_scores: {updated_scores}")
     return sum(updated_scores[:-1]) + sum(updated_scores[-1][-1])
+
+
+
+
+def bowling_score(frames):
+    bowl_frames = frames.split()
+    print(f"bowl_frames: {bowl_frames}")
+    if all(i == 'X' for i in bowl_frames[:-1]) and bowl_frames[-1] == 'XXX':
+        return 300
+    scores = score_frames(bowl_frames)
+    return score(scores)
 
 
 # a = bowling_score('11 11 11 11 11 11 11 11 11 11')  # , 20)
@@ -143,6 +161,6 @@ print('*' * 50)
 print('*' * 50)
 # d = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44/')  # , 0)
 print('*' * 50)
-e = bowling_score('00 5/ 4/ 53 33 22 4/ 5/ 45 XXX')
+# e = bowling_score('00 5/ 4/ 53 33 22 4/ 5/ 45 XXX')
 print('*' * 50)
 f = bowling_score('5/ 4/ 3/ 2/ 1/ 0/ X 9/ 4/ 8/8')
