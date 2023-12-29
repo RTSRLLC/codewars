@@ -101,16 +101,19 @@ def get_next_rolls(tup: tuple, roll: str) -> int:
         return sum(i for i in tup[2] if tup[1] != 'strike')
     if roll == 'spare':
         return tup[2][0]
-    if roll =='regular':
+    if roll == 'regular':
         return tup[2][0]
 
 
 def bowling_score(frames):
     bowl_frames = frames.split()
+    print(f"bowl_frames: {bowl_frames}")
+    print(f"all strikes: {all(i for i in bowl_frames if i == 'X')} and last frame: {bowl_frames[-1] == 'XXX'}")
+    if all(i == 'X' for i in bowl_frames[:-1]) and bowl_frames[-1] == 'XXX':
+        return 300
     scores = score_frames(bowl_frames)
     updated_scores = []
     print(scores)
-    # [(10, 'strike', [10]), (10, 'strike', [10]), (10, 'spare', [9]), (8, 'regular', [8, 0]), (10, 'strike', [10]), (10, 'strike', [10]), (9, 'regular', [9, 0]), (10, 'spare', [8]), (10, 'spare', [7]), (14, 'final frame', [4, 4, 6])]
     for i, score in enumerate(scores):
         print(f"i: {i}, score: {score}")
         if i == 9:
@@ -129,39 +132,17 @@ def bowling_score(frames):
             updated_scores.append(score[0])
         print(f"updated_scores: {updated_scores}\n{'*' * 50}")
     print(f"length updated_scores: {len(updated_scores)} ::: updated_scores: {updated_scores}")
-    print(scores[:-1])
     return sum(updated_scores[:-1]) + sum(updated_scores[-1][-1])
 
 
-a = bowling_score('11 11 11 11 11 11 11 11 11 11')  # , 20)
+# a = bowling_score('11 11 11 11 11 11 11 11 11 11')  # , 20)
 print('*' * 50)
-b = bowling_score('X X X X X X X X X XXX')  # , 300)
+# b = bowling_score('X X X X X X X X X XXX')  # , 300)
 print('*' * 50)
 # c = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44')
 print('*' * 50)
-d = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44/')  # , 0)
-
-"""
-Bowling scoring can seem complex at first, but it's straightforward once you break it down. Here's a simplified explanation:
-
-1. **Frames:**
-   - A game of bowling consists of 10 frames.
-   - In each frame, the player has two chances to knock down 10 pins.
-
-2. **Scoring:**
-   - **Regular Score:** If you knock down all 10 pins in two tries, you score the number of pins knocked down.
-   - **Spare:** If you knock down all 10 pins in two tries (a spare), you score 10 plus the number of pins knocked down on your next roll.
-   - **Strike:** If you knock down all 10 pins on your first try (a strike), you score 10 plus the number of pins knocked down in your next two rolls.
-
-3. **Tenth Frame Special:**
-   - In the 10th frame, if you bowl a spare or strike, you get extra rolls (one for a spare, two for a strike) to complete the scoring for the frame.
-
-4. **Maximum Score:**
-   - The maximum score in a single game of bowling is 300, achieved by rolling 12 strikes in a row (one for each frame plus two additional strikes in the tenth frame).
-
-5. **Keeping Track:**
-   - The score for each frame is cumulative. You add the score of each frame to the total score from the previous frames.
-
-In essence, you're trying to knock down pins and score points, with bonuses (spares and strikes) giving you the chance to add extra pins to your score. The key is understanding how the bonuses work to maximize your score.
-
-"""
+# d = bowling_score('X X 9/ 80 X X 90 8/ 7/ 44/')  # , 0)
+print('*' * 50)
+e = bowling_score('00 5/ 4/ 53 33 22 4/ 5/ 45 XXX')
+print('*' * 50)
+f = bowling_score('5/ 4/ 3/ 2/ 1/ 0/ X 9/ 4/ 8/8')
