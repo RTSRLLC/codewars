@@ -21,13 +21,13 @@ def score_frames(frames):
     for idx, frame in enumerate(frames):
         if idx == 9:
             print(f"final frame accessed: {frames[-1]}")
-            final = final_frame(frames[-1])
+            final = scoring.append(final_frame(frames[-1]))
         elif frame == 'X':
             # ex. (10, 'strike', 10)
-            scoring.append((10, 'strike', 10))
+            scoring.append((10, 'strike', [10]))
         elif frame[1] == '/':
-            # ex. (10, 'spare', 7)
-            scoring.append((10, 'spare', [int(i) for i in list(frame) if i != '/'][0]))
+            # ex. (10, 'spare', [7])
+            scoring.append((10, 'spare', [int(i) for i in list(frame) if i != '/']))
         else:
             # ex. (8, 'regular', [8, 0])
             print(f'frame: {frame}')
@@ -66,7 +66,7 @@ def final_frame(frame):
     This frame can have length 2 or 3 depending on whether the player scored a strike, spare, or neither in the final
     frame. The function returns the score for each roll of the final frame.
     Args:
-        list(frame (): a string representing the final frame in a game of ten-pin bowling.
+        frame (): a string representing the final frame in a game of ten-pin bowling.
 
     Returns: the score for each roll of the final frame.
 
@@ -83,7 +83,7 @@ def final_frame(frame):
         else:
             out_frame.append(int(roll))
     print(f'out_frame: {out_frame}')
-    return
+    return sum(out_frame), 'final frame', out_frame
 
 
 def bowling_score(frames):
