@@ -21,26 +21,41 @@ def rectangle_rotation(a: int, b: int) -> int:
     q1, q2, q3, q4 = rotate_by_45(q1, q2, q3, q4)
     print(q1, q2, q3, q4, sep='\n', end='\n\n')
 
-    # get the equation of the lines that make up the rectangle
+    # get the equation of the lines that make up the rectangle form lest x to max x
     m1, y_intercept1 = get_line_equation(q1, q4)
-    y1 = m1 * x + y_intercept1
-    print(f"y1 = {m1}x + {y_intercept1}")
+    y1 = get_x_y_vals(m1, y_intercept1, q1, q4)
+
     m2, y_intercept2 = get_line_equation(q2, q1)
-    y2 = m2 * x + y_intercept2
-    print(f"y2 = {m2}x + {y_intercept2}")
+    y2 = get_x_y_vals(m2, y_intercept2, q2, q1)
+
     m3, y_intercept3 = get_line_equation(q3, q2)
-    y3 = m3 * x + y_intercept3
-    print(f"y3 = {m3}x + {y_intercept3}")
-    m4, y_intercept4 = get_line_equation(q3, q4)
-    y4 = m4 * x + y_intercept4
-    print(f"y4 = {m4}x + {y_intercept4}")
+    y3 = get_x_y_vals(m3, y_intercept3, q3, q2)
 
-    # plugging in the integer x values from -x to x that lie inside the rectangle's line equations that are less than y1 and than y2 and greater than y3 and less than y4, get the cooresponding y values iff they are integers then count and return them
-    count = 0
-    for x in range(int(-a / 2), a // 2):
-        print(f"x = {x}")
-    return count
+    m4, y_intercept4 = get_line_equation(q4, q3)
+    y4 = get_x_y_vals(m4, y_intercept4, q4, q3)
 
+    # from the smallest x value to the largest x value, check for integer y values inside the rectangle
+
+    return 0
+
+
+def get_x_y_vals(slope: float, y_intercept: float, vec_1: np.array, vec_2: np.array) -> np.array:
+    """
+    Given the slope and y-intercept of a line, get the x and y values of the line
+    Args:
+        slope (): slope of the line
+        y_intercept (): y-intercept of the line
+        vec_1 (): vector 1
+        vec_2 (): vector 2
+
+    Returns: the x and y values of the line in a zip object
+
+    """
+    print(f"ints for the equation are: {int(vec_1[0]), int(vec_2[0])}")
+    x = np.arange(int(vec_1[0]), int(vec_2[0]), 0.1)
+    y = slope * x + y_intercept
+    print(f"the list: {list(iter(zip(x, y)))}\n{'*' * 50}")
+    return list(iter(zip(x, y)))
 
 
 def rotate_by_45(q1: np.array, q2: np.array, q3: np.array, q4: np.array) -> np.array:
