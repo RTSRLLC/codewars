@@ -11,7 +11,7 @@ def rectangle_rotation(a: int, b: int) -> int:
     Returns: the number of points that lie inside the rectangle after rotation
 
     """
-    # get the four corners of the rectangle
+    # get the four corners of the rectangle: 'q' stands for quadrant in the coordinate system
     q1 = np.array([a / 2, b / 2])
     q2 = np.array([-a / 2, b / 2])
     q3 = np.array([-a / 2, -b / 2])
@@ -28,11 +28,11 @@ def rectangle_rotation(a: int, b: int) -> int:
     m2, y_intercept2 = get_line_equation(q2, q1)
     y2 = get_x_y_vals(m2, y_intercept2, q2, q1)
 
-    m3, y_intercept3 = get_line_equation(q3, q2)
-    y3 = get_x_y_vals(m3, y_intercept3, q3, q2)
+    m3, y_intercept3 = get_line_equation(q2, q3)
+    y3 = get_x_y_vals(m3, y_intercept3, q2, q3)
 
-    m4, y_intercept4 = get_line_equation(q4, q3)
-    y4 = get_x_y_vals(m4, y_intercept4, q4, q3)
+    m4, y_intercept4 = get_line_equation(q3, q4)
+    y4 = get_x_y_vals(m4, y_intercept4, q3, q4)
 
     # from the smallest x value to the largest x value, check for integer y values inside the rectangle
 
@@ -51,8 +51,10 @@ def get_x_y_vals(slope: float, y_intercept: float, vec_1: np.array, vec_2: np.ar
     Returns: the x and y values of the line in a zip object
 
     """
+    print(f"vec_1: {vec_1}, vec_2: {vec_2}")
     print(f"ints for the equation are: {int(vec_1[0]), int(vec_2[0])}")
     x = np.arange(int(vec_1[0]), int(vec_2[0]), 0.1)
+    print(f"the x values: {x}")
     y = slope * x + y_intercept
     print(f"the list: {list(iter(zip(x, y)))}\n{'*' * 50}")
     return list(iter(zip(x, y)))
