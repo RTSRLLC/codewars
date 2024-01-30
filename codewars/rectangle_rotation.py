@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 def rectangle_rotation(a: int, b: int) -> int:
@@ -22,41 +23,46 @@ def rectangle_rotation(a: int, b: int) -> int:
     print(q1, q2, q3, q4, sep='\n', end='\n\n')
 
     family_line_boundaries = boundary_values(q1, q2, q3, q4)
-    print(f"family_line_boundaries head:\n{family_line_boundaries[:5]}\n")
+    print(
+            f"family_line_boundaries head:\n{family_line_boundaries[:5]}\n{family_line_boundaries[-5:]}\nlength: {len(family_line_boundaries)}\n")
 
-    # get the equation of the lines that make up the rectangle form lest x to max x
-    m1, y_intercept1 = get_slope(q1, q4)  # [0.70710678 3.53553391], [3.53553391 0.70710678]
-    family_y_intercepts = np.arange(-y_intercept1, y_intercept1 + 0.0001, 0.001)
-    print(f"family_y_intercepts:\n{family_y_intercepts[:]}\n")
+    line_points = {}
+    for vecs in family_line_boundaries:
+        r, intercept = vector_xy_vals(vecs[0], vecs[1])
+        print(f"intercept: {intercept}\n")
+        line_points[intercept] = r
 
-    for idx, num in enumerate(family_y_intercepts[::-1].copy()):
-        print(f"idx: {idx}, num: {num}")
-        y = get_x_y_vals(m1, num, family_line_boundaries[idx])
-        print(f"y:\n{y}\n{'*' * 50}\n")
+    # Create a list to hold the individual DataFrames
+    dfs = []
 
-    return None
+    for key, values in line_points.items():
+        # Create a DataFrame for each key
+        temp_df = pd.DataFrame(values, columns=[f'{key}_x', f'{key}_y'])
+        dfs.append(temp_df)
+
+    # Concatenate all DataFrames at once
+    df = pd.concat(dfs, axis=1)
+    print(df.head())
+
+    return df
 
 
-def get_x_y_vals(slope: float, y_intercept: float, the_limits: list) -> np.array:
+def vector_xy_vals(vec1: np.array, vec2: np.array) -> np.array:
     """
-    Given the slope and y-intercept of a line, get the x and y values of the line
+    Get the x and y values of a line given two points using r = a + t(b−a) where r is the vector, a is the starting
+    point, b is the ending point, and t is a scalar
     Args:
-        slope (): slope of the line
-        y_intercept (): y-intercept of the line
-        the_limits ():
+        vec1 (): vector 1
+        vec2 (): vector 2
 
-    Returns: the x and y values of the line in a zip object
+    Returns: the x and y values of the line
 
     """
-    print(f"Entered Equation: y = {slope}x + {y_intercept}")
-    print(f"the limits x min:\n{the_limits[0][0]}\nthe limits x max:\n{the_limits[1][0]}\n")
-    print(f"int the_limits:\n{int(the_limits[0][0])}, {int(the_limits[1][0])}\n")
-
-    x = np.round(np.arange(int(the_limits[0][0]), int(the_limits[1][0]), 1) + 1, 3)
-    print(f"the x values:\n{x}")
-    y = slope * x + y_intercept
-
-    return np.round(list(iter(zip(x, y))), 3)
+    _, y_intercept = get_slope(vec1, vec2)
+    t_values = np.round(np.arange(0, 1.001, 0.001), 3)
+    x_vals = vec1[0] + t_values * (vec2[0] - vec1[0])
+    y_vals = vec1[1] + t_values * (vec2[1] - vec1[1])
+    return np.round(list(iter(zip(x_vals, y_vals))), 3), y_intercept
 
 
 def boundary_values(xy1: np.array, xy2: np.array, xy3: np.array, xy4: np.array) -> list:
@@ -77,15 +83,17 @@ def boundary_values(xy1: np.array, xy2: np.array, xy3: np.array, xy4: np.array) 
     Returns:
     list: Two lists of (x, y) tuples representing the boundary lines between (xy1, xy2) and (xy3, xy4).
     """
-    xy1_x_range = np.round(np.arange(xy2[0], xy1[0] + 0.001, 0.001)[::-1], 3)
-    xy1_y_range = np.round(np.arange(xy2[1], xy1[1] + 0.001, 0.001)[::-1], 3)
+    xy1_x_range = np.round(np.arange(xy2[0], xy1[0], 0.0001)[::-1], 3)
+    xy1_y_range = np.round(np.arange(xy2[1], xy1[1], 0.0001)[::-1], 3)
     xy1_line = list(zip(xy1_x_range, xy1_y_range))
-    print(f"xy1_line:\n{xy1_line[:5]}\n")
+    print(xy1_line[:5], end='\n\n')
+    print(xy1_line[-5:], end='\n\n')
 
-    xy4_x_range = np.round(np.arange(xy3[0], xy4[0] + 0.001, 0.001)[::-1], 3)
-    xy4_y_range = np.round(np.arange(xy3[1], xy4[1] + 0.001, 0.001)[::-1], 3)
+    xy4_x_range = np.round(np.arange(xy3[0], xy4[0], 0.0001)[::-1], 3)
+    xy4_y_range = np.round(np.arange(xy3[1], xy4[1], 0.0001)[::-1], 3)
     xy4_line = list(zip(xy4_x_range, xy4_y_range))
-    print(f"xy4_line:\n{xy4_line[:5]}\n")
+    print(xy4_line[:5], end='\n\n')
+    print(xy4_line[-5:], end='\n\n')
 
     return list(zip(xy1_line, xy4_line))
 
