@@ -29,7 +29,7 @@ def rectangle_rotation(a: int, b: int) -> int:
     line_points = {}
     for vecs in family_line_boundaries:
         r, intercept = vector_xy_vals(vecs[0], vecs[1])
-        print(f"intercept: {intercept}\n")
+        # print(f"intercept: {intercept}\n")
         line_points[intercept] = r
 
     # Create a list to hold the individual DataFrames
@@ -42,9 +42,10 @@ def rectangle_rotation(a: int, b: int) -> int:
 
     # Concatenate all DataFrames at once
     df = pd.concat(dfs, axis=1)
-    print(df.head())
+    is_integer = df.map(lambda x: x.is_integer())
+    is_integer_sum = is_integer.sum()
 
-    return df
+    return is_integer_sum.sum()
 
 
 def vector_xy_vals(vec1: np.array, vec2: np.array) -> np.array:
