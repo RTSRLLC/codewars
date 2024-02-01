@@ -1,4 +1,5 @@
 import numpy as np
+test = ""
 
 
 def rectangle_rotation(a: int, b: int) -> int:
