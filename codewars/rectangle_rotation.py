@@ -19,7 +19,10 @@ def rectangle_rotation(a: int, b: int) -> int:
 
     # rotate the rectangle by 45 degrees
     q1, q2, q3, q4 = rotate_by_45(q1, q2, q3, q4)
-    print(q1, q2, q3, q4, sep='\n', end='\n\n')
+    print(q1, q2, q3, q4, type(q1), sep='\n', end='\n\n')
+
+    the_range = get_all_xy_combinations(q1, q2, q3, q4)
+    print(f"the_range: {the_range}")
 
     # get the equation of the lines that make up the rectangle form lest x to max x
     m1, y_intercept1 = get_line_equation(q1, q4)
@@ -51,12 +54,12 @@ def get_x_y_vals(slope: float, y_intercept: float, vec_1: np.array, vec_2: np.ar
     Returns: the x and y values of the line in a zip object
 
     """
-    print(f"vec_1: {vec_1}, vec_2: {vec_2}")
-    print(f"ints for the equation are: {int(vec_1[0]), int(vec_2[0])}")
+    # print(f"vec_1: {vec_1}, vec_2: {vec_2}")
+    # print(f"ints for the equation are: {int(vec_1[0]), int(vec_2[0])}")
     x = np.arange(int(vec_1[0]), int(vec_2[0]), 0.1)
-    print(f"the x values: {x}")
+    # print(f"the x values: {x}")
     y = slope * x + y_intercept
-    print(f"the list: {list(iter(zip(x, y)))}\n{'*' * 50}")
+    # print(f"the list: {list(iter(zip(x, y)))}\n{'*' * 50}")
     return list(iter(zip(x, y)))
 
 
@@ -95,6 +98,34 @@ def get_line_equation(vec1: np.array, vec2: np.array) -> tuple:
     y_intercept = vec1[1] - m * vec1[0]
 
     return m, y_intercept
+
+
+def get_all_xy_combinations(*args) -> list:
+    """
+    Get all the integer x and y combinations form the min and max of the lists.
+    Args:
+        p1 (): np.array of the first quadrant
+        p2 (): np.array of the second quadrant
+        p3 (): np.array of the third quadrant
+        p4 (): np.array of the fourth quadrant
+
+    Returns: a list of integers between the min and max of the x and y values
+
+    """
+    print(f"args: {args}")
+    miny = None
+    maxy = None
+    for arg in args:
+        if miny is None and max is None:
+            miny = np.min(arg)
+            maxy = np.max(arg)
+            print(f"miny inside None if: {miny}, maxy: {maxy}")
+        if np.min(arg) < miny:
+            miny = np.min(arg)
+        if np.max(arg) > maxy:
+            maxy = np.max(arg)
+    print(f"miny: {miny}, maxy: {maxy}")
+    return
 
 
 # q1 = [0.70710678 3.53553391]
