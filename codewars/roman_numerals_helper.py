@@ -28,25 +28,38 @@ class RomanNumerals:
 		"I": 1
 	}
 
+	NUMERAL_ROMANS = {v: k for k, v in ROMAN_NUMERALS.items()}
+
 	@staticmethod
-	def to_roman(val: int) -> str:
-		return ''
+	def break_into_base10(n):
+		digits = []
+		keys = sorted(RomanNumerals.NUMERAL_ROMANS.keys(), reverse=True)
+		for key in keys:
+			while n >= key:
+				digits.append(key)
+				n -= key
+		return digits
 
 	@staticmethod
 	def from_roman(roman_num: str) -> int:
-		return 0
+		return sum(map(lambda x: RomanNumerals.ROMAN_NUMERALS[x], [i for i in roman_num]))
+
+	@staticmethod
+	def to_roman(val: int) -> str:
+		return ''.join([RomanNumerals.NUMERAL_ROMANS[i] for i in RomanNumerals.break_into_base10(val)])
 
 
 a = RomanNumerals()
-print(a.to_roman(1000))  # 'M'
 # To Roman
-print(a.to_roman(2000))  # 'MM'
+print(a.ROMAN_NUMERALS, a.NUMERAL_ROMANS, sep='\n\n')
+print(a.to_roman(1000))  # 'M'
+print(a.to_roman(2000))  # 'MM''
 print(a.to_roman(1666))  # 'MDCLXVI'
 print(a.to_roman(86))  # 'LXXXVI'
 print(a.to_roman(1))  # 'I'
 
 # From Roman
-print(a.from_roman("MM"))  # 2000
-print(a.from_roman("MDCLXVI"))  # 1666
-print(a.from_roman("LXXXVI"))  # 86
-print(a.from_roman("I"))  # 1
+# print(a.from_roman("MM"))  # 2000
+# print(a.from_roman("MDCLXVI"))  # 1666
+# print(a.from_roman("LXXXVI"))  # 86
+# print(a.from_roman("I"))  # 1
