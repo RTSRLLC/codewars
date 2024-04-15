@@ -92,3 +92,5 @@ a = RomanNumerals()
 # print(a.from_roman("LXXXVI"))  # 86
 # print(a.from_roman("I"))  # 1
 print(a.from_roman("DCLIX"))  # 659
+
+# running a test on lag
