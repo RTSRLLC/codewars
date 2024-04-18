@@ -12,7 +12,8 @@ In this kata 4 should be represented as IV, NOT as IIII (the "watchmaker's four"
 
 # import queue
 import collections
-print(help(collections.deque))
+from itertools import pairwise
+
 
 class RomanNumerals:
 	ROMAN_NUMERALS = {
@@ -29,10 +30,10 @@ class RomanNumerals:
 		"V": 5,
 		"IV": 4,
 		"I": 1
-	}
-
+		}
+	
 	NUMERAL_ROMANS = {v: k for k, v in ROMAN_NUMERALS.items()}
-
+	
 	@staticmethod
 	def break_into_base10(n):
 		digits = []
@@ -42,39 +43,30 @@ class RomanNumerals:
 				digits.append(key)
 				n -= key
 		return digits
-
+	
 	@staticmethod
 	def to_roman(val: int) -> str:
 		return ''.join([RomanNumerals.NUMERAL_ROMANS[i] for i in RomanNumerals.break_into_base10(val)])
-
+	
 	@staticmethod
 	def from_roman(roman_num: str) -> int:
-		print(f'Roman Num: {roman_num}')
+		output_list_for_sum = []
 		lis = [i for i in roman_num]
+		pair_list = []
 		print(f'List: {lis}')
 		print(RomanNumerals.ROMAN_NUMERALS)
-		output = 0
-		test_string = ''
-		for idx, let in enumerate(lis):
-			test_string += let
-			try:
-				test_string += lis[idx + 1]
-			except IndexError:
-				pass
-			if test_string in RomanNumerals.ROMAN_NUMERALS:
-				output += RomanNumerals.ROMAN_NUMERALS[test_string]
-				test_string = ''
-			else:
-				keep_next_value = [i for i in test_string]
-				for i in keep_next_value:
-					if i in RomanNumerals.ROMAN_NUMERALS:
-						output += RomanNumerals.ROMAN_NUMERALS[i]
-						test_string = ''
-						test_string = i
-						continue
-
-			# output += sum(map(lambda x: RomanNumerals.ROMAN_NUMERALS[x], keep_next_value))
-		return output
+		pairwise_pairs = pairwise(lis)
+		for pair in pairwise_pairs:
+			print(pair)
+			pair_list.append(''.join(pair))
+			if ''.join(pair) in RomanNumerals.ROMAN_NUMERALS:
+				output_list_for_sum.append(RomanNumerals.ROMAN_NUMERALS[''.join(pair)])
+				print(f"Output List: {output_list_for_sum}")
+		# else:
+		
+		print(f"Pair List: {pair_list}")
+		# output += sum(map(lambda x: RomanNumerals.ROMAN_NUMERALS[x], keep_next_value))
+		return pairwise_pairs
 
 
 a = RomanNumerals()
@@ -92,5 +84,3 @@ a = RomanNumerals()
 # print(a.from_roman("LXXXVI"))  # 86
 # print(a.from_roman("I"))  # 1
 print(a.from_roman("DCLIX"))  # 659
-
-# running a test on lag
