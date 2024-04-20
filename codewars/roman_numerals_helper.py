@@ -1,19 +1,8 @@
-"""
-Modern Roman numerals are written by expressing each digit separately starting with the left most digit and skipping any
-digit with a value of zero. In Roman numerals:
-
-1990 is rendered: 1000=M, 900=CM, 90=XC; resulting in MCMXC
-2008 is written as 2000=MM, 8=VIII; or MMVIII
-1666 uses each Roman symbol in descending order: MDCLXVI.
-Input range : 1 <= n < 4000
-
-In this kata 4 should be represented as IV, NOT as IIII (the "watchmaker's four").
-"""
-
 from itertools import pairwise
 
 
 class RomanNumerals:
+	# Dictionary mapping Roman numerals to their base-10 values.
 	ROMAN_NUMERALS = {
 		"M": 1000,
 		"CM": 900,
@@ -34,6 +23,12 @@ class RomanNumerals:
 	
 	@staticmethod
 	def base10(n):
+		"""
+		Converts a base-10 number into a list of its Roman numeral components.
+
+		:param n: The base-10 number to be converted.
+		:return: A list of integers representing the base-10 values of the Roman numeral components.
+		"""
 		digits = []
 		keys = sorted(RomanNumerals.NUMERAL_ROMANS.keys(), reverse=True)
 		for key in keys:
@@ -44,21 +39,28 @@ class RomanNumerals:
 	
 	@staticmethod
 	def to_roman(val: int) -> str:
+		"""
+		Converts a base-10 number to its Roman numeral representation.
+
+		:param val: The base-10 number to be converted.
+		:return: A string representing the Roman numeral equivalent of the input number.
+		"""
 		return ''.join([RomanNumerals.NUMERAL_ROMANS[i] for i in RomanNumerals.base10(val)])
 	
 	@staticmethod
 	def from_roman(roman_num: str) -> int:
+		"""
+		Converts a Roman numeral to its base-10 representation.
+
+		:param roman_num: The Roman numeral string to be converted.
+		:return: An integer representing the base-10 equivalent of the Roman numeral.
+		"""
 		lis = [i for i in roman_num]
 		lis_copy = lis.copy()
-		print(f"RomanNumerals: {RomanNumerals.ROMAN_NUMERALS}")
 		pairwise_pairs = pairwise([i for i in roman_num])
 		pairwise_pairs_og = list(''.join(i) for i in list(pairwise_pairs))
-		paired_copies = list(''.join(i) for i in list(pairwise_pairs_og))
-		# answer is 659: d = 500 c = 100, l = 50, i = 1, x = 10, i = 1, x = 10, i = 1
-		pairwise_index = 0
 		in_roman_numerals = [i for i in pairwise_pairs_og if i in RomanNumerals.ROMAN_NUMERALS]
 		split_in_roman_numerals = [char for pair in in_roman_numerals for char in pair]
-		# remove items in split_in_ROMAN_NUMERALS from lis_copy
 		for i in split_in_roman_numerals:
 			lis_copy.remove(i)
 		a_sum = sum([RomanNumerals.ROMAN_NUMERALS[i] for i in lis_copy]) + sum(
