@@ -10,8 +10,6 @@ Input range : 1 <= n < 4000
 In this kata 4 should be represented as IV, NOT as IIII (the "watchmaker's four").
 """
 
-# import queue
-import collections
 from itertools import pairwise
 
 
@@ -50,55 +48,23 @@ class RomanNumerals:
 	
 	@staticmethod
 	def from_roman(roman_num: str) -> int:
-		a_sum = 0
 		lis = [i for i in roman_num]
-		pair_list = []
-		print(f'List: {lis}')
+		lis_copy = lis.copy()
 		print(f"RomanNumerals: {RomanNumerals.ROMAN_NUMERALS}")
-		# {'M': 1000, 'CM': 900, 'D': 500, 'CD': 400, 'C': 100, 'XC': 90,
-		# 'L': 50, 'XL': 40, 'X': 10, 'IX': 9, 'V': 5, 'IV': 4, 'I': 1}
-		pairwise_pairs = pairwise(lis)
-		# answer is 659: c = 500, l = 50, i = 1, x = 10, i = 1, x = 10, i = 1
-		for pair in pairwise_pairs:  # [('D', 'C'), ('C', 'L'), ('L', 'I'), ('I', 'X')]
-			previous_pair = []
-			next_pairwise = []
-			break_apart_value_1 = None
-			break_apart_value_2 = None
-			pair_list.append(''.join(pair))
-			print(f"Pair List: {pair_list}")
-			# see if the pair is in the dictionary, if yes, add the value to the sum and continue to next value
-			if pair_list[0] in RomanNumerals.ROMAN_NUMERALS:
-				a_sum += RomanNumerals.ROMAN_NUMERALS[''.join(pair)]
-				pair_list.clear()
-				print(f"Output List: {a_sum}")
-				continue
-			else:  # if not, check if the next pairwise value is in the dictionary
-				previous_pair.append(
-					''.join(pair)
-					)  # store precious value in the event that next value NOT in the dictionary
-				next_pairwise.append(''.join(next(pairwise_pairs)))
-				if next_pairwise[0] in RomanNumerals.ROMAN_NUMERALS:  # if yes, split previous value, add first
-					# value to sum then add the second value to the sum
-					break_apart_value_1 = [i for i in previous_pair[0]]
-					print(f"Break Apart Value: {break_apart_value_1}")
-					a_sum += RomanNumerals.ROMAN_NUMERALS[break_apart_value_1[0]] + RomanNumerals.ROMAN_NUMERALS[
-						previous_pair]
-					print(f"Output List: {a_sum}")
-					# clear acurrent_value
-					previous_pair.clear()
-					next_pairwise.clear()
-					continue
-				else:  # if not add, break up previous available value and add the first value to the sum
-					break_apart_value_2 = [i for i in previous_pair[0]]
-					print(f"Break Apart Value: {break_apart_value_2}")
-					for i in break_apart_value_2:
-						a_sum += RomanNumerals.ROMAN_NUMERALS[i]
-					previous_pair.clear()
-		
-		# next_pairwise.clear()
-		
-		# output += sum(map(lambda x: RomanNumerals.ROMAN_NUMERALS[x], keep_next_value))
-		return pairwise_pairs
+		pairwise_pairs = pairwise([i for i in roman_num])
+		pairwise_pairs_og = list(''.join(i) for i in list(pairwise_pairs))
+		paired_copies = list(''.join(i) for i in list(pairwise_pairs_og))
+		# answer is 659: d = 500 c = 100, l = 50, i = 1, x = 10, i = 1, x = 10, i = 1
+		pairwise_index = 0
+		in_roman_numerals = [i for i in pairwise_pairs_og if i in RomanNumerals.ROMAN_NUMERALS]
+		split_in_roman_numerals = [char for pair in in_roman_numerals for char in pair]
+		# remove items in split_in_ROMAN_NUMERALS from lis_copy
+		for i in split_in_roman_numerals:
+			lis_copy.remove(i)
+		a_sum = sum([RomanNumerals.ROMAN_NUMERALS[i] for i in lis_copy]) + sum(
+			[RomanNumerals.ROMAN_NUMERALS[i] for i in in_roman_numerals]
+			)
+		return a_sum
 
 
 a = RomanNumerals()
