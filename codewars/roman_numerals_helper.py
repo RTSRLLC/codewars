@@ -35,7 +35,7 @@ class RomanNumerals:
 	NUMERAL_ROMANS = {v: k for k, v in ROMAN_NUMERALS.items()}
 	
 	@staticmethod
-	def break_into_base10(n):
+	def base10(n):
 		digits = []
 		keys = sorted(RomanNumerals.NUMERAL_ROMANS.keys(), reverse=True)
 		for key in keys:
@@ -46,25 +46,38 @@ class RomanNumerals:
 	
 	@staticmethod
 	def to_roman(val: int) -> str:
-		return ''.join([RomanNumerals.NUMERAL_ROMANS[i] for i in RomanNumerals.break_into_base10(val)])
+		return ''.join([RomanNumerals.NUMERAL_ROMANS[i] for i in RomanNumerals.base10(val)])
 	
 	@staticmethod
 	def from_roman(roman_num: str) -> int:
-		output_list_for_sum = []
+		a_sum = 0
 		lis = [i for i in roman_num]
 		pair_list = []
 		print(f'List: {lis}')
-		print(RomanNumerals.ROMAN_NUMERALS)
+		print(f"RomanNumerals: {RomanNumerals.ROMAN_NUMERALS}")
+		# {'M': 1000, 'CM': 900, 'D': 500, 'CD': 400, 'C': 100, 'XC': 90,
+		# 'L': 50, 'XL': 40, 'X': 10, 'IX': 9, 'V': 5, 'IV': 4, 'I': 1}
 		pairwise_pairs = pairwise(lis)
-		for pair in pairwise_pairs:
-			print(pair)
+		# answer is 659: c = 500, l = 50, i = 1, x = 10, i = 1, x = 10, i = 1
+		for pair in pairwise_pairs:  # [('D', 'C'), ('C', 'L'), ('L', 'I'), ('I', 'X')]
+			acurrent_value = []
+			break_apart_value = []
 			pair_list.append(''.join(pair))
+			# see if the pair is in the dictionary, if yes, add the value to the sum
 			if ''.join(pair) in RomanNumerals.ROMAN_NUMERALS:
-				output_list_for_sum.append(RomanNumerals.ROMAN_NUMERALS[''.join(pair)])
-				print(f"Output List: {output_list_for_sum}")
-		# else:
+				a_sum += RomanNumerals.ROMAN_NUMERALS[''.join(pair)]
+				print(f"Output List: {a_sum}")
+				continue
+			else:  # if not, check if the next pairwise value is in the dictionary
+				acurrent_value.append(pair[0])
+				if acurrent_value in RomanNumerals.ROMAN_NUMERALS:  # if yes, split previous value, add first value to
+					# sum then add the second value to the sum
+					a_sum += RomanNumerals.ROMAN_NUMERALS[acurrent_value]
+					print(f"Output List: {a_sum}")
+					continue
+				else:  # if not add, break up previous available value and add the first value to the sum
+					break_apart_value.append(i for i in acurrent_value)
 		
-		print(f"Pair List: {pair_list}")
 		# output += sum(map(lambda x: RomanNumerals.ROMAN_NUMERALS[x], keep_next_value))
 		return pairwise_pairs
 
