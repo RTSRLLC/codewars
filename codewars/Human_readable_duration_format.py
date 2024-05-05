@@ -38,7 +38,7 @@ def format_duration(seconds):
 				nums.append(str(the_num) + " minute" if the_num == 1 else str(the_num) + " minutes")
 				return " ".join(i for i in nums)
 			nums.append(" and " + str(the_num) + " minute" if the_num == 1 else " and " + str(the_num) + " minutes")
-			return " ".join(i for i in nums)
+			return "".join(i for i in nums)
 		nums.append(str(the_num) + " minute" if the_num == 1 else str(the_num) + " minutes")
 	if 1 <= seconds < 60:
 		if seconds == 1:
@@ -46,18 +46,24 @@ def format_duration(seconds):
 			nums[-1].replace(" and ", "")
 			return " ".join(i for i in nums)
 		the_num = seconds
-		nums.append(" and " + str(the_num) + " second" if the_num == 1 else " and " + str(the_num) + " seconds")
+		nums.append("and " + str(the_num) + " second" if the_num == 1 else "and " + str(the_num) + " seconds")
 		return " ".join(i for i in nums)
 
+test1 = ("4 years, 68 days, 3 hours, and 4 minutes' "
+        "'4 years, 68 days, 3 hours and 4 minutes'")
+test2 = ("8 years, 12 days, 13 hours, 41 minutes  and 1 second' "
+        "'8 years, 12 days, 13 hours, 41 minutes and 1 second'")
 
-a = format_duration(0)  # , "now")
-b = format_duration(1)  # , "1 second")
-c = format_duration(62)  # , "1 minute and 2 seconds")
-d = format_duration(120)  # , "2 minutes")
-e = format_duration(3600)  # , "1 hour")
-f = format_duration(3662)  # , "1 hour, 1 minute and 2 seconds")
-g = format_duration(15731080)  # , "182 days, 1 hour, 44 minutes and 40 seconds")
+# a = format_duration(0)  # , "now")
+# b = format_duration(1)  # , "1 second")
+# c = format_duration(62)  # , "1 minute and 2 seconds")
+# d = format_duration(120)  # , "2 minutes")
+# e = format_duration(3600)  # , "1 hour")
+# f = format_duration(3662)  # , "1 hour, 1 minute and 2 seconds")
+# g = format_duration(15731080)  # , "182 days, 1 hour, 44 minutes and 40 seconds")
 h = format_duration(132030240)  # , "4 years, 68 days, 3 hours and 4 minutes")  #'4 years, 68 days, 3 hours, 4 minutes'
-i = format_duration(205851834)  # , "6 years, 192 days, 13 hours, 3 minutes and 54 seconds")
+# i = format_duration(205851834)  # , "6 years, 192 days, 13 hours, 3 minutes and 54 seconds")
 j = format_duration(253374061)  # , "8 years, 12 days, 13 hours, 41 minutes and 1 second")
-k = format_duration(242062374)  # , "7 years, 246 days, 15 hours, 32 minutes and 54 seconds")
+# k = format_duration(242062374)  # , "7 years, 246 days, 15 hours, 32 minutes and 54 seconds")
+
+
