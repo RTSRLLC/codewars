@@ -18,21 +18,9 @@ def format_duration(seconds):
 		seconds -= division * time[0]
 	print(nums)
 	nums = [n for n in nums if n[0] != 0]
-	new_nums = []
-	for frame in nums:
-		if frame[0] != 1:
-			if frame == nums[-1]:
-				new_nums.append(f", and {frame[0]} {frame[1]}")
-			else:
-				new_nums.append(f"{frame[0]}, ")
-		else:
-			new_word = list(frame[1])
-			new_word.pop()
-			new_word = "".join(new_word)
-			new_nums.append(f"{frame[0]} {new_word},")
-			print(new_word)
-	outish = "".join(new_nums)
-	print(outish)
+	nums = [f"{str(n[0])} {n[1]}" for n in nums]
+	
+	print(nums)
 
 
 # a = format_duration(0)  # , "now")
