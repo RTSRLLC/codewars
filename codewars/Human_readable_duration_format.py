@@ -1,4 +1,6 @@
 def final_item_in_list(lst: list) -> list:
+	if len(lst) == 1:
+		return lst
 	final = lst.pop()
 	lst.append(f"and {final}")
 	return lst
@@ -32,7 +34,9 @@ def division(seconds: int) -> list:
 
 
 def format_duration(seconds):
-	nums = division(seconds)  # [6, 192, 13, 3, 54]
+	if seconds == 0:
+		return "now"
+	nums = division(seconds)
 	nums = [f"{str(n[0])} {n[1]}" for n in nums if n[0] != 0]
 	nums = plural_or_not(nums)
 	nums = final_item_in_list(nums)
@@ -41,12 +45,12 @@ def format_duration(seconds):
 	return " ".join(nums)
 
 
-# a = format_duration(0)  # , "now")
-# b = format_duration(1)  # , "1 second")
-# c = format_duration(62)  # , "1 minute and 2 seconds")
-# d = format_duration(120)  # , "2 minutes")
-# e = format_duration(3600)  # , "1 hour")
-# f = format_duration(3662)  # , "1 hour, 1 minute and 2 seconds")
+a = format_duration(0)  # , "now")
+b = format_duration(1)  # , "1 second")
+c = format_duration(62)  # , "1 minute and 2 seconds")
+d = format_duration(120)  # , "2 minutes")
+e = format_duration(3600)  # , "1 hour")
+f = format_duration(3662)  # , "1 hour, 1 minute and 2 seconds")
 g = format_duration(15731080)  # , "182 days, 1 hour, 44 minutes and 40 seconds")
 h = format_duration(132030240)  # , "4 years, 68 days, 3 hours and 4 minutes")  #'4 years, 68 days, 3 hours, 4 minutes'
 i = format_duration(205851834)  # , "6 years, 192 days, 13 hours, 3 minutes and 54 seconds")
