@@ -6,13 +6,12 @@ class Node:
 
 
 def tree_by_levels(node):
+	out = []
 	if node is None:
 		return []
 	for key in vars(node).keys():
-		print(key)
-		print(node.__dict__[key])
-	
-	return 1
+		out.append(vars(node)[key])
+	return out
 
 
 a = tree_by_levels(None)  # , [])
@@ -36,4 +35,3 @@ b = tree_by_levels(
 			), n=1  # level one
 		)
 	)
-c = Node(L=1, R=2, n=3)
