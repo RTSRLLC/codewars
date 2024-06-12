@@ -8,11 +8,10 @@ class Node:
 def tree_by_levels(node):
 	if node is None:
 		return []
-	print(vars(node))
-	print(node.__dict__)
-	print(node.__dict__.keys())
+	for key in vars(node).keys():
+		print(key)
+		print(node.__dict__[key])
 	
-	print(vars(node.left))
 	return 1
 
 
