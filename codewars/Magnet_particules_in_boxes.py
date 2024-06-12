@@ -19,7 +19,9 @@ def doubles(maxk: int, maxn: int) -> float:
 	"""
 	
 	k = np.arange(1, maxk + 1)[:, np.newaxis]
+	print(k.shape)
 	n = np.arange(1, maxn + 1)
+	print(n.shape)
 	
 	# To prevent overflow, we need to use logarithms for large exponentiation
 	log_term = -np.log(k) - 2 * k * np.log(n + 1)
