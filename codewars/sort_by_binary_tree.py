@@ -10,8 +10,9 @@ def tree_by_levels(node):
 		return []
 	print(vars(node))
 	print(node.__dict__)
-	print(vars(node.left))
+	print(node.__dict__.keys())
 	
+	print(vars(node.left))
 	return 1
 
 
