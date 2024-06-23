@@ -5,12 +5,27 @@ class Node:
 		self.value = n
 
 
+def branch(current_node: dict):
+	return dict(list(current_node.items()))
+
+
 def tree_by_levels(node):
-	out = []
 	if node is None:
 		return []
-	for key in vars(node).keys():
-		out.append(vars(node)[key])
+	out = []
+	current_branch = {}
+	print(repr(vars(node)))
+	the_node = branch(vars(node))
+	for k, v in vars(node).items():
+		if k == 'left':
+			print(type(v))
+			if type(v) == Node:
+				current_branch[1] = [v]
+		elif k == 'right':
+			if type(v) == Node:
+				current_branch[1].append(v)
+		elif k == 'value':
+			out.append(v)
 	return out
 
 
