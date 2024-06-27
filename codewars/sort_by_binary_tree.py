@@ -1,4 +1,4 @@
-import inspect
+from typing import Optional, List
 
 
 class Node:
@@ -8,44 +8,53 @@ class Node:
 		self.value = n
 
 
-def branch(current_node: dict):
-	return dict(list(current_node.items()))
+def tree_by_levels(node: Optional[Node]) -> List[int]:
+	"""
+	Traverse a binary tree by levels and return a list of node values.
 
+	This function performs a level-order traversal (breadth-first traversal) of a binary tree.
+	It returns a list of node values in the order they are visited.
 
-def tree_by_levels(node):
-	# Get the current frame
-	frame = inspect.currentframe()
-	# Get the function arguments and their values
-	args, _, _, values = inspect.getargvalues(frame)
+	Parameters:
+	node (Optional[Node]): The root node of the binary tree.
+
+	Returns:
+	list: A list of integers representing the node values in level-order.
+	"""
 	
-	# Use the function signature to get argument names in the correct order
-	func_name = inspect.currentframe().f_code.co_name
-	func = globals()[func_name]
-	sig = inspect.signature(func)
-	params = sig.parameters
+	def branch(current_node: dict):
+		"""
+		Extract the values of the current node's attributes.
+
+		This helper function takes a dictionary representation of a node and returns a list
+		of its attribute values (left child, right child, and node value).
+
+		Parameters:
+		current_node (dict): A dictionary representation of a node.
+
+		Returns:
+		list: A list of the node's attribute values.
+		"""
+		return [i[1] for i in list(list(current_node.items()))]
 	
-	# Create a string with the arguments and their values
-	args_str = ', '.join(f"{param}={values[param]!r}" for param in params)
-	
-	# Print the arguments string
-	print(f"Arguments: {args_str}")
 	if node is None:
 		return []
-	out = []
-	current_branch = {}
-	print(repr(vars(node)))
-	the_node = branch(vars(node))
-	for k, v in vars(node).items():
-		if k == 'left':
-			print(type(v))
-			if type(v) == Node:
-				current_branch[1] = [v]
-		elif k == 'right':
-			if type(v) == Node:
-				current_branch[1].append(v)
-		elif k == 'value':
-			out.append(v)
-	return out
+	
+	the_tree = list()
+	the_tree.append(branch(vars(node)))
+	
+	for i in the_tree:
+		for j in i:
+			if isinstance(j, int):
+				continue
+			if not j:
+				continue
+			else:
+				the_tree.append(branch(vars(j)))
+	
+	flattened_tree = [item for sublist in the_tree for item in sublist]
+	
+	return [i for i in flattened_tree if isinstance(i, int)]
 
 
 a = tree_by_levels(None)  # , [])
@@ -55,17 +64,17 @@ b = tree_by_levels(
 		L=Node(
 			L=None,
 			R=Node(
-				L=None, R=None, n=4
+				L=None, R=None, n=4  # level three
 				),
-			n=2
+			n=2  # level two
 			),
 		R=Node(
-			Node(
-				L=None, R=None, n=5
+			L=Node(
+				L=None, R=None, n=5  # level three
 				),
-			Node(
+			R=Node(
 				L=None, R=None, n=6
-				), n=3
+				), n=3  # level two
 			), n=1  # level one
 		)
 	)
