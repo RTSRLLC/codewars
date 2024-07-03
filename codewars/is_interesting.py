@@ -9,22 +9,20 @@ def is_interesting(number, awesome_phrases):
 		return 2
 	if all(list(str(number))) == str(list(str(number))[0]):
 		return 2
-	# The digits are sequential, incrementing†: 1234
 	a = str(number)
 	if str(number) in '1234567890':
 		return 2
-	# The digits are sequential, decrementing‡: 4321
 	if str(number) in '0987654321':
 		return 2
 
 
-# a = is_interesting(3, [1337, 256])  # 0
-# b = is_interesting(1336, [1337, 256])  # 1
-# c = is_interesting(1337, [1337, 256])  # 2
-# d = is_interesting(11208, [1337, 256])  # 0
-# e = is_interesting(11209, [1337, 256])  # 1
-# f = is_interesting(11211, [1337, 256])  # 2
-# g = is_interesting(1111, [1337, 256])  # 2
+a = is_interesting(3, [1337, 256])  # 0
+b = is_interesting(1336, [1337, 256])  # 1
+c = is_interesting(1337, [1337, 256])  # 2
+d = is_interesting(11208, [1337, 256])  # 0
+e = is_interesting(11209, [1337, 256])  # 1
+f = is_interesting(11211, [1337, 256])  # 2
+g = is_interesting(1111, [1337, 256])  # 2
 h = is_interesting(1234, [1337, 256])  # 2ih = is_interesting(7890, [1337, 256])  # 2
 i = is_interesting(7890, [1337, 256])  # 2
 j = is_interesting(4321, [1337, 256])  # 2
