@@ -14,8 +14,8 @@ def is_interesting(number, awesome_phrases):
 	if str(number) in '1234567890':
 		return 2
 	# The digits are sequential, decrementing‡: 4321
-	# if number == int(''.join([str(i) for i in range(a, 0, -1)])):
-	# 	return 2
+	if str(number) in '0987654321':
+		return 2
 
 
 # a = is_interesting(3, [1337, 256])  # 0
