@@ -1,35 +1,52 @@
 def is_interesting(number, awesome_phrases):
 	a, b, c = number, number + 1, number + 2
+	awesome = awesome_phrases
+	print(f"a, b, c: {a, b, c}   awesome_phrases: {awesome_phrases}")
 	
-	if (len(str(a)) < 3 or
-			len(str(b)) < 3 or
-			len(str(c)) < 3):
+	if a >= 1_000_000_000 and b >= 1_000_000_000 and c >= 1_000_000_000:
+		print(0)
 		return 0
+	
+	if len(str(a)) < 3 and len(str(b)) < 3 and len(str(c)) < 3:
+		return 0
+	
 	if a in awesome_phrases:
 		return 2
+	elif b in awesome_phrases:
+		return 1
+	elif c in awesome_phrases:
+		return 1
+	
 	if (a % 100 == 0 or
 			b % 100 == 0 or
 			c % 100 == 0):
-		return 2 if number % 100 == 0 else 1
-	if (str(a) == str(a)[::-1] or
-			str(b) == str(b)[::-1] or
-			str(c) == str(c)[::-1]):
-		return 2 if str(a) == str(a)[::-1] else 1
+		print(a % 100, b % 100, c % 100)
+		print(2 if (a and b and c) % 100 == 0 else 1)
+		return 2
+	
 	if (all(list(str(a))) == str(list(str(a))[0]) or
 			all(list(str(b))) == str(list(str(b))[0]) or
 			all(list(str(c))) == str(list(str(c))[0])):
+		print(2 if all(list(str(a))) == str(list(str(a))[0]) else 1)
 		return 2 if all(list(str(a))) == str(list(str(a))[0]) else 1
+	
 	if ((str(a) in '1234567890' or str(a) in '9876543210') or
 			(str(b) in '1234567890' or str(b) in '9876543210') or
 			(str(c) in '1234567890' or str(c) in '9876543210')):
-		return 2
+		print(2 if str(a) in '1234567890' or str(a) in '9876543210' else 1)
+		return 2 if str(a) in '1234567890' or str(a) in '9876543210' else 1
+	
+	if (str(a) == str(a)[::-1] or
+			str(b) == str(b)[::-1] or
+			str(c) == str(c)[::-1]):
+		print(2 if str(a) == str(a)[::-1] else 1)
+		return 2 if str(a) == str(a)[::-1] else 1
+	
 	return 0
 
 
-a = is_interesting(97, [1337, 256])  # 0
-
-b = is_interesting(1336, [1337, 256])  # 1  still off haven't dealt with awesome_phrases + 1, + 2
-
+a = is_interesting(999999999, [1337, 256])  # 0
+b = is_interesting(654, [1337, 256])  # 1
 c = is_interesting(1337, [1337, 256])  # 2
 d = is_interesting(11208, [1337, 256])  # 0
 e = is_interesting(11209, [1337, 256])  # 1
