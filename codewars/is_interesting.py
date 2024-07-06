@@ -22,7 +22,7 @@ def is_interesting(number, awesome_phrases):
 			c % 100 == 0):
 		print(a % 100, b % 100, c % 100)
 		print(2 if (a and b and c) % 100 == 0 else 1)
-		return 2
+		return 2 if a % 100 == 0 else 1
 	
 	if (all(list(str(a))) == str(list(str(a))[0]) or
 			all(list(str(b))) == str(list(str(b))[0]) or
@@ -45,7 +45,11 @@ def is_interesting(number, awesome_phrases):
 	return 0
 
 
-a = is_interesting(999999999, [1337, 256])  # 0
+a = is_interesting(98, [1337, 256])  # 1
+aa = is_interesting(99, [1337, 256])  # 1
+aaa = is_interesting(6998, [1337, 256])  # 1
+aaaa = is_interesting(799999, [1337, 256])  # 1
+aaaaa = is_interesting(999999999, [1337, 256])  # 2
 b = is_interesting(654, [1337, 256])  # 1
 c = is_interesting(1337, [1337, 256])  # 2
 d = is_interesting(11208, [1337, 256])  # 0
