@@ -1,36 +1,69 @@
-def is_interesting(number, awesome_phrases):
-	a, b, c = number, number + 1, number + 2
-	if a >= 1_000_000_000 and b >= 1_000_000_000 and c >= 1_000_000_000:
-		return 0
-	if len(str(a)) < 3 and len(str(b)) < 3 and len(str(c)) < 3:
-		return 0
-	if a in awesome_phrases:
-		return 2
-	elif b in awesome_phrases:
-		return 1
-	elif c in awesome_phrases:
-		return 1
-	if a % 100 == 0 or (100 <= a <= 1_000_000_000) and str(a) == str(a)[::-1]:
-		return 2
-	elif b % 100 == 0:
-		return 1
-	elif c % 100 == 0:
-		return 1
-	else:
-		pass
-	if (all(list(str(a))) == str(list(str(a))[0]) or
-			all(list(str(b))) == str(list(str(b))[0]) or
-			all(list(str(c))) == str(list(str(c))[0])):
-		return 2 if all(list(str(a))) == str(list(str(a))[0]) else 1
-	if ((str(a) in '1234567890' or str(a) in '9876543210') or
-			(str(b) in '1234567890' or str(b) in '9876543210') or
-			(str(c) in '1234567890' or str(c) in '9876543210')):
-		return 2 if str(a) in '1234567890' or str(a) in '9876543210' else 1
-	if (str(a) == str(a)[::-1] or
-			str(b) == str(b)[::-1] or
-			str(c) == str(c)[::-1]):
-		return 2 if str(a) == str(a)[::-1] else 1
-	return 0
+def is_interesting(number: int, awesome_phrases: list[int]) -> int:
+    """
+    Determines if a number is "interesting" based on specific criteria.
+
+    Parameters:
+    number (int): The number to be evaluated.
+    awesome_phrases (list): A list of "awesome" numbers that are considered interesting.
+
+    Returns:
+    int:
+        - 2 if the number is interesting.
+        - 1 if an interesting number occurs within the next two miles.
+        - 0 if the number is not interesting.
+
+    An "interesting" number is defined as a 3-or-more digit number that meets one or more of the following criteria:
+    - Any digit followed by all zeros (e.g., 100, 90000).
+    - Every digit is the same number (e.g., 1111).
+    - The digits are sequential, incrementing (e.g., 1234).
+    - The digits are sequential, decrementing (e.g., 4321).
+    - The digits are a palindrome (e.g., 1221, 73837).
+    - The number matches one of the values in the awesome_phrases list.
+    """
+    # get all three numbers needed for evaluation
+    a, b, c = number, number + 1, number + 2
+    # convert nums to strings for efficient evaluation
+    str_a, str_b, str_c = str(a), str(b), str(c)
+    
+    # not larger than 1,000,000,000
+    if a >= 1_000_000_000 and b >= 1_000_000_000 and c >= 1_000_000_000:
+        return 0
+
+    # are greater than or equal to 100
+    if len(str_a) < 3 and len(str_b) < 3 and len(str_c) < 3:
+        return 0
+
+    # is in the awesome_phrases list
+    if a in awesome_phrases:
+        return 2
+    elif b in awesome_phrases or c in awesome_phrases:
+        return 1
+
+    # is all zeros or a palindrome
+    if a % 100 == 0 or (100 <= a <= 1_000_000_000) and str_a == str_a[::-1]:
+        return 2
+    elif b % 100 == 0 or c % 100 == 0:
+        return 1
+
+    # are the same number
+    if (all(list(str_a)) == str(list(str_a)[0]) or
+            all(list(str_b)) == str(list(str_b)[0]) or
+            all(list(str_c)) == str(list(str_c)[0])):
+        return 2 if all(list(str_a)) == str(list(str_a)[0]) else 1
+
+    # are sequential (incrementing or decrementing)
+    if ((str_a in '1234567890' or str_a in '9876543210') or
+            (str_b in '1234567890' or str_b in '9876543210') or
+            (str_c in '1234567890' or str_c in '9876543210')):
+        return 2 if str_a in '1234567890' or str_a in '9876543210' else 1
+
+    # is a palindrome
+    if (str_a == str_a[::-1] or
+            str_b == str_b[::-1] or
+            str_c == str_c[::-1]):
+        return 2 if str_a == str_a[::-1] else 1
+
+    return 0
 
 
 # and Operator: If the left operand is false, Python does not evaluate the right operand
