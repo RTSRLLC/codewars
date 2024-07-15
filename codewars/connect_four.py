@@ -8,6 +8,7 @@ def who_is_winner(pieces_position_list):
 # The list may contain up to 42 moves and shows the order the players are playing.
 # The first player who connects four items of the same color is the winner.
 # You should return "Yellow", "Red" or "Draw" accordingly.
+# Draw if the list ends and there is no winner.
 
 # A,B,C,D,E,F,G are the columns and 1,2,3,4,5,6 are the rows.
 
