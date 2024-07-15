@@ -1,7 +1,17 @@
 def who_is_winner(pieces_position_list):
-	# Your code here!
-	pass
-
+	# associate the column letter with its number
+	column_dict = {'A': None, 'B': None, 'C': None, 'D': None, 'E': None, 'F': None, 'G': None}
+	column_counter = {key: 0 for key in column_dict.keys()}
+	grid = {
+		'row 6': (6, [None for _ in range(7)]),
+		'row 5': (5, [None for _ in range(7)]),
+		'row 4': (4, [None for _ in range(7)]),
+		'row 3': (3, [None for _ in range(7)]),
+		'row 2': (2, [None for _ in range(7)]),
+		'row 1': (1, [None for _ in range(7)])
+		}
+	print(grid)
+	return None
 
 # The grid is 6 row by 7 columns, those being named from A to G.
 # You will receive a list of strings showing the order of the pieces which dropped in columns:
@@ -18,7 +28,7 @@ a = who_is_winner(
 		"D_Yellow", "F_Red", "E_Yellow", "A_Red", "A_Yellow", "G_Red", "A_Yellow", "F_Red", "F_Yellow", "D_Red",
 		"B_Yellow", "E_Red", "D_Yellow", "A_Red", "G_Yellow", "D_Red", "D_Yellow", "C_Red"
 		]
-	)  #, "Yellow"))
+	)  # , "Yellow"))
 
 b = who_is_winner(
 	[
@@ -28,7 +38,7 @@ b = who_is_winner(
 		"C_Yellow", "C_Red", "G_Yellow", "C_Red", "D_Yellow", "D_Red", "E_Yellow", "D_Red", "E_Yellow", "C_Red",
 		"E_Yellow", "E_Red"
 		]
-	)  #, "Yellow")
+	)  # , "Yellow")
 
 c = who_is_winner(
 	[
@@ -38,23 +48,23 @@ c = who_is_winner(
 		"A_Yellow", "A_Red", "G_Yellow", "C_Red", "B_Yellow", "E_Red", "F_Yellow", "G_Red", "G_Yellow", "B_Red",
 		"B_Yellow", "B_Red"
 		]
-	)  #, "Red")
+	)  # , "Red")
 
 d = who_is_winner(
 	[
 		"A_Yellow", "B_Red", "B_Yellow", "C_Red", "G_Yellow", "C_Red", "C_Yellow", "D_Red", "G_Yellow", "D_Red",
 		"G_Yellow", "D_Red", "F_Yellow", "E_Red", "D_Yellow"
 		]
-	)  #, "Red")
+	)  # , "Red")
 
 e = who_is_winner(
 	[
 		"A_Red", "B_Yellow", "A_Red", "B_Yellow", "A_Red", "B_Yellow", "G_Red", "B_Yellow"
 		]
-	)  #, "Yellow")
+	)  # , "Yellow")
 
 f = who_is_winner(
 	[
 		"A_Red", "B_Yellow", "A_Red", "E_Yellow", "F_Red", "G_Yellow", "A_Red", "G_Yellow"
 		]
-	)  #, "Draw")
+	)  # , "Draw")
