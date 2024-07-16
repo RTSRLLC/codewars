@@ -9,6 +9,7 @@ def who_is_winner(pieces_position_list):
 		'F': [i[:3] for i in pieces_position_list if i[0] == 'F'],
 		'G': [i[:3] for i in pieces_position_list if i[0] == 'G']
 		}
+	test = [(j, i[:3]) for j in range(len(pieces_position_list)) for i in pieces_position_list if i[0] == 'A']
 	last_move = pieces_position_list[-1]
 	move_dict = {}
 	for move, destination in list(enumerate(pieces_position_list, start=1)):
