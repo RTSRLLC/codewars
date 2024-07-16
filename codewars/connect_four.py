@@ -1,17 +1,22 @@
 def who_is_winner(pieces_position_list):
 	# associate the column letter with its number
-	column_dict = {'A': None, 'B': None, 'C': None, 'D': None, 'E': None, 'F': None, 'G': None}
-	column_counter = {key: 0 for key in column_dict.keys()}
-	grid = {
-		'row 6': (6, [None for _ in range(7)]),
-		'row 5': (5, [None for _ in range(7)]),
-		'row 4': (4, [None for _ in range(7)]),
-		'row 3': (3, [None for _ in range(7)]),
-		'row 2': (2, [None for _ in range(7)]),
-		'row 1': (1, [None for _ in range(7)])
+	column_dict = {
+		'A': [i[:3] for i in pieces_position_list if i[0] == 'A'],
+		'B': [i[:3] for i in pieces_position_list if i[0] == 'B'],
+		'C': [i[:3] for i in pieces_position_list if i[0] == 'C'],
+		'D': [i[:3] for i in pieces_position_list if i[0] == 'D'],
+		'E': [i[:3] for i in pieces_position_list if i[0] == 'E'],
+		'F': [i[:3] for i in pieces_position_list if i[0] == 'F'],
+		'G': [i[:3] for i in pieces_position_list if i[0] == 'G']
 		}
-	print(grid)
+	last_move = pieces_position_list[-1]
+	move_dict = {}
+	for move, destination in list(enumerate(pieces_position_list, start=1)):
+		print(f"Move: {move}, Destination: {destination[:3]}")
+		move_dict[move] = destination[:3]
+	
 	return None
+
 
 # The grid is 6 row by 7 columns, those being named from A to G.
 # You will receive a list of strings showing the order of the pieces which dropped in columns:
