@@ -1,21 +1,35 @@
+import numpy as np
+import pandas as pd
+
 def who_is_winner(pieces_position_list):
 	# associate the column letter with its number
 	column_dict = {
-		'A': [i[:3] for i in pieces_position_list if i[0] == 'A'],
-		'B': [i[:3] for i in pieces_position_list if i[0] == 'B'],
-		'C': [i[:3] for i in pieces_position_list if i[0] == 'C'],
-		'D': [i[:3] for i in pieces_position_list if i[0] == 'D'],
-		'E': [i[:3] for i in pieces_position_list if i[0] == 'E'],
-		'F': [i[:3] for i in pieces_position_list if i[0] == 'F'],
-		'G': [i[:3] for i in pieces_position_list if i[0] == 'G']
+		'A': [f"1 {i[2]}" for i in pieces_position_list if i[0] == 'A'],
+		'B': [f"2 {i[2]}" for i in pieces_position_list if i[0] == 'B'],
+		'C': [f"3 {i[2]}" for i in pieces_position_list if i[0] == 'C'],
+		'D': [f"4 {i[2]}" for i in pieces_position_list if i[0] == 'D'],
+		'E': [f"5 {i[2]}" for i in pieces_position_list if i[0] == 'E'],
+		'F': [f"6 {i[2]}" for i in pieces_position_list if i[0] == 'F'],
+		'G': [f"7 {i[2]}" for i in pieces_position_list if i[0] == 'G']
 		}
-	test = [(j, i[:3]) for j in range(len(pieces_position_list)) for i in pieces_position_list if i[0] == 'A']
-	last_move = pieces_position_list[-1]
-	move_dict = {}
-	for move, destination in list(enumerate(pieces_position_list, start=1)):
-		print(f"Move: {move}, Destination: {destination[:3]}")
-		move_dict[move] = destination[:3]
 	
+	longest = max([len(i) for i in column_dict.values()])
+	for key, val in column_dict.items():
+		counter = 0
+		for i in val:
+			val[counter] = f"{i} {str(counter)}"
+			counter += 1
+		# fill in the missing values with empty strings to ensure equal length dimensions
+		# while len(val) < longest:
+		# 	val.append("")
+		column_dict[key] = val
+		counter = 0
+		
+	values_flattened = [val for sublist in column_dict.values() for val in sublist]
+	
+	
+	# df = pd.DataFrame(column_dict)
+	# print(df.info())
 	return None
 
 
