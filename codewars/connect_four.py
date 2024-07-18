@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 def who_is_winner(pieces_position_list):
+	# final dict entries are row number, color,
 	# associate the column letter with its number
 	column_dict = {
 		'A': [f"1 {i[2]}" for i in pieces_position_list if i[0] == 'A'],
@@ -17,19 +18,18 @@ def who_is_winner(pieces_position_list):
 	for key, val in column_dict.items():
 		counter = 0
 		for i in val:
-			val[counter] = f"{i} {str(counter)}"
+			split = i.split()
+			if split[1] == "R":
+				split[1] = '7'
+			elif split[1] == "Y":
+				split[1] = '8'
+			val[counter] = int(''.join(split) + str(counter))
 			counter += 1
-		# fill in the missing values with empty strings to ensure equal length dimensions
-		# while len(val) < longest:
-		# 	val.append("")
 		column_dict[key] = val
 		counter = 0
 		
 	values_flattened = [val for sublist in column_dict.values() for val in sublist]
 	
-	
-	# df = pd.DataFrame(column_dict)
-	# print(df.info())
 	return None
 
 
