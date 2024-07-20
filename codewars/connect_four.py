@@ -14,21 +14,21 @@ def who_is_winner(pieces_position_list):
 		}
 	player_dict = {8: 'Red', 9: 'Yellow'}
 	length = len(pieces_position_list)
-	for move, color in list(enumerate(pieces_position_list)):
-		print(f"T or F: {move == len(pieces_position_list)}")
-		if not move == len(pieces_position_list) - 1:
-			print(f"Move {move}, column {color}, color {color[-6:]}")
-			column_dict[color[0]].append((move, color[-6:]))
-			print(column_dict[color[0]])
-		else:
-			print("Last move")
-			column_dict[color[0]].append((move, color, "Last move"))
-			print(
-				f"Final Column Dict: {column_dict.items()}")
-			flatten =[item for sublist in column_dict.values() for item in sublist]
-			print(f"Flatten: {flatten}")
-			print("End of move")
-	print(f"Column Dict: {column_dict.items()}")
+	
+	color_coding = {'R': 1, 'Y': 2}
+	
+	for color in (pieces_position_list):
+		column_dict[color[0]].append(color_coding[color[2]])
+	
+	max_length = max([len(i) for i in column_dict.values()])
+	for i in column_dict.values():
+		if len(i) < max_length:
+			i.extend([0] * (max_length - len(i)))
+	test_values = np.array(list(column_dict.values()))
+	transpose_values = np.transpose(test_values)
+	
+	return column_dict
+	
 
 
 # The grid is 6 row by 7 columns, those being named from A to G.
@@ -40,13 +40,13 @@ def who_is_winner(pieces_position_list):
 
 # A,B,C,D,E,F,G are the columns and 1,2,3,4,5,6 are the rows.
 
-# a = who_is_winner(
-# 	[
-# 		"C_Yellow", "E_Red", "G_Yellow", "B_Red", "D_Yellow", "B_Red", "B_Yellow", "G_Red", "C_Yellow", "C_Red",
-# 		"D_Yellow", "F_Red", "E_Yellow", "A_Red", "A_Yellow", "G_Red", "A_Yellow", "F_Red", "F_Yellow", "D_Red",
-# 		"B_Yellow", "E_Red", "D_Yellow", "A_Red", "G_Yellow", "D_Red", "D_Yellow", "C_Red"
-# 		]
-# 	)  # , "Yellow"))
+a = who_is_winner(
+	[
+		"C_Yellow", "E_Red", "G_Yellow", "B_Red", "D_Yellow", "B_Red", "B_Yellow", "G_Red", "C_Yellow", "C_Red",
+		"D_Yellow", "F_Red", "E_Yellow", "A_Red", "A_Yellow", "G_Red", "A_Yellow", "F_Red", "F_Yellow", "D_Red",
+		"B_Yellow", "E_Red", "D_Yellow", "A_Red", "G_Yellow", "D_Red", "D_Yellow", "C_Red"
+		]
+	)  # , "Yellow"))
 #
 # b = who_is_winner(
 # 	[
@@ -74,15 +74,15 @@ def who_is_winner(pieces_position_list):
 # 		"G_Yellow", "D_Red", "F_Yellow", "E_Red", "D_Yellow"
 # 		]
 # 	)  # , "Red")
-
-e = who_is_winner(
-	[
-		"A_Red", "B_Yellow", "A_Red", "B_Yellow", "A_Red", "B_Yellow", "G_Red", "B_Yellow"
-		]
-	)  # , "Yellow")
-
-# f = who_is_winner(
+#
+# e = who_is_winner(
 # 	[
-# 		"A_Red", "B_Yellow", "A_Red", "E_Yellow", "F_Red", "G_Yellow", "A_Red", "G_Yellow"
+# 		"A_Red", "B_Yellow", "A_Red", "B_Yellow", "A_Red", "B_Yellow", "G_Red", "B_Yellow"
 # 		]
-# 	)  # , "Draw")
+# 	)  # , "Yellow")
+
+f = who_is_winner(
+	[
+		"A_Red", "B_Yellow", "A_Red", "E_Yellow", "F_Red", "G_Yellow", "A_Red", "G_Yellow"
+		]
+	)  # , "Draw")
