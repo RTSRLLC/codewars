@@ -14,7 +14,6 @@ def who_is_winner(pieces_position_list):
 		'G': [f"7 {i[2]}" for i in pieces_position_list if i[0] == 'G']
 		}
 	
-	longest = max([len(i) for i in column_dict.values()])
 	for key, val in column_dict.items():
 		counter = 0
 		for i in val:
@@ -29,8 +28,27 @@ def who_is_winner(pieces_position_list):
 		counter = 0
 		
 	values_flattened = [val for sublist in column_dict.values() for val in sublist]
-	
-	return None
+	values_flattened_2 = [
+		170, 181, 182, 173,
+		270, 271, 282, 283,
+		380, 381, 372, 373,
+		480, 481, 472, 483, 474, 485,
+		570, 581, 572,
+		670, 671, 682,
+		780, 771, 772, 783
+		]
+	winner_dict = {7: 'Red', 8: 'Yellow'}
+	for move in values_flattened:
+		# is there a column move + 1
+		if move + 1 in values_flattened and move + 2 in values_flattened and move + 3 in values_flattened:
+			return winner_dict[int(str(move)[1])]
+		# is there a row move + 100
+		elif move + 100 in values_flattened and move + 200 in values_flattened and move + 300 in values_flattened:
+			return winner_dict[int(str(move)[1])]
+		# is there a diagonal move + 101
+		elif move + 101 in values_flattened and move + 202 in values_flattened and move + 303 in values_flattened:
+			test = str(move)[2]
+			return winner_dict[int(str(move)[1])]
 
 
 # The grid is 6 row by 7 columns, those being named from A to G.
@@ -83,8 +101,8 @@ e = who_is_winner(
 		]
 	)  # , "Yellow")
 
-f = who_is_winner(
-	[
-		"A_Red", "B_Yellow", "A_Red", "E_Yellow", "F_Red", "G_Yellow", "A_Red", "G_Yellow"
-		]
-	)  # , "Draw")
+# f = who_is_winner(
+# 	[
+# 		"A_Red", "B_Yellow", "A_Red", "E_Yellow", "F_Red", "G_Yellow", "A_Red", "G_Yellow"
+# 		]
+# 	)  # , "Draw")
