@@ -1,54 +1,34 @@
 import numpy as np
 import pandas as pd
 
+
 def who_is_winner(pieces_position_list):
-	# final dict entries are row number, color,
-	# associate the column letter with its number
 	column_dict = {
-		'A': [f"1 {i[2]}" for i in pieces_position_list if i[0] == 'A'],
-		'B': [f"2 {i[2]}" for i in pieces_position_list if i[0] == 'B'],
-		'C': [f"3 {i[2]}" for i in pieces_position_list if i[0] == 'C'],
-		'D': [f"4 {i[2]}" for i in pieces_position_list if i[0] == 'D'],
-		'E': [f"5 {i[2]}" for i in pieces_position_list if i[0] == 'E'],
-		'F': [f"6 {i[2]}" for i in pieces_position_list if i[0] == 'F'],
-		'G': [f"7 {i[2]}" for i in pieces_position_list if i[0] == 'G']
+		'A': [],
+		'B': [],
+		'C': [],
+		'D': [],
+		'E': [],
+		'F': [],
+		'G': []
 		}
-	
-	for key, val in column_dict.items():
-		counter = 0
-		for i in val:
-			split = i.split()
-			if split[1] == "R":
-				split[1] = '7'
-			elif split[1] == "Y":
-				split[1] = '8'
-			val[counter] = int(''.join(split) + str(counter))
-			counter += 1
-		column_dict[key] = val
-		counter = 0
-		
-	values_flattened = [val for sublist in column_dict.values() for val in sublist]
-	values_flattened_2 = [
-		170, 181, 182, 173,
-		270, 271, 282, 283,
-		380, 381, 372, 373,
-		480, 481, 472, 483, 474, 485,
-		570, 581, 572,
-		670, 671, 682,
-		780, 771, 772, 783
-		]
-	winner_dict = {7: 'Red', 8: 'Yellow'}
-	for move in values_flattened:
-		# is there a column move + 1
-		if move + 1 in values_flattened and move + 2 in values_flattened and move + 3 in values_flattened:
-			return winner_dict[int(str(move)[1])]
-		# is there a row move + 100
-		elif move + 100 in values_flattened and move + 200 in values_flattened and move + 300 in values_flattened:
-			return winner_dict[int(str(move)[1])]
-		# is there a diagonal move + 101
-		elif move + 101 in values_flattened and move + 202 in values_flattened and move + 303 in values_flattened:
-			test = str(move)[2]
-			return winner_dict[int(str(move)[1])]
+	player_dict = {8: 'Red', 9: 'Yellow'}
+	length = len(pieces_position_list)
+	for move, color in list(enumerate(pieces_position_list)):
+		print(f"T or F: {move == len(pieces_position_list)}")
+		if not move == len(pieces_position_list) - 1:
+			print(f"Move {move}, column {color}, color {color[-6:]}")
+			column_dict[color[0]].append((move, color[-6:]))
+			print(column_dict[color[0]])
+		else:
+			print("Last move")
+			column_dict[color[0]].append((move, color, "Last move"))
+			print(
+				f"Final Column Dict: {column_dict.items()}")
+			flatten =[item for sublist in column_dict.values() for item in sublist]
+			print(f"Flatten: {flatten}")
+			print("End of move")
+	print(f"Column Dict: {column_dict.items()}")
 
 
 # The grid is 6 row by 7 columns, those being named from A to G.
@@ -60,40 +40,40 @@ def who_is_winner(pieces_position_list):
 
 # A,B,C,D,E,F,G are the columns and 1,2,3,4,5,6 are the rows.
 
-a = who_is_winner(
-	[
-		"C_Yellow", "E_Red", "G_Yellow", "B_Red", "D_Yellow", "B_Red", "B_Yellow", "G_Red", "C_Yellow", "C_Red",
-		"D_Yellow", "F_Red", "E_Yellow", "A_Red", "A_Yellow", "G_Red", "A_Yellow", "F_Red", "F_Yellow", "D_Red",
-		"B_Yellow", "E_Red", "D_Yellow", "A_Red", "G_Yellow", "D_Red", "D_Yellow", "C_Red"
-		]
-	)  # , "Yellow"))
-
-b = who_is_winner(
-	[
-		"C_Yellow", "B_Red", "B_Yellow", "E_Red", "D_Yellow", "G_Red", "B_Yellow", "G_Red", "E_Yellow", "A_Red",
-		"G_Yellow", "C_Red", "A_Yellow", "A_Red", "D_Yellow", "B_Red", "G_Yellow", "A_Red", "F_Yellow", "B_Red",
-		"D_Yellow", "A_Red", "F_Yellow", "F_Red", "B_Yellow", "F_Red", "F_Yellow", "G_Red", "A_Yellow", "F_Red",
-		"C_Yellow", "C_Red", "G_Yellow", "C_Red", "D_Yellow", "D_Red", "E_Yellow", "D_Red", "E_Yellow", "C_Red",
-		"E_Yellow", "E_Red"
-		]
-	)  # , "Yellow")
-
-c = who_is_winner(
-	[
-		"F_Yellow", "G_Red", "D_Yellow", "C_Red", "A_Yellow", "A_Red", "E_Yellow", "D_Red", "D_Yellow", "F_Red",
-		"B_Yellow", "E_Red", "C_Yellow", "D_Red", "F_Yellow", "D_Red", "D_Yellow", "F_Red", "G_Yellow", "C_Red",
-		"F_Yellow", "E_Red", "A_Yellow", "A_Red", "C_Yellow", "B_Red", "E_Yellow", "C_Red", "E_Yellow", "G_Red",
-		"A_Yellow", "A_Red", "G_Yellow", "C_Red", "B_Yellow", "E_Red", "F_Yellow", "G_Red", "G_Yellow", "B_Red",
-		"B_Yellow", "B_Red"
-		]
-	)  # , "Red")
-
-d = who_is_winner(
-	[
-		"A_Yellow", "B_Red", "B_Yellow", "C_Red", "G_Yellow", "C_Red", "C_Yellow", "D_Red", "G_Yellow", "D_Red",
-		"G_Yellow", "D_Red", "F_Yellow", "E_Red", "D_Yellow"
-		]
-	)  # , "Red")
+# a = who_is_winner(
+# 	[
+# 		"C_Yellow", "E_Red", "G_Yellow", "B_Red", "D_Yellow", "B_Red", "B_Yellow", "G_Red", "C_Yellow", "C_Red",
+# 		"D_Yellow", "F_Red", "E_Yellow", "A_Red", "A_Yellow", "G_Red", "A_Yellow", "F_Red", "F_Yellow", "D_Red",
+# 		"B_Yellow", "E_Red", "D_Yellow", "A_Red", "G_Yellow", "D_Red", "D_Yellow", "C_Red"
+# 		]
+# 	)  # , "Yellow"))
+#
+# b = who_is_winner(
+# 	[
+# 		"C_Yellow", "B_Red", "B_Yellow", "E_Red", "D_Yellow", "G_Red", "B_Yellow", "G_Red", "E_Yellow", "A_Red",
+# 		"G_Yellow", "C_Red", "A_Yellow", "A_Red", "D_Yellow", "B_Red", "G_Yellow", "A_Red", "F_Yellow", "B_Red",
+# 		"D_Yellow", "A_Red", "F_Yellow", "F_Red", "B_Yellow", "F_Red", "F_Yellow", "G_Red", "A_Yellow", "F_Red",
+# 		"C_Yellow", "C_Red", "G_Yellow", "C_Red", "D_Yellow", "D_Red", "E_Yellow", "D_Red", "E_Yellow", "C_Red",
+# 		"E_Yellow", "E_Red"
+# 		]
+# 	)  # , "Yellow")
+#
+# c = who_is_winner(
+# 	[
+# 		"F_Yellow", "G_Red", "D_Yellow", "C_Red", "A_Yellow", "A_Red", "E_Yellow", "D_Red", "D_Yellow", "F_Red",
+# 		"B_Yellow", "E_Red", "C_Yellow", "D_Red", "F_Yellow", "D_Red", "D_Yellow", "F_Red", "G_Yellow", "C_Red",
+# 		"F_Yellow", "E_Red", "A_Yellow", "A_Red", "C_Yellow", "B_Red", "E_Yellow", "C_Red", "E_Yellow", "G_Red",
+# 		"A_Yellow", "A_Red", "G_Yellow", "C_Red", "B_Yellow", "E_Red", "F_Yellow", "G_Red", "G_Yellow", "B_Red",
+# 		"B_Yellow", "B_Red"
+# 		]
+# 	)  # , "Red")
+#
+# d = who_is_winner(
+# 	[
+# 		"A_Yellow", "B_Red", "B_Yellow", "C_Red", "G_Yellow", "C_Red", "C_Yellow", "D_Red", "G_Yellow", "D_Red",
+# 		"G_Yellow", "D_Red", "F_Yellow", "E_Red", "D_Yellow"
+# 		]
+# 	)  # , "Red")
 
 e = who_is_winner(
 	[
