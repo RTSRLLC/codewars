@@ -2,6 +2,48 @@ import numpy as np
 import pandas as pd
 
 
+def get_diagonal(matrix, offset=0):
+	"""
+	Get the diagonal of a 2-D list (matrix) with a given offset.
+
+	Parameters:
+	matrix (list of lists): The input 2-D list.
+	offset (int): The diagonal offset (0 for main diagonal, positive for upper diagonals, negative for lower diagonals).
+
+	Returns:
+	list: The diagonal elements.
+	"""
+	rows = len(matrix)
+	cols = len(matrix[0])
+	diagonal = []
+	
+	if offset >= 0:
+		for i in range(min(rows, cols - offset)):
+			diagonal.append(matrix[i][i + offset])
+	else:
+		for i in range(min(rows + offset, cols)):
+			diagonal.append(matrix[i - offset][i])
+	
+	return diagonal
+
+
+# Example usage:
+matrix = [
+	[0, 1, 2],
+	[3, 4, 5],
+	[6, 7, 8]
+	]
+
+# Main diagonal
+print(get_diagonal(matrix))  # Output: [0, 4, 8]
+
+# Upper diagonal (offset = 1)
+print(get_diagonal(matrix, 1))  # Output: [1, 5]
+
+# Lower diagonal (offset = -1)
+print(get_diagonal(matrix, -1))  # Output: [3, 7]
+
+
 def visualize_board(board: dict) -> np.array:
 	max_length = max([len(i) for i in board.values()])
 	for i in board.values():
@@ -46,6 +88,7 @@ def check_sequence(seq, num):
 		else:
 			count = 1
 	return False
+
 
 def who_is_winner(pieces_position_list):
 	column_dict = {'A': [], 'B': [], 'C': [], 'D': [], 'E': [], 'F': [], 'G': []}
