@@ -56,7 +56,7 @@ def who_is_winner(pieces_position_list):
 	check_winner = check_consecutive(np_board)
 	reverse_color_coding = {v: k for k, v in color_coding.items()}
 	
-	return reverse_color_coding[check_winner[0]] if check_winner else 'Draw'
+	return reverse_color_coding[check_winner[0]]
 
 
 # The grid is 6 row by 7 columns, those being named from A to G.
