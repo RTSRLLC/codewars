@@ -2,104 +2,31 @@ import numpy as np
 import pandas as pd
 
 
-def get_diagonal(matrix, offset=0):
-	"""
-	Get the diagonal of a 2-D list (matrix) with a given offset.
-
-	Parameters:
-	matrix (list of lists): The input 2-D list.
-	offset (int): The diagonal offset (0 for main diagonal, positive for upper diagonals, negative for lower diagonals).
-
-	Returns:
-	list: The diagonal elements.
-	"""
-	rows = len(matrix)
-	cols = len(matrix[0])
-	diagonal = []
-	
-	if offset >= 0:
-		for i in range(min(rows, cols - offset)):
-			diagonal.append(matrix[i][i + offset])
-	else:
-		for i in range(min(rows + offset, cols)):
-			diagonal.append(matrix[i - offset][i])
-	
-	return diagonal
-
-
-# Example usage:
-matrix = [
-	[0, 1, 2],
-	[3, 4, 5],
-	[6, 7, 8]
-	]
-
-# Main diagonal
-print(get_diagonal(matrix))  # Output: [0, 4, 8]
-
-# Upper diagonal (offset = 1)
-print(get_diagonal(matrix, 1))  # Output: [1, 5]
-
-# Lower diagonal (offset = -1)
-print(get_diagonal(matrix, -1))  # Output: [3, 7]
-
-
-def visualize_board(board: dict) -> np.array:
-	max_length = max([len(i) for i in board.values()])
-	for i in board.values():
-		if len(i) < max_length:
-			i.extend([0] * (max_length - len(i)))
-	np_values = np.transpose(np.array(list(board.values())))
-	return np_values
-
-
-import numpy as np
-
-
-def check_consecutive(arr, num=4):
-	# Check rows and columns
-	for row in arr:
-		if check_sequence(row, num):
-			return row
-	for col in arr.T:
-		if check_sequence(col, num):
-			return col
-	
-	# Check diagonals
-	for offset in range(-arr.shape[0] + 1, arr.shape[1]):
-		off, neg_arr_shape, arr_shape = offset, -arr.shape[0] + 1, arr.shape[1]
-		heading_in = arr.diagonal(offset)
-		if check_sequence(arr.diagonal(offset), num):
-			return arr.diagonal(offset)
-		if check_sequence(np.fliplr(arr).diagonal(offset), num):
-			return np.fliplr(arr).diagonal(offset)
-	
-	return False
-
-
-def check_sequence(seq, num):
-	count = 1
-	for i in range(1, len(seq)):
-		seq_i, seq_i_1 = seq[i], seq[i - 1]
-		if seq[i] == seq[i - 1] and seq[i] != 0:
-			count += 1
-			if count == num:
-				return True
-		else:
-			count = 1
-	return False
-
-
 def who_is_winner(pieces_position_list):
-	column_dict = {'A': [], 'B': [], 'C': [], 'D': [], 'E': [], 'F': [], 'G': []}
-	color_coding = {'Red': 1, 'Yellow': 2}
-	for color in pieces_position_list:
-		column_dict[color[0]].append(color_coding[color[2:]])
-	np_board = visualize_board(column_dict)
-	check_winner = check_consecutive(np_board)
-	reverse_color_coding = {v: k for k, v in color_coding.items()}
-	
-	return reverse_color_coding[check_winner[0]]
+	col_dict = {"A": [6, 0], "B": [6, 0], "C": [6, 0], "D": [6, 0], "E": [6, 0], "F": [6, 0], "G": [6, 0]}
+	board = np.zeros((6, 7), dtype=object)
+	pd_board = pd.DataFrame(board, index=[1, 2, 3, 4, 5, 6], columns=list(col_dict.keys()))
+	for move, color in list(enumerate(pieces_position_list, start=1)):
+		pd_board.at[col_dict[color[0]][0], color[0]] = color[2]
+		col_dict[color[0]][0] -= 1
+		col_dict[color[0]][1] += 1
+		if move >= 7:
+			player = color[2]
+			row, col = col_dict[color[0]][0] + 1, color[0]
+			the_row = pd_board.loc[row]
+			the_row.reset_index(drop=True, inplace=True)
+			
+			test_row_minus_4 = the_row.iloc[row:row-4:-1]
+			row_minus_4 = all(the_row.iloc[row:row-4:-1])
+			test_row_plus_4 = the_row.iloc[row:row+4]
+			row_plus_4 = all(the_row.iloc[row:row+4])
+			
+			the_col = pd_board[col]
+			
+			
+			transposed = pd_board.T
+			print(transposed)
+	return None
 
 
 # The grid is 6 row by 7 columns, those being named from A to G.
@@ -109,7 +36,6 @@ def who_is_winner(pieces_position_list):
 # You should return "Yellow", "Red" or "Draw" accordingly.
 # Draw if the list ends and there is no winner.
 
-# A,B,C,D,E,F,G are the columns and 1,2,3,4,5,6 are the rows.
 
 # a = who_is_winner(
 # 	[
@@ -157,3 +83,59 @@ f = who_is_winner(
 		"A_Red", "B_Yellow", "A_Red", "E_Yellow", "F_Red", "G_Yellow", "A_Red", "G_Yellow"
 		]
 	)  # , "Draw")
+
+# def visualize_board(board: dict) -> np.array:
+# 	max_length = max([len(i) for i in board.values()])
+# 	for i in board.values():
+# 		if len(i) < max_length:
+# 			i.extend([0] * (max_length - len(i)))
+# 	np_values = np.transpose(np.array(list(board.values())))
+# 	return np_values
+#
+#
+# def check_consecutive(arr, num=4):
+# 	# Check rows and columns
+# 	for row in arr:
+# 		if check_sequence(row, num):
+# 			return row
+# 	for col in arr.T:
+# 		if check_sequence(col, num):
+# 			return col
+#
+# 	# Check diagonals
+# 	for offset in range(-arr.shape[0] + 1, arr.shape[1]):
+# 		if check_sequence(arr.diagonal(offset), num):
+# 			return arr.diagonal(offset)
+# 		if check_sequence(np.fliplr(arr).diagonal(offset), num):
+# 			return np.fliplr(arr).diagonal(offset)
+#
+# 	return False
+#
+#
+# def check_sequence(seq, num):
+# 	count = 1
+# 	for i in range(1, len(seq)):
+# 		if seq[i] == seq[i - 1] and seq[i] != 0:
+# 			count += 1
+# 			if count == num:
+# 				return True
+# 		else:
+# 			count = 1
+# 	return False
+#
+#
+# def who_is_winner(pieces_position_list):
+# 	column_dict = {'A': [], 'B': [], 'C': [], 'D': [], 'E': [], 'F': [], 'G': []}
+# 	color_coding = {'Red': 1, 'Yellow': 2}
+# 	reverse_color_coding = {v: k for k, v in color_coding.items()}
+# 	for color in pieces_position_list:
+# 		column_dict[color[0]].append(color_coding[color[2:]])
+# 	np_board = visualize_board(column_dict)
+# 	print(f"np_board: \n{np_board}")
+# 	try:
+# 		check_winner = list(check_consecutive(np_board))
+# 	except TypeError:
+# 		return 'Draw'
+# 	print(f"Winner: {check_winner}, check_winner[0]: {check_winner[0]} is  {reverse_color_coding[check_winner[0]]}")
+#
+# 	return reverse_color_coding[check_winner[0]]
