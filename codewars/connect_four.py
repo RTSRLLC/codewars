@@ -5,6 +5,7 @@ import pandas as pd
 def who_is_winner(pieces_position_list):
 	col_dict = {"A": [6, 0], "B": [6, 0], "C": [6, 0], "D": [6, 0], "E": [6, 0], "F": [6, 0], "G": [6, 0]}
 	board = np.zeros((6, 7), dtype=object)
+	truthy = bool(board.all())
 	pd_board = pd.DataFrame(board, index=[1, 2, 3, 4, 5, 6], columns=list(col_dict.keys()))
 	for move, color in list(enumerate(pieces_position_list, start=1)):
 		pd_board.at[col_dict[color[0]][0], color[0]] = color[2]
@@ -12,20 +13,77 @@ def who_is_winner(pieces_position_list):
 		col_dict[color[0]][1] += 1
 		if move >= 7:
 			player = color[2]
-			row, col = col_dict[color[0]][0] + 1, color[0]
+			# reset columns to zero-based columns
+			new_cols = list(i for i in range(7))
+			pd_board.columns = new_cols
+			row, col = col_dict[color[0]][0] + 1, list('ABCDEFG').index(color[0])
+			############################################
+			# check for winner in diagonal
+			try:  # go left and down
+				if (pd_board.at[row , col] ==
+						pd_board.at[row - 1, col - 1] ==
+						pd_board.at[row - 2, col - 2] ==
+						pd_board.at[row - 3, col - 3] == player):
+					return player
+			except KeyError:
+				pd_board.columns = list("ABCDEFG")
+			try:  # go left and up
+				if (pd_board.at[row , col] ==
+						pd_board.at[row - 1, col + 1] ==
+						pd_board.at[row - 2, col + 2] ==
+						pd_board.at[row - 3, col + 3] == player):
+					return player
+			except KeyError:
+				pd_board.columns = list("ABCDEFG")
+			try:  # go right and down
+				if (pd_board.at[row, col] ==
+						pd_board.at[row + 1, col - 1] ==
+						pd_board.at[row + 2, col - 2] ==
+						pd_board.at[row + 3, col - 3] == player):
+					return player
+			except KeyError:
+				pd_board.columns = list("ABCDEFG")
+			try:  # go right and up
+				if (pd_board.at[row, col] ==
+						pd_board.at[row + 1, col + 1] ==
+						pd_board.at[row + 2, col + 2] ==
+						pd_board.at[row + 3, col + 3] == player):
+					return player
+			except KeyError:
+				pd_board.columns = list("ABCDEFG")
+			############################################
+			# check for winner in row
 			the_row = pd_board.loc[row]
 			the_row.reset_index(drop=True, inplace=True)
-			
-			test_row_minus_4 = the_row.iloc[row:row-4:-1]
-			row_minus_4 = all(the_row.iloc[row:row-4:-1])
-			test_row_plus_4 = the_row.iloc[row:row+4]
-			row_plus_4 = all(the_row.iloc[row:row+4])
-			
-			the_col = pd_board[col]
-			
-			
-			transposed = pd_board.T
-			print(transposed)
+			print(f"the_row: \n{the_row}")
+			try:
+				if the_row[row] == the_row[row - 1] == the_row[row - 2] == the_row[row - 3] == player:
+					return player
+			except KeyError:
+				pd_board.columns = list("ABCDEFG")
+			try:
+				if the_row[row] == the_row[row + 1] == the_row[row + 2] == the_row[row + 3] == player:
+					return player
+			except KeyError:
+				pd_board.columns = list("ABCDEFG")
+			############################################
+			# check for winner in column
+			the_col = pd_board.iloc[:, col]
+			# the_col.reset_index(drop=True, inplace=True)
+			print(f"the_col.iloc[row,col]: \n{pd_board.iloc[row:, col]}")
+			try:
+				if the_col[col] == the_col[col - 1] == the_col[col - 2] == the_col[col - 3] == player:
+					return player
+			except KeyError:
+				pd_board.columns = list("ABCDEFG")
+			try:
+				if the_col[col] == the_col[col + 1] == the_col[col + 2] == the_col[col + 3] == player:
+					return player
+			except KeyError:
+				pd_board.columns = list("ABCDEFG")
+		else:
+			pd_board.columns = list("ABCDEFG")
+			continue
 	return None
 
 
