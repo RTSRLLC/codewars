@@ -3,87 +3,99 @@ import pandas as pd
 
 
 def who_is_winner(pieces_position_list):
-	col_dict = {"A": [6, 0], "B": [6, 0], "C": [6, 0], "D": [6, 0], "E": [6, 0], "F": [6, 0], "G": [6, 0]}
+	col_dict = {"A": [5, 0], "B": [5, 0], "C": [5, 0], "D": [5, 0], "E": [5, 0], "F": [5, 0], "G": [5, 0]}
 	board = np.zeros((6, 7), dtype=object)
 	truthy = bool(board.all())
-	pd_board = pd.DataFrame(board, index=[1, 2, 3, 4, 5, 6], columns=list(col_dict.keys()))
+	pd_board = pd.DataFrame(board, columns=list('ABCDEFG'))
 	for move, color in list(enumerate(pieces_position_list, start=1)):
 		pd_board.at[col_dict[color[0]][0], color[0]] = color[2]
 		col_dict[color[0]][0] -= 1
 		col_dict[color[0]][1] += 1
 		if move >= 7:
-			player = color[2]
-			# reset columns to zero-based columns
-			new_cols = list(i for i in range(7))
-			pd_board.columns = new_cols
+			player = color[2:]
 			row, col = col_dict[color[0]][0] + 1, list('ABCDEFG').index(color[0])
+			pd_board.columns = list(range(7))
 			############################################
 			# check for winner in diagonal
 			try:  # go left and down
-				if (pd_board.at[row , col] ==
-						pd_board.at[row - 1, col - 1] ==
-						pd_board.at[row - 2, col - 2] ==
-						pd_board.at[row - 3, col - 3] == player):
+				if (pd_board.iat[row , col] ==
+						pd_board.iat[row - 1, col - 1] ==
+						pd_board.iat[row - 2, col - 2] ==
+						pd_board.iat[row - 3, col - 3] == player):
 					return player
-			except KeyError:
-				pd_board.columns = list("ABCDEFG")
+			except IndexError:
+				pass
 			try:  # go left and up
-				if (pd_board.at[row , col] ==
-						pd_board.at[row - 1, col + 1] ==
-						pd_board.at[row - 2, col + 2] ==
-						pd_board.at[row - 3, col + 3] == player):
+				if (pd_board.iat[row , col] ==
+						pd_board.iat[row - 1, col + 1] ==
+						pd_board.iat[row - 2, col + 2] ==
+						pd_board.iat[row - 3, col + 3] == player):
 					return player
-			except KeyError:
-				pd_board.columns = list("ABCDEFG")
+			except IndexError:
+				pass
 			try:  # go right and down
-				if (pd_board.at[row, col] ==
-						pd_board.at[row + 1, col - 1] ==
-						pd_board.at[row + 2, col - 2] ==
-						pd_board.at[row + 3, col - 3] == player):
+				if (pd_board.iat[row, col] ==
+						pd_board.iat[row + 1, col - 1] ==
+						pd_board.iat[row + 2, col - 2] ==
+						pd_board.iat[row + 3, col - 3] == player):
 					return player
-			except KeyError:
-				pd_board.columns = list("ABCDEFG")
+			except IndexError:
+				pass
 			try:  # go right and up
-				if (pd_board.at[row, col] ==
-						pd_board.at[row + 1, col + 1] ==
-						pd_board.at[row + 2, col + 2] ==
-						pd_board.at[row + 3, col + 3] == player):
+				if (pd_board.iat[row, col] ==
+						pd_board.iat[row + 1, col + 1] ==
+						pd_board.iat[row + 2, col + 2] ==
+						pd_board.iat[row + 3, col + 3] == player):
 					return player
-			except KeyError:
-				pd_board.columns = list("ABCDEFG")
+			except IndexError:
+				pass
 			############################################
 			# check for winner in row
-			the_row = pd_board.loc[row]
-			the_row.reset_index(drop=True, inplace=True)
-			print(f"the_row: \n{the_row}")
 			try:
-				if the_row[row] == the_row[row - 1] == the_row[row - 2] == the_row[row - 3] == player:
+				if (pd_board.iat[row, col] ==
+						pd_board.iat[row, col - 1] ==
+						pd_board.iat[row, col - 2] ==
+						pd_board.iat[row, col - 3] ==
+						player):
 					return player
-			except KeyError:
-				pd_board.columns = list("ABCDEFG")
+			except IndexError:
+				pass
 			try:
-				if the_row[row] == the_row[row + 1] == the_row[row + 2] == the_row[row + 3] == player:
+				if (pd_board.iat[row, col] ==
+						pd_board.iat[row, col + 1] ==
+						pd_board.iat[row, col + 2] ==
+						pd_board.iat[row, col + 3] ==
+						player):
 					return player
-			except KeyError:
-				pd_board.columns = list("ABCDEFG")
+			except IndexError:
+				pass
 			############################################
 			# check for winner in column
-			the_col = pd_board.iloc[:, col]
-			# the_col.reset_index(drop=True, inplace=True)
-			print(f"the_col.iloc[row,col]: \n{pd_board.iloc[row:, col]}")
 			try:
-				if the_col[col] == the_col[col - 1] == the_col[col - 2] == the_col[col - 3] == player:
+				if (pd_board.iat[row, col] ==
+						pd_board.iat[row - 1, col] ==
+						pd_board.iat[row - 2, col] ==
+						pd_board.iat[row - 3, col] ==
+						player):
 					return player
-			except KeyError:
-				pd_board.columns = list("ABCDEFG")
+			except IndexError:
+				pass
 			try:
-				if the_col[col] == the_col[col + 1] == the_col[col + 2] == the_col[col + 3] == player:
+				print(pd_board.iat[row, col] ==
+						pd_board.iat[row + 1, col] ==
+						pd_board.iat[row + 2, col] ==
+						pd_board.iat[row + 3, col] ==
+						player)
+				if (pd_board.iat[row, col] ==
+						pd_board.iat[row + 1, col] ==
+						pd_board.iat[row + 2, col] ==
+						pd_board.iat[row + 3, col] ==
+						player):
 					return player
-			except KeyError:
-				pd_board.columns = list("ABCDEFG")
+			except IndexError:
+				pd_board.columns = list(col_dict.keys())
 		else:
-			pd_board.columns = list("ABCDEFG")
-			continue
+			pd_board.columns = list(col_dict.keys())
 	return None
 
 
