@@ -8,7 +8,7 @@ def who_is_winner(pieces_position_list):
 	truthy = bool(board.all())
 	pd_board = pd.DataFrame(board, columns=list('ABCDEFG'))
 	for move, color in list(enumerate(pieces_position_list, start=1)):
-		pd_board.at[col_dict[color[0]][0], color[0]] = color[2]
+		pd_board.at[col_dict[color[0]][0], color[0]] = color[2:]
 		col_dict[color[0]][0] -= 1
 		col_dict[color[0]][1] += 1
 		if move >= 7:
@@ -72,6 +72,14 @@ def who_is_winner(pieces_position_list):
 			############################################
 			# check for winner in column
 			try:
+				print(all(pd_board.iat[row, col] == pd_board.iat[row - i, col] == player for i in range(1, 4)))
+				print(row, col,
+					pd_board.iat[row, col],
+					pd_board.iat[row - 1, col],
+					pd_board.iat[row - 2, col],
+					pd_board.iat[row - 3, col],
+					player, sep="\n"
+					)
 				if (pd_board.iat[row, col] ==
 						pd_board.iat[row - 1, col] ==
 						pd_board.iat[row - 2, col] ==
@@ -81,11 +89,12 @@ def who_is_winner(pieces_position_list):
 			except IndexError:
 				pass
 			try:
-				print(pd_board.iat[row, col] ==
-						pd_board.iat[row + 1, col] ==
-						pd_board.iat[row + 2, col] ==
-						pd_board.iat[row + 3, col] ==
-						player)
+				print(all(pd_board.iat[row, col] == pd_board.iat[row + i, col] == player for i in range(1, 4)))
+				print(pd_board.iat[row, col],
+						pd_board.iat[row + 1, col],
+						pd_board.iat[row + 2, col],
+						pd_board.iat[row + 3, col],
+						player, sep="\n")
 				if (pd_board.iat[row, col] ==
 						pd_board.iat[row + 1, col] ==
 						pd_board.iat[row + 2, col] ==
