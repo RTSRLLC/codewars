@@ -125,11 +125,11 @@ def who_is_winner(pieces_position_list):
 # 		]
 # 	)  # , "Red")
 #
-# e = who_is_winner(
-# 	[
-# 		"A_Red", "B_Yellow", "A_Red", "B_Yellow", "A_Red", "B_Yellow", "G_Red", "B_Yellow"
-# 		]
-# 	)  # , "Yellow")
+e = who_is_winner(
+	[
+		"A_Red", "B_Yellow", "A_Red", "B_Yellow", "A_Red", "B_Yellow", "G_Red", "B_Yellow"
+		]
+	)  # , "Yellow")
 #
 # f = who_is_winner(
 # 	[
@@ -137,9 +137,9 @@ def who_is_winner(pieces_position_list):
 # 		]
 # 	)  # , "Draw")
 
-g = who_is_winner(
-	[
-		'B_Red', 'G_Yellow', 'D_Red', 'G_Yellow', 'E_Red', 'G_Yellow', 'C_Red', 'D_Yellow', 'B_Red', 'G_Yellow',
-		'A_Red', 'A_Yellow', 'B_Red', 'C_Yellow', 'A_Red', 'B_Yellow', 'B_Red', 'D_Yellow', 'D_Red', 'A_Yellow',
-		'E_Red', 'G_Yellow', 'G_Red']
-	)  # , "Red")
+# g = who_is_winner(
+# 	[
+# 		'B_Red', 'G_Yellow', 'D_Red', 'G_Yellow', 'E_Red', 'G_Yellow', 'C_Red', 'D_Yellow', 'B_Red', 'G_Yellow',
+# 		'A_Red', 'A_Yellow', 'B_Red', 'C_Yellow', 'A_Red', 'B_Yellow', 'B_Red', 'D_Yellow', 'D_Red', 'A_Yellow',
+# 		'E_Red', 'G_Yellow', 'G_Red']
+# 	)  # , "Red")
