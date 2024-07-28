@@ -7,7 +7,6 @@ def who_is_winner(pieces_position_list):
 	print(f"pieces_position_list: {pieces_position_list}")
 	col_dict = {"A": [5, 0], "B": [5, 0], "C": [5, 0], "D": [5, 0], "E": [5, 0], "F": [5, 0], "G": [5, 0]}
 	board = np.zeros((6, 7), dtype=object)
-	pos_array = np.array([1, 2, 3, -1, 1, 2, -2, -1, 1, -3, -2, -1]).reshape(4, 3)
 	pd_board = pd.DataFrame(board, columns=list('ABCDEFG'))
 	for move, color in list(enumerate(pieces_position_list, start=1)):
 		pd_board.at[col_dict[color[0]][0], color[0]] = color[2:]
@@ -18,97 +17,45 @@ def who_is_winner(pieces_position_list):
 			row, col = col_dict[color[0]][0] + 1, list('ABCDEFG').index(color[0])
 			print(f"row, col = {row}, {col}")
 			pd_board.columns = list(range(7))
+			area_check = pd_board.iloc[row - 1:row + 2, col - 1:col + 2]
+			# Find the row and column indices of the player in the area_check DataFrame
+			bool_df = area_check.eq(player)
+			stacked_bool_df = bool_df.stack()
 			
-			row_indices = [('r', it) for item in (row + pos_array) for it in item]
-			
-			col_indices = [('c', it) for item in (col + pos_array) for it in item]
-			
-			############################################
-			# check for winner in column
-			try:
-				if all(pd_board.iat[row, col] == pd_board.iat[abs(row - i), abs(col)] == player for i in range(1, 4)):
-					print(f"Player: {player}, In check for winner in column row - i\nthe_board:\n{pd_board}")
-					return player
-			except IndexError:
-				pass
-			try:
-				if all(pd_board.iat[row, col] == pd_board.iat[abs(row + i), abs(col)] == player for i in range(1, 4)):
-					print(f"Player: {player}, In check for winner in column row + i\nthe_board:\n{pd_board}")
-					return player
-				else:
-					pass
-			except IndexError:
-				pd_board.columns = list(col_dict.keys())
-			############################################
-			# check for winner in row
-			try:
-				if all(pd_board.iat[row, col] == pd_board.iat[abs(row), abs(col - i)] == player for i in range(1,4)) and len(pieces_position_list) != 42:
-					print(f"Player: {player}, In check for winner in row col - i\nthe_board:\n{pd_board}")
-					return player
-			except IndexError:
-				pass
-			try:
-				if all(pd_board.iat[row, col] == pd_board.iat[abs(row), abs(col + i)] == player for i in range(1, 4)):
-					print(f"Player: {player}, In check for winner in row col + i\nthe_board:\n{pd_board}")
-					return player
-			except IndexError:
-				pass
-			############################################
-			# check for winner in diagonal
-			try:  # go left and down
-				if all(
-						pd_board.iat[row, col] == pd_board.iat[abs(row - i), abs(col - i)] == player for i in range(1, 4)
-						) and len(pieces_position_list) != 42:
-					print(f"Player: {player}, In check for winner in diagonal left and down]\nthe_board:\n{pd_board}")
-					return player
-			except IndexError:
-				pass
-			try:  # go left and up
-				if all(
-						pd_board.iat[row, col] == pd_board.iat[abs(row - i), abs(col + i)] == player for i in range(1, 4)
-						) and len(pieces_position_list) != 42:
-					print(f"Player: {player}, In check for winner in diagonal left and up\nthe_board:\n{pd_board}")
-					return player
-			except IndexError:
-				pass
-			try:  # go right and down
-				if all(
-						pd_board.iat[row, col] == pd_board.iat[abs(row + i), abs(col - i)] == player for i in range(1, 4)
-						) and len(pieces_position_list) != 42:
-					print(
-						f"row and col = {row}, {col}\n"
-						f"{[pd_board.iat[row, col]] + list(pd_board.iat[abs(row + i), abs(col - i)] for i in range(1, 4))}"
-						)
-					print(f"Player: {player}, In check for winner in diagonal right and down\nthe_board:\n{pd_board}")
-					return player
-			except IndexError:
-				pass
-			try:  # go right and up
-				if all(pd_board.iat[row, col] == pd_board.iat[abs(row + i), abs(col + i)] == player for i in range(1, 4)):
-					print(f"Player: {player}, In check for winner in diagonal right and up\nthe_board:\n{pd_board}")
-					return player
-			except IndexError:
-				pd_board.columns = list(col_dict.keys())
-		else:
+			matching_indices = stacked_bool_df[stacked_bool_df]
+			if len(matching_indices) > 1:
+				rows = list(matching_indices.index.get_level_values(0))
+				rows_equal = all(i == rows[0] for i in rows)
+				cols = list(matching_indices.index.get_level_values(1))
+				cols_equal = all(i == cols[0] for i in cols)
+				# establish the direction of the possible winning streak and get new df indices.
+				if rows_equal is False or cols_equal is False:
+					if not rows_equal:
+						print(f'not rows_equal: {rows}')
+						row_indices_positive = [0 if num < 0 else num for num in [rows[0], rows[0] + 3]]
+						row_indices_negative = [0 if num < 0 else num for num in [rows[0] - 3, rows[0]]]
+						print(f'row_indices_positive: {row_indices_positive}\nrow_indices_negative: {row_indices_negative}')
+					else:
+						row_indices_positive = rows
+						print(f'row_indices_positive: {row_indices_positive}')
+					if not cols_equal:
+						print(f'not cols_equal: {cols}')
+						col_indices_positive = [0 if num < 0 else num for num in [cols[0], cols[0] + 3]]
+						col_indices_negative = [0 if num < 0 else num for num in [cols[0] - 3, cols[0]]]
+						print(f'col_indices_positive: {col_indices_positive}\ncol_indices_negative: {col_indices_negative}')
+					else:
+						col_indices_positive = cols
+						print(f'col_indices_positive: {col_indices_positive}')
+					pd_board_streak_positive = pd_board.iloc[row_indices_positive[0]:row_indices_positive[1] + 1, col_indices_positive[0]:col_indices_positive[1] + 1]
+					print(f"pd_board_streak_positive:\n{pd_board_streak_positive}")
+					if all(pd_board_streak_positive.eq(player)):
+						print(f"Player: {player}, In check for winner in streak positive\nthe_board:\n{pd_board}")
+						return player
 			pd_board.columns = list(col_dict.keys())
-		
+			print()
+	
 	return 'Draw'
 
-# make a numpy array with only the number 3
-row = 3
-col = 3
-
-rows = np.array([1, 2, 3, -1, 1, 2, -2, -1, 1, -3, -2, -1]).reshape(4, 3)
-# row_rows = row + rows
-# col_rows = col + rows
-
-# list_rows = row_rows.tolist()
-test_row_indices = [('r', it) for item in (row + rows) for it in item]
-
-# list_cols = col_rows.tolist()
-test_col_indices = [('c', it) for item in (col + rows) for it in item]
-
-# zip_list = list(zip(list_rows, list_cols))
 
 e = who_is_winner(
 	[
