@@ -15,13 +15,11 @@ def who_is_winner(pieces_position_list):
 		if move >= 7:
 			player = color[2:]
 			row, col = col_dict[color[0]][0] + 1, list('ABCDEFG').index(color[0])
-			print(f"row, col = {row}, {col}")
 			pd_board.columns = list(range(7))
 			area_check = pd_board.iloc[row - 1:row + 2, col - 1:col + 2]
 			# Find the row and column indices of the player in the area_check DataFrame
 			bool_df = area_check.eq(player)
 			stacked_bool_df = bool_df.stack()
-			
 			matching_indices = stacked_bool_df[stacked_bool_df]
 			if len(matching_indices) > 1:
 				rows = list(matching_indices.index.get_level_values(0))
@@ -52,13 +50,59 @@ def who_is_winner(pieces_position_list):
 						print(f"Player: {player}, In check for winner in streak positive\nthe_board:\n{pd_board}")
 						return player
 			pd_board.columns = list(col_dict.keys())
-			print()
-	
 	return 'Draw'
 
 
+a = who_is_winner(
+	[
+		"C_Yellow", "E_Red", "G_Yellow", "B_Red", "D_Yellow", "B_Red", "B_Yellow", "G_Red", "C_Yellow", "C_Red",
+		"D_Yellow", "F_Red", "E_Yellow", "A_Red", "A_Yellow", "G_Red", "A_Yellow", "F_Red", "F_Yellow", "D_Red",
+		"B_Yellow", "E_Red", "D_Yellow", "A_Red", "G_Yellow", "D_Red", "D_Yellow", "C_Red"
+		]
+	)  # , "Yellow"))
+
+b = who_is_winner(
+	[
+		"C_Yellow", "B_Red", "B_Yellow", "E_Red", "D_Yellow", "G_Red", "B_Yellow", "G_Red", "E_Yellow", "A_Red",
+		"G_Yellow", "C_Red", "A_Yellow", "A_Red", "D_Yellow", "B_Red", "G_Yellow", "A_Red", "F_Yellow", "B_Red",
+		"D_Yellow", "A_Red", "F_Yellow", "F_Red", "B_Yellow", "F_Red", "F_Yellow", "G_Red", "A_Yellow", "F_Red",
+		"C_Yellow", "C_Red", "G_Yellow", "C_Red", "D_Yellow", "D_Red", "E_Yellow", "D_Red", "E_Yellow", "C_Red",
+		"E_Yellow", "E_Red"
+		]
+	)  # , "Yellow")
+
+c = who_is_winner(
+	[
+		"F_Yellow", "G_Red", "D_Yellow", "C_Red", "A_Yellow", "A_Red", "E_Yellow", "D_Red", "D_Yellow", "F_Red",
+		"B_Yellow", "E_Red", "C_Yellow", "D_Red", "F_Yellow", "D_Red", "D_Yellow", "F_Red", "G_Yellow", "C_Red",
+		"F_Yellow", "E_Red", "A_Yellow", "A_Red", "C_Yellow", "B_Red", "E_Yellow", "C_Red", "E_Yellow", "G_Red",
+		"A_Yellow", "A_Red", "G_Yellow", "C_Red", "B_Yellow", "E_Red", "F_Yellow", "G_Red", "G_Yellow", "B_Red",
+		"B_Yellow", "B_Red"
+		]
+	)  # , "Red")
+
+d = who_is_winner(
+	[
+		"A_Yellow", "B_Red", "B_Yellow", "C_Red", "G_Yellow", "C_Red", "C_Yellow", "D_Red", "G_Yellow", "D_Red",
+		"G_Yellow", "D_Red", "F_Yellow", "E_Red", "D_Yellow"
+		]
+	)  # , "Red")
+#
 e = who_is_winner(
 	[
 		"A_Red", "B_Yellow", "A_Red", "B_Yellow", "A_Red", "B_Yellow", "G_Red", "B_Yellow"
 		]
 	)  # , "Yellow")
+
+f = who_is_winner(
+	[
+		"A_Red", "B_Yellow", "A_Red", "E_Yellow", "F_Red", "G_Yellow", "A_Red", "G_Yellow"
+		]
+	)  # , "Draw")
+
+g = who_is_winner(
+	[
+		'B_Red', 'G_Yellow', 'D_Red', 'G_Yellow', 'E_Red', 'G_Yellow', 'C_Red', 'D_Yellow', 'B_Red', 'G_Yellow',
+		'A_Red', 'A_Yellow', 'B_Red', 'C_Yellow', 'A_Red', 'B_Yellow', 'B_Red', 'D_Yellow', 'D_Red', 'A_Yellow',
+		'E_Red', 'G_Yellow', 'G_Red']
+	)  # , "Red")
