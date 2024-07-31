@@ -3,29 +3,41 @@ import pandas as pd
 from collections import defaultdict, Counter
 
 def who_is_winner(pieces_position_list):
-	print(f"{'=' * 50}\n")
+	print(f"\n{'=' * 50}")
 	print(f"len(pieces_position_list): {len(pieces_position_list)}\nactual list   {pieces_position_list}\n")
 	col_dict = {"A": [5, 0], "B": [5, 0], "C": [5, 0], "D": [5, 0], "E": [5, 0], "F": [5, 0], "G": [5, 0]}
 	board = np.zeros((6, 7), dtype=object)
 	pd_board = pd.DataFrame(board, columns=list('ABCDEFG'))
-	
-	# test various sorting methods on pieces_position_list
-	# could be good for colum
-	on_x0 = sorted(pieces_position_list, key=lambda x: x[0])
-	print(f"Sorted by x0: {on_x0}\n")
-	# could be good for diagonal checks
-	on_x2 = sorted(pieces_position_list, key=lambda x: x[2])
-	print(f"Sorted by x2: {on_x2}\n")
-	
-	
-	
-	
+	# for user board visualization
 	for move, color in list(enumerate(pieces_position_list, start=1)):
-		pd_board.at[col_dict[color[0]][0], color[0]] = color[2:]
+		pd_board.at[col_dict[color[0]][0], color[0]] = move, color
 		col_dict[color[0]][0] -= 1
 		col_dict[color[0]][1] += 1
-		if move >= 7:
-			pass
+		# if move >= 7:
+	# ================================
+	# test various sorting methods on pieces_position_list
+	# could be good for column checks
+	on_x0 = sorted(pieces_position_list, key=lambda x: x[0])
+	count_x0 = Counter(on_x0)
+	greater_then_4 = [k[0] for k, v in count_x0.items() if v >= 4]
+	# get items in board_array_transposed that are in greater_then_4
+	pd_board.columns = list(col_dict.keys())
+	possible_winning_rows = [(row, tuple(col)) for row, col in pd_board.T.iterrows() if row in greater_then_4]
+	print("possible_winning_rows")
+	the_min = None
+	for item in possible_winning_rows:
+		zero = item[0]
+		one = item[1]
+		ending = item[1][1:]
+		print(min(i[0] for i in item[1][1:]))
+		the_min = min(i[0] for i in item[1][1:])
+		if the_min < the_min:
+			print(the_min)
+			the_min = the_min
+
+	
+
+	
 	return "Draw"
 
 
