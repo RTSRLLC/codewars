@@ -1,158 +1,31 @@
 import numpy as np
 import pandas as pd
-
+from collections import defaultdict, Counter
 
 def who_is_winner(pieces_position_list):
 	print(f"{'=' * 50}\n")
-	print(f"len(pieces_position_list): {len(pieces_position_list)}\n{pieces_position_list}")
+	print(f"len(pieces_position_list): {len(pieces_position_list)}\nactual list   {pieces_position_list}\n")
 	col_dict = {"A": [5, 0], "B": [5, 0], "C": [5, 0], "D": [5, 0], "E": [5, 0], "F": [5, 0], "G": [5, 0]}
 	board = np.zeros((6, 7), dtype=object)
 	pd_board = pd.DataFrame(board, columns=list('ABCDEFG'))
+	
+	# test various sorting methods on pieces_position_list
+	# could be good for colum
+	on_x0 = sorted(pieces_position_list, key=lambda x: x[0])
+	print(f"Sorted by x0: {on_x0}\n")
+	# could be good for diagonal checks
+	on_x2 = sorted(pieces_position_list, key=lambda x: x[2])
+	print(f"Sorted by x2: {on_x2}\n")
+	
+	
+	
+	
 	for move, color in list(enumerate(pieces_position_list, start=1)):
 		pd_board.at[col_dict[color[0]][0], color[0]] = color[2:]
 		col_dict[color[0]][0] -= 1
 		col_dict[color[0]][1] += 1
 		if move >= 7:
-			player = color[2:]
-			row, col = col_dict[color[0]][0] + 1, list('ABCDEFG').index(color[0])
-			pd_board.columns = list(range(7))
-			# row possibilities
-			try:
-				if (pd_board.iat[row, col - 1] == player and
-						pd_board.iat[row, col - 2] == player and pd_board.iat[row, col - 3] == player):
-					print("row possibilities 1")
-					print(pd_board.iat[row, col - 1], pd_board.iat[row, col - 2], pd_board.iat[row, col - 3], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row, col - 1] == player and
-				      pd_board.iat[row, col - 2] == player and pd_board.iat[row, col + 1] == player):
-					print("row possibilities 2")
-					print(pd_board.iat[row, col - 1], pd_board.iat[row, col - 2], pd_board.iat[row, col + 1], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row, col - 1] == player and
-				      pd_board.iat[row, col + 1] == player and pd_board.iat[row, col + 2] == player):
-					print("row possibilities 3")
-					print(pd_board.iat[row, col - 1], pd_board.iat[row, col + 1], pd_board.iat[row, col + 2], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row, col + 1] == player and
-				      pd_board.iat[row, col + 2] == player and pd_board.iat[row, col + 3] == player):
-					print("row possibilities 4")
-					print(pd_board.iat[row, col + 1], pd_board.iat[row, col + 2], pd_board.iat[row, col + 3], end="\n")
-					return player
-			except IndexError:
-				pass
-			
-			# column possibilities
-			try:
-				if (pd_board.iat[abs(row - 1), col] == player and
-				      pd_board.iat[abs(row - 2), col] == player and pd_board.iat[abs(row - 3), col] == player):
-					print("column possibilities 1")
-					print(pd_board.iat[row - 1, col], pd_board.iat[row - 2, col], pd_board.iat[row - 3, col], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row - 1, col] == player and
-				      pd_board.iat[row + 1, col] == player and pd_board.iat[row + 2, col] == player):
-					print("column possibilities 2")
-					print(pd_board.iat[row - 1, col], pd_board.iat[row + 1, col], pd_board.iat[row + 2, col], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row - 1, col] == player and
-				      pd_board.iat[row - 2, col] == player and pd_board.iat[row + 1, col] == player):
-					print("column possibilities 3")
-					print(pd_board.iat[row - 1, col], pd_board.iat[row - 2, col], pd_board.iat[row + 1, col], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row + 1, col] == player and
-				      pd_board.iat[row + 2, col] == player and pd_board.iat[row + 3, col] == player):
-					print("column possibilities 4")
-					print(pd_board.iat[row + 1, col], pd_board.iat[row + 2, col], pd_board.iat[row + 3, col], end="\n")
-					return player
-			except IndexError:
-				pass
-			
-			# diagonal possibilities negative slope
-			try:
-				if (pd_board.iat[row - 1, col - 1] == player and
-				      pd_board.iat[row - 2, col - 2] == player and pd_board.iat[row - 3, col - 3] == player):
-					print("diagonal possibilities negative slope 1")
-					print(pd_board.iat[row - 1, col - 1], pd_board.iat[row - 2, col - 2], pd_board.iat[row - 3, col - 3], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row - 1, col - 1] == player and
-				      pd_board.iat[row + 1, col + 1] == player and pd_board.iat[row + 2, col + 2] == player):
-					print("diagonal possibilities negative slope 2")
-					print(pd_board.iat[row - 1, col - 1], pd_board.iat[row + 1, col + 1], pd_board.iat[row + 2, col + 2], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row - 1, col - 1] == player and
-				      pd_board.iat[row - 2, col - 2] == player and pd_board.iat[row + 1, col + 1] == player):
-					print("diagonal possibilities negative slope 3")
-					print(pd_board.iat[row - 1, col - 1], pd_board.iat[row - 2, col - 2], pd_board.iat[row + 1, col + 1], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row + 1, col + 1] == player and
-				      pd_board.iat[row + 2, col + 2] == player and pd_board.iat[row + 3, col + 3] == player):
-					print("diagonal possibilities negative slope 4")
-					print(pd_board.iat[row + 1, col + 1], pd_board.iat[row + 2, col + 2], pd_board.iat[row + 3, col + 3], end="\n")
-					return player
-			except IndexError:
-				pass
-			
-			# diagonal possibilities positive slope
-			try:
-				if (pd_board.iat[row - 1, col + 1] == player and
-				      pd_board.iat[row - 2, col + 2] == player and pd_board.iat[row - 3, col + 3] == player):
-					print("diagonal possibilities positive slope 1")
-					print(pd_board.iat[row - 1, col + 1], pd_board.iat[row - 2, col + 2], pd_board.iat[row - 3, col + 3], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row + 1, col - 1] == player and
-				      pd_board.iat[row - 1, col + 1] == player and pd_board.iat[row - 2, col + 2] == player):
-					print("diagonal possibilities positive slope 2")
-					print(pd_board.iat[row + 1, col - 1], pd_board.iat[row - 1, col + 1], pd_board.iat[row - 2, col + 2], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row + 1, col - 1] == player and
-				      pd_board.iat[row + 2, col - 2] == player and pd_board.iat[row - 1, col + 1] == player):
-					print("diagonal possibilities positive slope 3")
-					print(pd_board.iat[row + 1, col - 1], pd_board.iat[row + 2, col - 2], pd_board.iat[row - 1, col + 1], end="\n")
-					return player
-			except IndexError:
-				pass
-			try:
-				if (pd_board.iat[row + 1, abs(col - 1)] == player and
-				      pd_board.iat[row + 2, col - 2] == player and pd_board.iat[row + 3, col - 3] == player):
-					print("diagonal possibilities positive slope 4")
-					print(pd_board.iat[row + 1, col - 1], pd_board.iat[row + 2, col - 2], pd_board.iat[row + 3, col - 3], end="\n")
-					return player
-				else:
-					pd_board.columns = list(col_dict.keys())
-			except IndexError:
-				pd_board.columns = list(col_dict.keys())
+			pass
 	return "Draw"
 
 
@@ -203,16 +76,18 @@ def who_is_winner(pieces_position_list):
 # 		]
 # 	)  # , "Draw")
 #
-# g = who_is_winner(
-# 	[
-# 		'B_Red', 'G_Yellow', 'D_Red', 'G_Yellow', 'E_Red', 'G_Yellow', 'C_Red', 'D_Yellow', 'B_Red', 'G_Yellow',
-# 		'A_Red', 'A_Yellow', 'B_Red', 'C_Yellow', 'A_Red', 'B_Yellow', 'B_Red', 'D_Yellow', 'D_Red', 'A_Yellow',
-# 		'E_Red', 'G_Yellow', 'G_Red']
-# 	)  # , "Red")
+g = who_is_winner(
+	[
+		'B_Red', 'G_Yellow', 'D_Red', 'G_Yellow', 'E_Red', 'G_Yellow', 'C_Red', 'D_Yellow', 'B_Red', 'G_Yellow',
+		'A_Red', 'A_Yellow', 'B_Red', 'C_Yellow', 'A_Red', 'B_Yellow', 'B_Red', 'D_Yellow', 'D_Red', 'A_Yellow',
+		'E_Red', 'G_Yellow', 'G_Red']
+	)  # , "Red")
+#
 # h = who_is_winner(
 # 	['B_Red', 'A_Yellow', 'C_Red', 'E_Yellow', 'A_Red', 'C_Yellow', 'E_Red', 'A_Yellow', 'D_Red', 'C_Yellow', 'C_Red',
 # 	 'D_Yellow', 'G_Red', 'G_Yellow', 'C_Red', 'B_Yellow', 'C_Red']
 # 	)  # , "Draw")
-i = who_is_winner(
-	['B_Red', 'D_Yellow', 'C_Red', 'E_Yellow', 'C_Red', 'G_Yellow', 'B_Red', 'B_Yellow', 'B_Red', 'B_Yellow', 'F_Red',
-	 'E_Yellow', 'E_Red', 'G_Yellow', 'A_Red', 'G_Yellow', 'D_Red', 'C_Yellow', 'B_Red'])  # Draw
+#
+# i = who_is_winner(
+# 	['B_Red', 'D_Yellow', 'C_Red', 'E_Yellow', 'C_Red', 'G_Yellow', 'B_Red', 'B_Yellow', 'B_Red', 'B_Yellow', 'F_Red',
+# 	 'E_Yellow', 'E_Red', 'G_Yellow', 'A_Red', 'G_Yellow', 'D_Red', 'C_Yellow', 'B_Red'])  # Draw
