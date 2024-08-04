@@ -28,7 +28,7 @@ def the_counting_list(a_list: list, colr=None) -> Optional[str]:
 	return None
 
 
-def diagonal(df: pd.DataFrame, mv: int = None, colr: str = None):
+def diagonal(df: pd.DataFrame, *, mv: int = None, colr: str = None) -> Optional[str]:
 	"""
 	Checks for consecutive occurrences of a specified element in the diagonals of a DataFrame.
 
@@ -75,7 +75,7 @@ def who_is_winner(pieces_position_list: list) -> str:
 	# for user board visualization and ensure all cells are tuples for later code
 	# create numpy array and convert to pandas DataFrame making the numbers string tuples.
 	board = np.ones((6, 7), dtype=object) * 10
-	pd_board = pd.DataFrame(board, columns=list('ABCDEFG')).applymap(lambda x: tuple(str(x)))
+	pd_board = pd.DataFrame(board, columns=list('ABCDEFG')).apply(lambda x: x.map(lambda y: tuple(str(y))))
 	
 	# Place each piece on the board
 	for move, color in enumerate(pieces_position_list, start=1):
