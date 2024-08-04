@@ -1,8 +1,22 @@
 import numpy as np
 import pandas as pd
+from typing import Optional
 
 
-def the_counting_list(a_list, colr=None):
+def the_counting_list(a_list: list, colr=None) -> Optional[str]:
+	"""
+	Counts consecutive occurrences of a specified element in a list.
+
+	This function iterates through a list and counts consecutive occurrences of a specified element.
+	If the element appears four times consecutively, the function returns that element. Otherwise, it returns None.
+
+	Parameters:
+	a_list (list): The list in which to count consecutive occurrences.
+	colr (str, optional): The element to count consecutive occurrences of. Defaults to None.
+
+	Returns:
+	Optional[str]: The element if it appears four times consecutively, otherwise None.
+	"""
 	count = 0
 	for i in a_list:
 		if i == colr:
@@ -14,10 +28,25 @@ def the_counting_list(a_list, colr=None):
 	return None
 
 
-def diagonal(df, mv=None, colr=None):
-	for i in range(-5, 5):
-		the_diagonal_series_transpose = pd.Series(df.to_numpy().T.diagonal(offset=i)).tolist()
-		if (mv, colr) in the_diagonal_series_transpose and len(the_diagonal_series_transpose) >= 4:
+def diagonal(df: pd.DataFrame, mv: int = None, colr: str = None):
+	"""
+	Checks for consecutive occurrences of a specified element in the diagonals of a DataFrame.
+
+	This function iterates through the diagonals of a DataFrame and checks for consecutive occurrences
+	of a specified element. If the element appears four times consecutively in any diagonal, the function
+	returns that element. Otherwise, it returns None.
+
+	Parameters:
+	df (pd.DataFrame): The DataFrame in which to check the diagonals.
+	mv (int, optional): The move number associated with the element. Defaults to None.
+	colr (str, optional): The element to check for consecutive occurrences. Defaults to None.
+
+	Returns:
+	Optional[str]: The element if it appears four times consecutively in any diagonal, otherwise None.
+	"""
+	for _ in range(-5, 5):
+		the_diagonal_series_transpose = pd.Series(df.to_numpy().T.diagonal(offset=_)).tolist()
+		if (mv, colr) in the_diagonal_series_transpose:
 			diagonal_transpose_list_for_win = [i[1][2:] for i in the_diagonal_series_transpose]
 			dia_count = the_counting_list(diagonal_transpose_list_for_win, colr[2:])
 			if dia_count is not None:
@@ -26,16 +55,30 @@ def diagonal(df, mv=None, colr=None):
 
 
 def who_is_winner(pieces_position_list: list) -> str:
+	"""
+	Determines the winner of a Connect Four game based on the sequence of moves.
+
+	This function simulates a Connect Four game by placing pieces on a board according to the given sequence of moves.
+	It checks for a winner after each move, and if a player gets four consecutive pieces in a row, column, or diagonal,
+	the function returns the color of the winning player. If no player wins after all moves, it returns "Draw".
+
+	Parameters:
+	pieces_position_list (list): A list of strings representing the moves in the game. Each string is in the format
+								 "Column_Color", where Column is a letter from 'A' to 'G' and Color is either "Red" or "Yellow".
+
+	Returns:
+	str: The color of the winning player ("Red" or "Yellow") if there is a winner, otherwise "Draw".
+	"""
 	# provide a countdown for each column in order to place the pieces for user visualization
 	col_dict = {"A": [5, 0], "B": [5, 0], "C": [5, 0], "D": [5, 0], "E": [5, 0], "F": [5, 0], "G": [5, 0]}
 	
 	# for user board visualization and ensure all cells are tuples for later code
-	# create numpy array and convert to pandas DataFrame amking the numbers string tuples.
+	# create numpy array and convert to pandas DataFrame making the numbers string tuples.
 	board = np.ones((6, 7), dtype=object) * 10
 	pd_board = pd.DataFrame(board, columns=list('ABCDEFG')).applymap(lambda x: tuple(str(x)))
 	
 	# Place each piece on the board
-	for move, color in list(enumerate(pieces_position_list, start=1)):
+	for move, color in enumerate(pieces_position_list, start=1):
 		# a tuple with move is needed to ensure the number of moves is not lost
 		pd_board.at[col_dict[color[0]][0], color[0]] = move, color  # a tuple to match the existing board
 		col_dict[color[0]][0] -= 1
@@ -43,33 +86,36 @@ def who_is_winner(pieces_position_list: list) -> str:
 		
 		# check for winning conditions if there are at least 7 moves, the min for a win
 		if move >= 7:
-			# check current column for a win
+			
+			# Extract the current column, row, and diagonal series
 			the_col_series = pd_board[color[0]].tolist()
-			if len(the_col_series) >= 4:  # at least 4 needed to win
-				col_list_for_win = [i[1][2:] for i in the_col_series]  # put the col elements in a list
-				col_count = the_counting_list(col_list_for_win, color[2:])  # check for a win or None if not
-				if col_count is not None:
-					return col_count
-				
-			# check current row for a win
 			the_row_series = (
 				pd_board[pd_board.apply(lambda row: row[color[0]] == (move, color), axis=1)].iloc[0].tolist())
-			if len(the_row_series) >= 4:  # at least 4 needed to win
-				row_list_for_win = [i[1][2:] for i in the_row_series]  # put the row elements in a list
-				row_count = the_counting_list(row_list_for_win, color[2:])  # check for a win or None if not
-				if row_count is not None:
-					return row_count
+			reg = diagonal(
+				pd_board, mv=move, colr=color
+				)  # check negative (left to right top to bottom) diagonals for a win
+			reg_flip = diagonal(
+				pd_board.iloc[:, ::-1], mv=move, colr=color
+				)  # check positive (right to left top to bottom) diagonals for win. Flipped it for np.diagonal() reqs
 			
-			# check negative (left to right top to bottom) diagonals for a win
-			reg = diagonal(pd_board, mv=move, colr=color)
+			# check current column for a win
+			col_list_for_win = [i[1][2:] for i in the_col_series]  # put the col elements in a list
+			col_count = the_counting_list(col_list_for_win, color[2:])  # check for a win or None if not
+			if col_count is not None:
+				return col_count
+			
+			# check current row for a win
+			row_list_for_win = [i[1][2:] for i in the_row_series]  # put the row elements in a list
+			row_count = the_counting_list(row_list_for_win, color[2:])  # check for a win or None if not
+			if row_count is not None:
+				return row_count
+			
+			# check both diagonals for a win
 			if reg is not None:
-				return diagonal(pd_board, mv=move, colr=color)
-			
-			# check positive (right to left top to bottom) diagonals for a win but flipped it for np.diagonal() reqs
-			reg_flip = diagonal(pd_board.iloc[:, ::-1], mv=move, colr=color)
+				return reg
 			if reg_flip is not None:
-				return diagonal(pd_board.iloc[:, ::-1], mv=move, colr=color)
-			
+				return reg_flip
+	
 	return "Draw"
 
 
