@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from typing import Optional
+import pprint
 
 
 def the_counting_list(a_list: list, colr=None) -> Optional[str]:
