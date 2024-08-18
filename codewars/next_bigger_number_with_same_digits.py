@@ -12,24 +12,22 @@ If the digits can't be rearranged to form a bigger number, return -1 (or nil in 
 """
 
 from itertools import permutations
+import time
 
 
 def next_bigger(n):
 	print(n)
-	sorted_perms = sorted(list(set(int(''.join(x)) for x in list(permutations(list(str(n)))))))
+	_ = sorted(list(set(int(''.join(x)) for x in list(permutations(str(n))))))
 	try:
-		next_num = sorted_perms[sorted_perms.index(n) + 1]
-		return next_num
-	except IndexError as e:
+		return _[_.index(n) + 1]
+	except IndexError:
 		return -1
 
 
 def next_bigger_(n):
-	list_n = list(str(n))
-	print(f"list_n:\n{list_n}")
-	perm = list(permutations(list_n))
-	print(f"perm:\n{perm}")
-	perms_ = sorted(int(''.join(x)) for x in perm)
+	perm = list(permutations(str(n)))
+	print(f"perm:\n{list(perm)}")
+	perms_ = [int(''.join(x)) for x in perm]
 	print(f"perms_:\n{perms_}")
 	set_perms = set(perms_)
 	print(f"set_perms:\n{set_perms}")
@@ -37,18 +35,20 @@ def next_bigger_(n):
 	print(f"list_perms:\n{list_perms}")
 	sorted_perms = sorted(list_perms)
 	print(f"sorted_perms:\n{sorted_perms}")
-	loc = sorted_perms.index(n)
-	print(f"loc:\n{loc}")
+	# loc = sorted_perms.index(n)
+	# print(f"loc:\n{loc}")
 	try:
-		next_num = sorted_perms[loc + 1]
-		return next_num
-	except IndexError as e:
+		return sorted_perms.pop(sorted_perms.index(n) + 1)
+		# return sorted_perms[sorted_perms.index(n) + 1]
+	except IndexError:
 		return -1
 
 
-a = next_bigger(21)  # ,   -1)
-aa = next_bigger_(21)  # ,   -1)
-print('*' * 72)
+start = time.time()
+
+# a = next_bigger(21)  # ,   -1)
+# aa = next_bigger_(21)  # ,   -1)
+# print('*' * 72)
 
 b = next_bigger(513)  # ,  531)
 bb = next_bigger_(513)  # ,  531)
@@ -65,3 +65,6 @@ print('*' * 72)
 e = next_bigger(144)  # ,  414)
 ee = next_bigger_(144)  # ,  414)
 print('*' * 72)
+
+end = time.time()
+print(f"Time: {(end - start) * 1000:.2f} ms")
