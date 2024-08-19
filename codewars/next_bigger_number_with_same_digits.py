@@ -17,8 +17,7 @@ import time
 
 def next_bigger(n):
 	try:
-		_ = int(''.join(sorted(i for i in permutations(str(n)) if int(''.join(i)) > n)[0]))
-		return _ if _ else -1
+		return int(''.join(sorted(i for i in permutations(str(n)) if int(''.join(i)) > n)[0]))
 	except IndexError:
 		return -1
 
