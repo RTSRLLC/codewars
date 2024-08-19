@@ -17,8 +17,8 @@ import time
 
 def next_bigger(n):
 	try:
-		_ = [i for i in permutations(str(n))]
-		_ = sorted(int(''.join(x)) for x in _ if int(''.join(x)) > n)[0]
+		_ = int(''.join(sorted(i for i in permutations(str(n)) if int(''.join(i)) > n)[0]))
+		# _ = sorted(int(''.join(x)) for x in _ if int(''.join(x)) > n)[0]
 		return _ if _ else -1
 	except IndexError:
 		print(f"No larger number found for {n}")
@@ -27,7 +27,7 @@ def next_bigger(n):
 
 start = time.time()
 
-# a = next_bigger(21)  # ,   -1)
+a = next_bigger(21)  # ,   -1)
 print('*' * 72)
 
 b = next_bigger(513)  # ,  531)
