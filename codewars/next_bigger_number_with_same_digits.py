@@ -18,10 +18,8 @@ import time
 def next_bigger(n):
 	try:
 		_ = int(''.join(sorted(i for i in permutations(str(n)) if int(''.join(i)) > n)[0]))
-		# _ = sorted(int(''.join(x)) for x in _ if int(''.join(x)) > n)[0]
 		return _ if _ else -1
 	except IndexError:
-		print(f"No larger number found for {n}")
 		return -1
 
 
