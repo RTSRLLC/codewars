@@ -30,6 +30,8 @@ def next_bigger(n):
     # Step 2: Find the smallest digit on the right side of the found digit that is larger than it
     b = list(range(length - 1, i, -1))
     for j in range(length - 1, i, -1):
+        c = digits[j]
+        d = digits[i]
         if digits[j] > digits[i]:
             break
     
@@ -50,14 +52,14 @@ start = time.time()
 # b = next_bigger(513)  # ,  531)
 # print('*' * 72)
 
-c = next_bigger(2017)  # , 2071)
-print('*' * 72)
-
-d = next_bigger(414)  # ,  441)
-print('*' * 72)
-
-e = next_bigger(144)  # ,  414)
-print('*' * 72)
+# c = next_bigger(2017)  # , 2071)
+# print('*' * 72)
+#
+# d = next_bigger(414)  # ,  441)
+# print('*' * 72)
+#
+# e = next_bigger(144)  # ,  414)
+# print('*' * 72)
 
 f = next_bigger(1234567890)  # , 1234567908)
 
