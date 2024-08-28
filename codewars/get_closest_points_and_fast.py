@@ -8,22 +8,13 @@ worked = ""
 
 
 def closest_pair(points):
-	# final = None
-	# minimum = float('inf')
-	generator = ((((
-			     i[0] - j[0]) ** 2 + (i[1] - j[1]) ** 2) ** 0.5, i, j)
-	             for idx, i in enumerate(np.array(points))
-	             for j in points[idx + 1:][1:]
-	             )
-	# the_gen = list(generator)
-	# the_gen = min(the_gen, key=lambda x: x[0])
-	# for i in the_gen:
-	# 	print(i)
-	# 	if i[0] < minimum:
-	# 		minimum = i[0]
-	# 	final = i[1:]
-	
-	return generator
+	return min(
+		((((
+		 i[0] - j[0]) ** 2 + (i[1] - j[1]) ** 2) ** 0.5, i, j)
+		 for idx, i in enumerate(points)
+		 for j in points[idx + 1:]
+		 ), key=lambda x: x[0]
+		)[1:]
 
 
 test_with_numpy = ''
