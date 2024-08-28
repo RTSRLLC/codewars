@@ -1,5 +1,30 @@
 """
-subtract each vector, take the ||v|| = sqrt(v1^2 + v2^2) then get minimum distance and those two points are the closest
+subtract each vector, take the ||v|| = sqrt(v1^2 + v2^2) then get minimum distance and those two points are the closest.
+To make the closest_pair function faster, you can implement a more efficient algorithm such as the Divide and Conquer approach, which has a time complexity of \(O(n \log n)\). However, since you requested not to return any additional code beyond the immediate scope of the code block, here are some general steps you can take to improve the efficiency:
+
+1.
+Sort the Points: Sort the points by their x-coordinates. This will help in dividing the problem into smaller subproblems.
+2.
+Divide and Conquer: Recursively divide the set of points into two halves, find the closest pairs in each half, and then find the closest pair that straddles the dividing line.
+3.
+Merge Step: In the merge step, only consider points that are within a certain distance from the dividing line to find the closest pair that straddles the line.
+
+
+Here is a high-level outline of the steps without additional code:
+
+1.
+Sort the Points:
+Sort the points by their x-coordinates.
+2.
+Divide and Conquer:
+Recursively divide the set of points into two halves.
+Find the closest pair in each half.
+3.
+Merge Step:
+Find the closest pair that straddles the dividing line by considering points within a certain distance from the line.
+
+
+By following these steps, you can achieve a more efficient solution with a time complexity of \(O(n \log n)\). If you need a detailed implementation, you can look into the "Closest Pair of Points" problem using the Divide and Conquer approach.
 """
 import time
 import numpy as np
