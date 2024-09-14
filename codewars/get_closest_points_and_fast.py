@@ -50,7 +50,7 @@ def plot_points(points):
 
 
 def closest_pair(points):
-	# plot_points(points)
+	plot_points(points)
 	sorted_points = sorted(points, key=lambda x: x[0])
 	dis_func = lambda x, y: np.sqrt((x[0] - y[0]) ** 2 + (x[1] - y[1]) ** 2)
 	front_half = sorted_points[:len(sorted_points) // 2]
@@ -59,14 +59,25 @@ def closest_pair(points):
 	start_back = back_half[0]
 	distance = dis_func(start_front, start_back)
 	points = (start_front, start_back)
-	for p in front_half:
-		
-		d = dis_func(p, q)
-		if d < distance:
-			point = (p, q)
-			distance = d
+	fh = front_half[-2::-1]
+	test_fh = fh[:len(fh) - 1]
+	test_reverse_bh = back_half[1:]
 	
-	return point
+	def recurse(lst: list):
+		nonlocal distance, points
+		if len(lst) == 1:
+			return None
+		for idx, p in enumerate(lst):
+			i, j = idx, p
+			new_dis = dis_func(p, start_back)
+			if new_dis < distance:
+				distance = new_dis
+				points = (p, start_front)
+		return recurse(lst[:len(lst) - 1])
+	
+	front_half = recurse(fh)
+	back_half = recurse(test_reverse_bh)
+	return
 
 
 start_time = time.time()
