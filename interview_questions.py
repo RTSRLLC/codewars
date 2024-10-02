@@ -78,21 +78,25 @@ def generate_random_list(n, min_val, max_val):
 
 int_list = generate_random_list(100, 1, 100)
 print(f"int_list\n{'*' * len(int_list)}")
+############################################################################################################
 
 one = "check if integer x is in a list"
 integ = 7
 print(f"7 is in list: {7 in int_list}")
 print(f"{one=}\n{'*' * len(one)}")
+############################################################################################################
 
 two = "find duplicate number in a integer list"
 b_int_dup_set_2 = set(i for i in int_list if int_list.count(i) > 1)
 print(f"{two=}\n{'*' * len(two)}")
+############################################################################################################
 
 three = "check if 2 strings are anagrams"
 str1 = "listen"
 str2 = "silent"
 print(f"are {str1} and {str2} anagrams?: {sorted(list(str1)) == sorted(list(str2))}")
 print(f"{three=}\n{'*' * len(three)}")
+############################################################################################################
 
 four = "find pairs in a list that sum to a target value"
 target = 15
@@ -100,12 +104,13 @@ set_list = set(int_list)
 sum_pair_set = {(i, x) for i in set_list if (x := target - i) in set_list}
 print(f"unique pairs: {sum_pair_set}")
 print(f"{four=}\n{'*' * len(four)}")
+############################################################################################################
 
 five = "check if a string is a palindrome"
 palindrome = "racecar"
 print(f"is palindrome: {list(palindrome) == list(palindrome)[::-1]}")
 print(f"{five=}\n{'*' * len(five)}")
-
+############################################################################################################
 six = "use a list as stack, array, and queue"
 print(f"{six=}\n{'*' * len(six)}")
 
@@ -128,3 +133,4 @@ print(deq_int_list[0])
 deq_first = deq_int_list.popleft()
 print(deq_int_list[0])
 print(f"{six=}\n{'*' * len(six)}")
+############################################################################################################
