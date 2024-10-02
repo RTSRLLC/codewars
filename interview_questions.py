@@ -78,24 +78,34 @@ def generate_random_list(n, min_val, max_val):
 
 int_list = generate_random_list(100, 1, 100)
 print(f"int_list\n{'*' * len(int_list)}")
+
+
 ############################################################################################################
 
-one = "check if integer x is in a list"
-integ = 7
-print(f"7 is in list: {7 in int_list}")
-print(f"{one=}\n{'*' * len(one)}")
-############################################################################################################
+def one(the_list: list, x: int) -> str:
+	ones = "check if integer x is in a list"
+	return f"{ones}\n{x in int_list}\n{'*' * 72}"
 
-two = "find duplicate number in a integer list"
-b_int_dup_set_2 = set(i for i in int_list if int_list.count(i) > 1)
-print(f"{two=}\n{'*' * len(two)}")
-############################################################################################################
 
-three = "check if 2 strings are anagrams"
-str1 = "listen"
-str2 = "silent"
-print(f"are {str1} and {str2} anagrams?: {sorted(list(str1)) == sorted(list(str2))}")
-print(f"{three=}\n{'*' * len(three)}")
+print(one(the_list=int_list, x=7))
+
+
+############################################################################################################
+def two(the_list: list) -> str:
+	two = "find duplicate number in a integer list"
+	return f"{two}\n{set(i for i in the_list if the_list.count(i) > 1)}\n{'*' * 72}"
+
+
+print(two(the_list=int_list))
+
+
+############################################################################################################
+def three(str1: str, str2: str) -> str:
+	three = "check if 2 strings are anagrams"
+	return f"{three}\nare {str1} and {str2} anagrams?\n{sorted(list(str1)) == sorted(list(str2))}\n{'*' * 72}"
+
+
+print(three(str1="listen", str2="silent"))
 ############################################################################################################
 
 four = "find pairs in a list that sum to a target value"
