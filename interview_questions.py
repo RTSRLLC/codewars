@@ -14,4 +14,18 @@ integ = 7
 print(7 in int_list)
 
 two = "find duplicate number in a integer list"
-int_list_sorted = sorted(int_list)
+a_int_list_sorted = sorted(int_list.copy())
+b_int_dup_set = set()
+int_list_enum = list(enumerate(a_int_list_sorted))
+for i, n in int_list_enum:
+	try:
+		if a_int_list_sorted[i + 1] == n:
+			b_int_dup_set.add(n)
+	except IndexError:
+		continue
+b_int_dup_set_2 = set()
+for i in int_list:
+	print(f"{i=}\n{int_list.count(i)=}\n{'*'*10}")
+	if int_list.count(i) > 1:
+		b_int_dup_set_2.add(i)
+print(f"{sorted(b_int_dup_set_2) == b_int_dup_set_2}")
