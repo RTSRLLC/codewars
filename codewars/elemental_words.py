@@ -1,3 +1,4 @@
+
 ELEMENTS = {
 	'H': 'Hydrogen', 'He': 'Helium', 'Li': 'Lithium', 'Be': 'Beryllium', 'B': 'Boron', 'C': 'Carbon', 'N': 'Nitrogen', 'O': 'Oxygen', 'F': 'Fluorine',
 	'Ne': 'Neon', 'Na': 'Sodium', 'Mg': 'Magnesium', 'Al': 'Aluminium', 'Si': 'Silicon', 'P': 'Phosphorus', 'S': 'Sulfur', 'Cl': 'Chlorine', 'Ar': 'Argon',
@@ -19,4 +20,10 @@ ELEMENTS = {
 
 
 def elemental_forms(word):
-	...
+	broke_back_word = list(word)
+	print(broke_back_word)
+	for i in broke_back_word:
+		print(f"{i}: {ELEMENTS.get(i)}")
+
+
+a = elemental_forms('snack')

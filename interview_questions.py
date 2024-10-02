@@ -78,48 +78,61 @@ def generate_random_list(n, min_val, max_val):
 
 int_list = generate_random_list(100, 1, 100)
 print(f"int_list\n{'*' * len(int_list)}")
-
-
 ############################################################################################################
-
 def one(the_list: list, x: int) -> str:
 	ones = "check if integer x is in a list"
 	return f"{ones}\n{x in int_list}\n{'*' * 72}"
-
-
 print(one(the_list=int_list, x=7))
-
-
 ############################################################################################################
 def two(the_list: list) -> str:
 	two = "find duplicate number in a integer list"
 	return f"{two}\n{set(i for i in the_list if the_list.count(i) > 1)}\n{'*' * 72}"
-
-
 print(two(the_list=int_list))
-
-
 ############################################################################################################
 def three(str1: str, str2: str) -> str:
 	three = "check if 2 strings are anagrams"
 	return f"{three}\nare {str1} and {str2} anagrams?\n{sorted(list(str1)) == sorted(list(str2))}\n{'*' * 72}"
-
-
 print(three(str1="listen", str2="silent"))
 ############################################################################################################
+def four(the_list: list, target: int) -> str:
+	"""
+	Finds pairs of numbers in a list that sum to a target value.
 
-four = "find pairs in a list that sum to a target value"
-target = 15
-set_list = set(int_list)
-sum_pair_set = {(i, x) for i in set_list if (x := target - i) in set_list}
-print(f"unique pairs: {sum_pair_set}")
-print(f"{four=}\n{'*' * len(four)}")
+	Parameters
+	----------
+	the_list : list
+		A list of integers to search for pairs.
+	target : int
+		The target sum value for which pairs are to be found.
+
+	Returns
+	-------
+	str
+		A formatted string describing the function's purpose and listing the pairs of numbers
+		that sum to the target value.
+	"""
+	four = "find pairs in a list that sum to a target value"
+	set_list = set(int_list)
+	return f"{four}\n{(list((i, x) for i in set_list if (x := target - i) in set_list))}\n{'*' * 72}"
+print(four(the_list=int_list, target=15))
 ############################################################################################################
+def five(palindrome: str) -> str:
+	"""
+	Checks if a given string is a palindrome.
 
-five = "check if a string is a palindrome"
-palindrome = "racecar"
-print(f"is palindrome: {list(palindrome) == list(palindrome)[::-1]}")
-print(f"{five=}\n{'*' * len(five)}")
+	Parameters
+	----------
+	palindrome : str
+		The string to be checked for palindrome properties.
+
+	Returns
+	-------
+	str
+		A formatted string indicating whether the input string is a palindrome.
+	"""
+	five = "check if a string is a palindrome"
+	return f"{five}\nis palindrome: {list(palindrome) == list(palindrome)[::-1]}\n{'*' * 72}"
+print(five(palindrome="racecar"))
 ############################################################################################################
 six = "use a list as stack, array, and queue"
 print(f"{six=}\n{'*' * len(six)}")
