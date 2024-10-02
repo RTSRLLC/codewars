@@ -14,9 +14,4 @@ integ = 7
 print(7 in int_list)
 
 two = "find duplicate number in a integer list"
-b_int_dup_set_2 = set()
-for i in int_list:
-	print(f"{i=}\n{int_list.count(i)=}\n{'*'*10}")
-	if int_list.count(i) > 1:
-		b_int_dup_set_2.add(i)
-print(f"{sorted(b_int_dup_set_2)}\n{sorted(int_list)}")
+b_int_dup_set_2 = set(i for i in int_list if int_list.count(i) > 1)
