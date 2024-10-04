@@ -329,6 +329,8 @@ sorted_ = [8, 9, 30, 78, 85, 86, 88, 90, 93, 97]
 def quick_sort(a_list: list = None):
 	start = a_list[random.randint(0, len(a_list) - 1)]
 	print(f"{start=}")
+	front_half = a_list[:a_list.index(start)]
+	back_half = a_list[a_list.index(start) + 1:]
 	a_list.remove(start)
 	new_list = [start]
 	for i in a_list:
