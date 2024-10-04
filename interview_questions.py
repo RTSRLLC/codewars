@@ -4,70 +4,90 @@ from collections import deque
 
 
 class Stack:
-	"""
-	A class used to represent a Stack data structure.
+    """
+    A class used to represent a Stack data structure.
 
-	Attributes
-	----------
-	stack : list
-		A list to store the elements of the stack.
-	"""
-	
-	def __init__(self, a_list: list):
-		"""
-		Initializes the stack with a given list.
+    Attributes
+    ----------
+    stack : list
+        A list to store the elements of the stack.
 
-		Parameters
-		----------
-		a_list : list
-			A list of elements to initialize the stack with.
-		"""
-		self.stack = a_list
-	
-	def push(self, item):
-		"""
-		Adds an element to the top of the stack.
+    Methods
+    -------
+    __init__(self, a_list: list)
+        Initializes the stack with a given list.
 
-		Parameters
-		----------
-		item : any
-			The element to be added to the stack.
-		"""
-		self.stack.append(item)
-	
-	def pop(self):
-		"""
-		Removes the top element from the stack.
-		"""
-		self.stack.pop()
-	
-	def peek(self):
-		"""
-		Prints the top element of the stack without removing it.
-		"""
-		print(self.stack[-1])
-	
-	def size(self):
-		"""
-		Returns the number of elements in the stack.
+    push(self, item: any)
+        Adds an element to the top of the stack.
 
-		Returns
-		-------
-		int
-			The number of elements in the stack.
-		"""
-		return len(self.stack)
-	
-	def __repr__(self):
-		"""
-		Returns a string representation of the stack.
+    pop(self)
+        Removes the top element from the stack.
 
-		Returns
-		-------
-		str
-			A string representation of the stack.
-		"""
-		return repr(self.stack)
+    peek(self)
+        Prints the top element of the stack without removing it.
+
+    size(self)
+        Returns the number of elements in the stack.
+
+    __repr__(self)
+        Returns a string representation of the stack.
+    """
+
+    def __init__(self, a_list: list):
+        """
+        Initializes the stack with a given list.
+
+        Parameters
+        ----------
+        a_list : list
+            A list of elements to initialize the stack with.
+        """
+        self.stack = a_list
+
+    def push(self, item: any):
+        """
+        Adds an element to the top of the stack.
+
+        Parameters
+        ----------
+        item : any
+            The element to be added to the stack.
+        """
+        self.stack.append(item)
+
+    def pop(self):
+        """
+        Removes the top element from the stack.
+        """
+        self.stack.pop()
+
+    def peek(self):
+        """
+        Prints the top element of the stack without removing it.
+        """
+        print(self.stack[-1])
+
+    def size(self):
+        """
+        Returns the number of elements in the stack.
+
+        Returns
+        -------
+        int
+            The number of elements in the stack.
+        """
+        return len(self.stack)
+
+    def __repr__(self):
+        """
+        Returns a string representation of the stack.
+
+        Returns
+        -------
+        str
+            A string representation of the stack.
+        """
+        return repr(self.stack)
 
 
 def generate_random_list(n, min_val, max_val):
@@ -134,26 +154,33 @@ def five(palindrome: str) -> str:
 	return f"{five}\nis palindrome: {list(palindrome) == list(palindrome)[::-1]}\n{'*' * 72}"
 print(five(palindrome="racecar"))
 ############################################################################################################
-six = "use a list as stack, array, and queue"
-print(f"{six=}\n{'*' * len(six)}")
-
-stackin = Stack(int_list)
-stackin.push(1_000_000)
-the_peek = stackin.peek()
-print(stackin.size())
-print(stackin.__repr__())
-stackin.pop()
-
-array_int_list = array.array('i', int_list)
-print(array_int_list.buffer_info())
-item_51 = array_int_list[51]
-
-deq_int_list = deque(int_list)
-print(f"{[i for i in dir(deq_int_list) if not i.startswith('_')]=}")
-print(deq_int_list[0])
-deq_int_list.appendleft(1_000_000)
-print(deq_int_list[0])
-deq_first = deq_int_list.popleft()
-print(deq_int_list[0])
-print(f"{six=}\n{'*' * len(six)}")
+def six(int_list: list) -> str:
+	six = "use a list as stack, array, and queue"
+	print(f"{six=}\n{'*' * len(six)}")
+	
+	stackin = Stack(int_list)
+	stackin.push(1_000_000)
+	the_peek = stackin.peek()
+	print(stackin.size())
+	print(stackin.__repr__())
+	stackin.pop()
+	
+	array_int_list = array.array('i', int_list)
+	print(array_int_list.buffer_info())
+	item_51 = array_int_list[51]
+	
+	deq_int_list = deque(int_list)
+	print(f"{[i for i in dir(deq_int_list) if not i.startswith('_')]=}")
+	print(deq_int_list[0])
+	deq_int_list.appendleft(1_000_000)
+	print(deq_int_list[0])
+	deq_first = deq_int_list.popleft()
+	print(deq_int_list[0])
+	print(f"{six=}\n{'*' * len(six)}")
+	return f"{six}\n{'*' * 72}"
 ############################################################################################################
+a = [1, 2, 2, 3]
+b = [1, 3]
+set_a = set(a)
+set_b = set(b)
+print(f"{a} - {b} = {set_a - set_b}")
