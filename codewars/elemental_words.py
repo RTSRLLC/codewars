@@ -1,7 +1,5 @@
 from typing import List
 
-from interview_questions import three
-
 ELEMENTS = {
 	'H': 'Hydrogen', 'He': 'Helium', 'Li': 'Lithium', 'Be': 'Beryllium', 'B': 'Boron', 'C': 'Carbon', 'N': 'Nitrogen', 'O': 'Oxygen', 'F': 'Fluorine',
 	'Ne': 'Neon', 'Na': 'Sodium', 'Mg': 'Magnesium', 'Al': 'Aluminium', 'Si': 'Silicon', 'P': 'Phosphorus', 'S': 'Sulfur', 'Cl': 'Chlorine', 'Ar': 'Argon',
@@ -27,28 +25,51 @@ def check_symbol(symbol: str):
 
 
 def elemental_forms(word: str) -> List[List[str]]:
+	
+	def reset_doubles() -> None:
+		"""
+		This function resets the internal state of the elemental_forms function for processing double letter elements.
+	
+		Parameters:
+		None
+	
+		Returns:
+		None
+	
+		This function is a helper function for the elemental_forms function. It is used to reset the list_word, length, and list_word_iter variables to their
+		initial state. This is necessary because the elemental_forms function processes the input word in multiple passes, and the state of these variables
+		needs to be preserved between passes.
+		"""
+		nonlocal list_word, length, list_word_iter
+		list_word = list(word.upper())
+		length = len(word)
+		list_word_iter = iter(list_word)
+	
 	elements_are = list()
-	# check dict for single upper letter elements
-	elements_are.append([f"{check_symbol(i)} ({i})" for i in list(word.upper()) if not f"{check_symbol(i)} ({i})".startswith('Invalid symbol')])
-	# permutations for 2 letter elements
-	list_word = list(word.upper())
 	length = len(word)
+	list_word = list(word.upper())
+	
+	# check dict for single upper letter elements
+	elements_are.append(
+		[f"{check_symbol(i)} ({i})" for i in list_word if not f"{check_symbol(i)} ({i})".startswith('Invalid symbol')]
+		)
+	
+	# permutations for 2 letter elements
 	list_word_iter = iter(list_word)
-	double_letter_perms = []
+	add_list = []
 	for let in list_word:
-		while length > 0:
+		while length:
 			try:
-				next_letter = next(list_word_iter)
-				double_letter_perms.append(''.join(let + next_letter.lower()))
+				form_letter = ''.join(let + next(list_word_iter).lower())
+				add_list.append(
+					f"{check_symbol(form_letter)} ({form_letter})" if ELEMENTS.get(form_letter, 'Invalid symbol') != 'Invalid symbol' else ''
+					)
 				length -= 1
 			except StopIteration:
-				list_word = list(word.upper())
-				length = len(word)
-				list_word_iter = iter(list_word)
-		length = len(word)
-		list_word = list(word.upper())
-		list_word_iter = iter(list_word)
-	elements_are.append(double_letter_perms)
+				reset_doubles()
+		reset_doubles()
+	elements_are.append(add_list)
+	
 	# permutations for 3 letter elements
 	three_letter_elements = [i for i in ELEMENTS.keys() if len(i) == 3]
 	three_letter_list = []
@@ -57,8 +78,9 @@ def elemental_forms(word: str) -> List[List[str]]:
 		three_letter_list.append(i) if i in word.lower() else ''
 	if three_letter_list:
 		elements_are.append(three_letter_list)
+	elements_are = [item for sublist in elements_are for item in sublist if item]
 	return elements_are
-	
+
 
 a = elemental_forms('snack')
 answer_a = [
