@@ -1,3 +1,6 @@
+from typing import List
+
+from interview_questions import three
 
 ELEMENTS = {
 	'H': 'Hydrogen', 'He': 'Helium', 'Li': 'Lithium', 'Be': 'Beryllium', 'B': 'Boron', 'C': 'Carbon', 'N': 'Nitrogen', 'O': 'Oxygen', 'F': 'Fluorine',
@@ -19,11 +22,54 @@ ELEMENTS = {
 	}
 
 
-def elemental_forms(word):
-	broke_back_word = list(word)
-	print(broke_back_word)
-	for i in broke_back_word:
-		print(f"{i}: {ELEMENTS.get(i)}")
+def check_symbol(symbol: str):
+	return ELEMENTS.get(symbol, 'Invalid symbol')
 
+
+def elemental_forms(word: str) -> List[List[str]]:
+	elements_are = list()
+	# check dict for single upper letter elements
+	elements_are.append([f"{check_symbol(i)} ({i})" for i in list(word.upper()) if not f"{check_symbol(i)} ({i})".startswith('Invalid symbol')])
+	# permutations for 2 letter elements
+	list_word = list(word.upper())
+	length = len(word)
+	list_word_iter = iter(list_word)
+	double_letter_perms = []
+	for let in list_word:
+		while length > 0:
+			try:
+				next_letter = next(list_word_iter)
+				double_letter_perms.append(''.join(let + next_letter.lower()))
+				length -= 1
+			except StopIteration:
+				list_word = list(word.upper())
+				length = len(word)
+				list_word_iter = iter(list_word)
+		length = len(word)
+		list_word = list(word.upper())
+		list_word_iter = iter(list_word)
+	elements_are.append(double_letter_perms)
+	# permutations for 3 letter elements
+	three_letter_elements = [i for i in ELEMENTS.keys() if len(i) == 3]
+	three_letter_list = []
+	for i in three_letter_elements:
+		i = i.lower()
+		three_letter_list.append(i) if i in word.lower() else ''
+	if three_letter_list:
+		elements_are.append(three_letter_list)
+	return elements_are
+	
 
 a = elemental_forms('snack')
+answer_a = [
+	['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
+	['Sulfur (S)', 'Sodium (Na)', 'Carbon (C)', 'Potassium (K)'],
+	['Tin (Sn)', 'Actinium (Ac)', 'Potassium (K)']
+	]
+print('Test case a:', a == answer_a)
+# b = elemental_forms('beach')
+# answer_b = [['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']]
+# print('Test case b:', b == answer_b)
+# c = elemental_forms('BEACH')
+# answer_c = [['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']]
+# print('Test case c:', c == answer_c)
