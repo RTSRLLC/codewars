@@ -91,6 +91,118 @@ class Stack:
 		return repr(self.stack)
 
 
+def one(the_list: list, x: int) -> str:
+	ones = "check if integer x is in a list"
+	return f"{ones}\n{x in int_list}\n{'*' * 72}"
+
+
+def two(the_list: list) -> str:
+	two = "find duplicate number in a integer list"
+	return f"{two}\n{set(i for i in the_list if the_list.count(i) > 1)}\n{'*' * 72}"
+
+
+def three(str1: str, str2: str) -> str:
+	three = "check if 2 strings are anagrams"
+	return f"{three}\nare {str1} and {str2} anagrams?\n{sorted(list(str1)) == sorted(list(str2))}\n{'*' * 72}"
+
+
+def four(the_list: list, target: int) -> str:
+	"""
+	Finds pairs of numbers in a list that sum to a target value.
+
+	Parameters
+	----------
+	the_list : list
+		A list of integers to search for pairs.
+	target : int
+		The target sum value for which pairs are to be found.
+
+	Returns
+	-------
+	str
+		A formatted string describing the function's purpose and listing the pairs of numbers
+		that sum to the target value.
+	"""
+	four = "find pairs in a list that sum to a target value"
+	set_list = set(int_list)
+	return f"{four}\n{(list((i, x) for i in set_list if (x := target - i) in set_list))}\n{'*' * 72}"
+
+
+def five(palindrome: str) -> str:
+	"""
+	Checks if a given string is a palindrome.
+
+	Parameters
+	----------
+	palindrome : str
+		The string to be checked for palindrome properties.
+
+	Returns
+	-------
+	str
+		A formatted string indicating whether the input string is a palindrome.
+	"""
+	five = "check if a string is a palindrome"
+	return f"{five}\nis palindrome: {list(palindrome) == list(palindrome)[::-1]}\n{'*' * 72}"
+
+
+def six(int_list: list) -> str:
+	six = "use a list as stack, array, and queue"
+	
+	stackin = Stack(int_list)
+	print(f"stackin docstring:\n{stackin.__doc__}\n{'*' * 72}")
+	stackin.push(1_000_000)
+	print(f"{stackin.peek()=}")
+	print(f"{stackin.size()=}")
+	print(f"{stackin.__repr__()=}")
+	stackin.pop()
+	print(f"{stackin.size()=}")
+	
+	array_int_list = array.array('i', int_list)
+	print(f"{array_int_list[51]=}")
+	
+	deq_int_list = deque(int_list)
+	print(f"{deq_int_list[0]=}")
+	deq_int_list.appendleft(1_000_000)
+	print(f"{deq_int_list[0]=}")
+	deq_int_list.popleft()
+	print(f"{deq_int_list[0]=}")
+	return f"{six}\n{'*' * 72}"
+
+
+def seven(int_list: list) -> str:
+	"""
+	This function identifies and returns the missing numbers in a sequence.
+
+	Parameters:
+	int_list (list): A list of integers representing a sequence.
+
+	Returns:
+	str: A formatted string containing the missing numbers in the sequence. The string also includes a check to ensure the sum of the found missing numbers
+	and the sorted list length equals the length of the complete set.
+	"""
+	seven = "get missing numbers in a sequence"
+	sorted_list = sorted(int_list)
+	sorted_set = set(sorted_list)
+	complete_set = [i for i in range(sorted_list[0], sorted_list[-1] + 1)]
+	complete_set_set = set(complete_set)
+	missing_numbers = [j for j in complete_set if j not in sorted_set]
+	missing_numbers2 = complete_set_set - sorted_set
+	return (f"{seven}\nMissing numbers: {missing_numbers}\nMissing numbers (set): {missing_numbers2}\n{'*' * 72}\nlengths add to complete_set: "
+	        f"{len(sorted_set) + len(missing_numbers) == len(complete_set)}")
+
+
+def eight(int_list: list) -> str:
+	eight = "compute the intersection of two lists"
+	intersection = set(int_list) & set(generate_random_list(10, 1, 100))
+	return f"{eight}\nIntersection: {intersection}\n{'*' * 72}"
+
+
+def nine(int_list: list) -> str:
+	nine = "find max and min in an unsorted list"
+	return f"{nine}\nMax: {max(int_list)}, Min: {min(int_list)}\n{'*' * 72}"
+
+
 def ten(s: str) -> str:
 	"""
 	This function reverses a given string using recursion.
@@ -169,6 +281,53 @@ def eleven_(n: int) -> str:
 	return f"{eleven}\nFirst {n} Fibonacci numbers: {out}\n{'*' * 72}"
 
 
+def twelve_(the_list: list) -> str:
+	twelve = 'sort list with quicksort algorithm'
+	
+	def quick_sort(a_list: list = None):
+		if a_list:
+			pivot = a_list.pop()
+			greater = [x for x in a_list if x > pivot]
+			lesser = [x for x in a_list if x <= pivot]
+			return quick_sort(lesser) + [pivot] + quick_sort(greater)
+		else:
+			return []
+	
+	my_list = quick_sort(the_list)
+	return f"{twelve}\nSorted list: {my_list}\n{'*' * 72}"
+
+
+def thirteen_permutations(s: str) -> list:
+	"""
+	Generates all possible permutations of a given string.
+
+	Parameters:
+	----------
+	s : str
+		The input string for which to generate permutations.
+
+	Returns:
+	-------
+	list
+		A list of strings, where each string is a unique permutation of the input string.
+		The order of the permutations in the list is not guaranteed to be consistent.
+
+	Notes:
+	-----
+	This function removes any whitespace characters from the input string before generating permutations.
+	The function uses a simple algorithm that repeatedly rotates the characters in the string to generate permutations.
+	"""
+	lis = [i for i in s if i != ' ']
+	out = []
+	count = len(lis)
+	while count > 0:
+		out.append("".join(lis))
+		da_pop = lis.pop(0)
+		lis.append(da_pop)
+		count -= 1
+	return out
+
+
 def generate_random_list(n, min_val, max_val):
 	the_list = [random.randint(min_val, max_val) for _ in range(n)]
 	the_list.append(the_list[0])  # to create a duplicate number in the list
@@ -176,176 +335,36 @@ def generate_random_list(n, min_val, max_val):
 
 
 int_list = generate_random_list(100, 1, 100)
-
-# ############################################################################################################
-# def one(the_list: list, x: int) -> str:
-# 	ones = "check if integer x is in a list"
-# 	return f"{ones}\n{x in int_list}\n{'*' * 72}"
-#
-#
-# print(one(the_list=int_list, x=7))
-#
-#
-# ############################################################################################################
-# def two(the_list: list) -> str:
-# 	two = "find duplicate number in a integer list"
-# 	return f"{two}\n{set(i for i in the_list if the_list.count(i) > 1)}\n{'*' * 72}"
-#
-#
-# print(two(the_list=int_list))
-#
-#
-# ############################################################################################################
-# def three(str1: str, str2: str) -> str:
-# 	three = "check if 2 strings are anagrams"
-# 	return f"{three}\nare {str1} and {str2} anagrams?\n{sorted(list(str1)) == sorted(list(str2))}\n{'*' * 72}"
-#
-#
-# print(three(str1="listen", str2="silent"))
-#
-#
-# ############################################################################################################
-# def four(the_list: list, target: int) -> str:
-# 	"""
-# 	Finds pairs of numbers in a list that sum to a target value.
-#
-# 	Parameters
-# 	----------
-# 	the_list : list
-# 		A list of integers to search for pairs.
-# 	target : int
-# 		The target sum value for which pairs are to be found.
-#
-# 	Returns
-# 	-------
-# 	str
-# 		A formatted string describing the function's purpose and listing the pairs of numbers
-# 		that sum to the target value.
-# 	"""
-# 	four = "find pairs in a list that sum to a target value"
-# 	set_list = set(int_list)
-# 	return f"{four}\n{(list((i, x) for i in set_list if (x := target - i) in set_list))}\n{'*' * 72}"
-#
-#
-# print(four(the_list=int_list, target=15))
-#
-#
-# ############################################################################################################
-# def five(palindrome: str) -> str:
-# 	"""
-# 	Checks if a given string is a palindrome.
-#
-# 	Parameters
-# 	----------
-# 	palindrome : str
-# 		The string to be checked for palindrome properties.
-#
-# 	Returns
-# 	-------
-# 	str
-# 		A formatted string indicating whether the input string is a palindrome.
-# 	"""
-# 	five = "check if a string is a palindrome"
-# 	return f"{five}\nis palindrome: {list(palindrome) == list(palindrome)[::-1]}\n{'*' * 72}"
-#
-#
-# print(five(palindrome="racecar"))
-#
-#
-# ############################################################################################################
-# def six(int_list: list) -> str:
-# 	six = "use a list as stack, array, and queue"
-#
-# 	stackin = Stack(int_list)
-# 	print(f"stackin docstring:\n{stackin.__doc__}\n{'*' * 72}")
-# 	stackin.push(1_000_000)
-# 	print(f"{stackin.peek()=}")
-# 	print(f"{stackin.size()=}")
-# 	print(f"{stackin.__repr__()=}")
-# 	stackin.pop()
-# 	print(f"{stackin.size()=}")
-#
-# 	array_int_list = array.array('i', int_list)
-# 	print(f"{array_int_list[51]=}")
-#
-# 	deq_int_list = deque(int_list)
-# 	print(f"{deq_int_list[0]=}")
-# 	deq_int_list.appendleft(1_000_000)
-# 	print(f"{deq_int_list[0]=}")
-# 	deq_int_list.popleft()
-# 	print(f"{deq_int_list[0]=}")
-# 	return f"{six}\n{'*' * 72}"
-#
-#
-# print(six(int_list))
 ############################################################################################################
-# def seven(int_list: list) -> str:
-# 	"""
-# 	This function identifies and returns the missing numbers in a sequence.
-#
-# 	Parameters:
-# 	int_list (list): A list of integers representing a sequence.
-#
-# 	Returns:
-# 	str: A formatted string containing the missing numbers in the sequence. The string also includes a check to ensure the sum of the found missing numbers
-# 	and the sorted list length equals the length of the complete set.
-# 	"""
-# 	seven = "get missing numbers in a sequence"
-# 	sorted_list = sorted(int_list)
-# 	sorted_set = set(sorted_list)
-# 	complete_set = [i for i in range(sorted_list[0], sorted_list[-1] + 1)]
-# 	complete_set_set = set(complete_set)
-# 	missing_numbers = [j for j in complete_set if j not in sorted_set]
-# 	missing_numbers2 = complete_set_set - sorted_set
-# 	return (f"{seven}\nMissing numbers: {missing_numbers}\nMissing numbers (set): {missing_numbers2}\n{'*' * 72}\nlengths add to complete_set: "
-# 	        f"{len(sorted_set) + len(missing_numbers) == len(complete_set)}")
-#
-#
-# print(seven(int_list))
+print(one(the_list=int_list, x=7))
 ############################################################################################################
-# def eight(int_list: list) -> str:
-# 	eight = "compute the intersection of two lists"
-# 	intersection = set(int_list) & set(generate_random_list(10, 1, 100))
-# 	return f"{eight}\nIntersection: {intersection}\n{'*' * 72}"
-# print(eight(int_list))
-# ############################################################################################################
-# def nine(int_list: list) -> str:
-# 	nine = "find max and min in an unsorted list"
-# 	return f"{nine}\nMax: { max(int_list)}, Min: {min(int_list)}\n{'*' * 72}"
-# print(nine(int_list))
-##################################################################################################
-# print(ten(s="".join(str(i) for i in sorted(set(int_list))[:20])))
-#############################################################################################
-# print(eleven_(n=10))
-##########################################################################################
-# def twelve_(the_list: list) -> str:
-# 	twelve = 'sort list with quicksort algorithm'
-#
-# 	def quick_sort(a_list: list = None):
-# 		if a_list:
-# 			pivot = a_list.pop()
-# 			greater = [x for x in a_list if x > pivot]
-# 			lesser = [x for x in a_list if x <= pivot]
-# 			return quick_sort(lesser) + [pivot] + quick_sort(greater)
-# 		else:
-# 			return []
-#
-# 	my_list = quick_sort(the_list)
-# 	return f"{twelve}\nSorted list: {my_list}\n{'*' * 72}"
-# print(
-#     twelve_(the_list=int_list))
-##########################################################################################
-# thirteen = "for all possible permutations of a string"
-thirteen = 'nan'
-answer = {'nan', 'nna', 'ann'}
-
-set_thirteen = list(enumerate(i for i in thirteen if i != ' '))
-len_thirteen = len(set_thirteen)
-num_perm = math.prod([i for i in range(2, len_thirteen + 1)]) / math.prod([i for i in range(2, len_thirteen + 1)])
-
-for i in range():
-	pass
-
-out = []
-for idx, let in set_thirteen:
-	print(f"{idx=}, {let=}")
+print(two(the_list=int_list))
+############################################################################################################
+print(three(str1="listen", str2="silent"))
+############################################################################################################
+print(four(the_list=int_list, target=15))
+############################################################################################################
+print(five(palindrome="racecar"))
+############################################################################################################
+print(six(int_list))
+###########################################################################################################
+print(seven(int_list))
+###########################################################################################################
+print(eight(int_list))
+############################################################################################################
+print(nine(int_list))
+#################################################################################################
+print(ten(s="".join(str(i) for i in sorted(set(int_list))[:20])))
+############################################################################################
+print(eleven_(n=10))
+#########################################################################################
+print(twelve_(the_list=int_list))
+#########################################################################################
+thirteen = "for all possible permutations of a string"
+print(
+	f"{thirteen}\n"
+	f"number perms should be:"
+	f"{math.prod(i for i in range(1, len([i for i in thirteen if i != ' ']) + 1)) / math.prod(i for i in range(1, len([i for i in thirteen if i != ' '])))}\n"
+	f"{(the_function := thirteen_permutations(thirteen))}\n{len(the_function)=}\n{'*' * 72}"
+	)
+#########################################################################################
