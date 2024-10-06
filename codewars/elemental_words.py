@@ -18,126 +18,67 @@ ELEMENTS = {
 	}
 
 
+def check_singles(the_word: str):
+	add_list = list()
+	add_list.append(
+		[f"{check_symbol(i)} ({i})" for i in list(the_word.upper()) if not f"{check_symbol(i)} ({i})".startswith('Invalid symbol')]
+		)
+	return add_list[0]
+
+
+def check_doubles(elements: dict, the_word: str) -> list:
+	def reset_doubles() -> None:
+		global list_word, length, list_word_iter
+		list_word = list(the_word.upper())
+		length = len(the_word)
+		list_word_iter = iter(list_word)
+	
+	global list_word, length, list_word_iter
+	length = len(the_word)
+	list_word = list(the_word.upper())
+	list_word_iter = iter(list_word)
+	
+	add_list = []
+	for let in list_word:
+		while length:
+			try:
+				form_letter = ''.join(let + next(list_word_iter).lower())
+				add_list.append(
+					f"{check_symbol(form_letter)} ({form_letter})" if elements.get(form_letter, 'Invalid symbol') != 'Invalid symbol' else ''
+					)
+				length -= 1
+			except StopIteration:
+				reset_doubles()
+		reset_doubles()
+	return add_list
+
+
+def check_triples(elements: dict, the_word: str) -> list:
+	
+	add_list = []
+	three_letter_elements = [i for i in elements.keys() if len(i) == 3]
+	for i in three_letter_elements:
+		i = i.lower()
+		add_list.append(i) if i in the_word.lower() else ''
+	if add_list:
+		add_list.append(add_list)
+	return add_list
+
+
 def check_symbol(symbol: str):
 	return ELEMENTS.get(symbol, 'Invalid symbol')
 
 
 def elemental_forms(word: str) -> list:
-	
-	def check_singles():
-		"""
-		This function processes single letter elements in the input word.
-	
-		Parameters:
-		None
-	
-		Returns:
-		None
-	
-		This function is a helper function for the elemental_forms function. It iterates through the input word,
-		converting each letter to uppercase for comparison with the ELEMENTS dictionary. For each letter, it checks
-		if the corresponding element exists in the dictionary. If the element exists, it is appended to the elements_are
-		list along with its symbol and name.
-	
-		The function uses list comprehension and the check_symbol function to generate the elements_are list. It also
-		filters out any elements that have an 'Invalid symbol' prefix.
-		"""
-		elements_are.append(
-			[f"{check_symbol(i)} ({i})" for i in list(word.upper()) if not f"{check_symbol(i)} ({i})".startswith('Invalid symbol')]
-			)
-	
-	def check_doubles():
-		"""
-		This function checks for and processes double letter elements in the input word.
-	
-		Parameters:
-		None
-	
-		Returns:
-		None
-	
-		This function is a helper function for the elemental_forms function. It iterates through the input word,
-		checking for double letter elements. If a double letter element is found, it is validated against the
-		ELEMENTS dictionary. If the element is valid, it is appended to the add_list along with its corresponding
-		symbol and name. The add_list is then appended to the elements_are list.
-	
-		The function uses nonlocal variables to maintain state between function calls. The list_word, length, and
-		list_word_iter variables are used to iterate through the input word and keep track of the remaining length.
-		If a StopIteration exception is raised during iteration, the reset_doubles function is called to reset the
-		state of these variables.
-	
-		The function is called within the elemental_forms function to process double letter elements.
-		"""
-		
-		def reset_doubles() -> None:
-			"""
-			This function resets the internal state of the elemental_forms function for processing double letter elements.
-	
-			Parameters:
-			None
-	
-			Returns:
-			None
-	
-			This function is a helper function for the elemental_forms function. It is used to reset the list_word, length, and list_word_iter variables to
-			their
-			initial state. This is necessary because the elemental_forms function processes the input word in multiple passes, and the state of these variables
-			needs to be preserved between passes.
-			"""
-			nonlocal list_word, length, list_word_iter
-			list_word = list(word.upper())
-			length = len(word)
-			list_word_iter = iter(list_word)
-		
-		length = len(word)
-		list_word = list(word.upper())
-		list_word_iter = iter(list_word)
-		add_list = []
-		for let in list_word:
-			while length:
-				try:
-					form_letter = ''.join(let + next(list_word_iter).lower())
-					add_list.append(
-						f"{check_symbol(form_letter)} ({form_letter})" if ELEMENTS.get(form_letter, 'Invalid symbol') != 'Invalid symbol' else ''
-						)
-					length -= 1
-				except StopIteration:
-					reset_doubles()
-			reset_doubles()
-		elements_are.append(add_list)
-	
-	def check_triples():
-		"""
-		This function checks for and processes three-letter elements in the input word.
-	
-		Parameters:
-		None
-	
-		Returns:
-		None
-	
-		This function is a helper function for the elemental_forms function. It iterates through the list of three-letter elements,
-		converting each element to lowercase for comparison with the lowercase version of the input word. If a three-letter element
-		is found in the input word, it is appended to the add_list.
-	
-		After iterating through all three-letter elements, the add_list is checked for any elements. If the add_list is not empty,
-		the elements are appended to the elements_are list.
-	
-		The function does not return any value, but it modifies the elements_are list.
-		"""
-		add_list = []
-		three_letter_elements = [i for i in ELEMENTS.keys() if len(i) == 3]
-		for i in three_letter_elements:
-			i = i.lower()
-			add_list.append(i) if i in word.lower() else ''
-		if add_list:
-			elements_are.append(add_list)
+	global list_word, length, list_word_iter, elements_are, ELEMENTS
+	length = len(word)
+	list_word = list(word.upper())
+	list_word_iter = iter(list_word)
 	
 	elements_are = list()
-	
-	check_singles()
-	check_doubles()
-	check_triples()
+	elements_are.append(check_singles(the_word=word))
+	elements_are.append([i for i in check_doubles(elements=ELEMENTS, the_word=word) if i != ''])
+	elements_are.append(check_triples(elements=ELEMENTS, the_word=word))
 	
 	elements_are = [item for sublist in elements_are for item in sublist if item]
 	zip_elements = dict(
@@ -151,12 +92,28 @@ def elemental_forms(word: str) -> list:
 	return eliminate_useless_elements
 
 
+length = None
+list_word = None
+list_word_iter = None
+elements_are = None
+
 a = elemental_forms('snack')
 
-# produced thus far
-elements_exist = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
-the_word = 'snack'
 
+#
+# # produced thus far
+# a_the_word = 'snack'.upper()
+# b_elements_exist = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
+# c_join_elements_exist = ''.join(b_elements_exist)
+
+
+def doubles_wrapper(func):
+	def wrapper(*args, **kwargs):
+		print("in Wrapper going into func")
+		func(*args, **kwargs)
+		print("leaving func in wrapper")
+	
+	return wrapper
 
 
 re_a = [
@@ -164,6 +121,7 @@ re_a = [
 	['Sulfur (S)', 'Sodium (Na)', 'Carbon (C)', 'Potassium (K)'],
 	['Tin (Sn)', 'Actinium (Ac)', 'Potassium (K)']
 	]
+
 print(f"Test case a: {a == re_a=}")
 
 # b = elemental_forms('beach')
