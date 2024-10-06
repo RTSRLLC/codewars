@@ -140,16 +140,32 @@ def elemental_forms(word: str) -> list:
 	check_triples()
 	
 	elements_are = [item for sublist in elements_are for item in sublist if item]
-	return elements_are
+	zip_elements = dict(
+		zip(
+			["".join(i for i in list(i)[-3:] if i not in ('(', ')')) for i in elements_are],
+			elements_are
+			)
+		)
+	eliminate_useless_elements = [t for t in list(zip_elements.keys()) if t.lower() in word.lower()]
+	
+	return eliminate_useless_elements
 
 
 a = elemental_forms('snack')
-answer_a = [
+
+# produced thus far
+elements_exist = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
+the_word = 'snack'
+
+
+
+re_a = [
 	['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
 	['Sulfur (S)', 'Sodium (Na)', 'Carbon (C)', 'Potassium (K)'],
 	['Tin (Sn)', 'Actinium (Ac)', 'Potassium (K)']
 	]
-print('Test case a:', a == answer_a)
+print(f"Test case a: {a == re_a=}")
+
 # b = elemental_forms('beach')
 # answer_b = [['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']]
 # print('Test case b:', b == answer_b)
