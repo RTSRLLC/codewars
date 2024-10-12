@@ -102,39 +102,57 @@
 # a = elemental_forms('snack')
 
 
-def get_word_perms(the_word: str, the_word_list: list) -> list:
-	def reset_letters() -> None:
-		nonlocal length, list_word_iter
-		length = len(the_word)
-		list_word_iter = iter(list_word_iter)
-	
-	string_the_word = ''.join(the_word).lower()
-	string_the_word_list = list(enumerate(i.lower() for i in the_word_list))
-	length = len(the_word)
-	list_word_iter = iter(the_word_list)
-	
-	add_list = []
-	first_letter = [i.lower() for i in the_word_list if i.lower()[0] == string_the_word[0]]
-	first_letter_enum = list(enumerate(first_letter))
-	counter = 0
-	the_word_list.pop()
-	return add_list
+
+word = 'snack'
+word__ = list(word)
+length_word = len(word)
+
+word_a_list_original = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
+length_word_list = len(word_a_list_original)
+word_d_list_lower = [i.lower() for i in word_a_list_original]
+
+word_c_start = [i.lower() for i in word_d_list_lower if i.lower()[0] in word.lower()[0]]
+index_1 = word_d_list_lower.index(word_c_start[0])
+index_2 = word_d_list_lower.index(word_c_start[1])
+
+word_d_list_lower.pop(index_1)
+word_d_list_lower.pop(index_2 - 1)
 
 
-test_word_list = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
-test_word_perms = get_word_perms('snack', test_word_list)
+word_e_possibilities = []
+word_e_forming = ''
+
+for i in word_c_start:
+	_the_letter = word__.index(word_c_start[0])  # TODO needs resetting after some or all iterations
+	word_e_forming += word__[_the_letter]
+	enum_word_d_list = list(enumerate(word_d_list_lower, start=1))
+	counter = 1
+	for idx, j in enum_word_d_list:
+		try:
+			if j == word[idx]:
+				word_e_forming += j
+			else:
+				continue
+		except IndexError:
+			continue
 
 
 
 
 
-re_a = [
+answer = [
 	['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
 	['Sulfur (S)', 'Sodium (Na)', 'Carbon (C)', 'Potassium (K)'],
 	['Tin (Sn)', 'Actinium (Ac)', 'Potassium (K)']
 	]
 
-print(f"Test case a: {a == re_a=}")
+
+
+
+
+
+
+# print(f"Test case a: {a == re_a=}")
 
 # b = elemental_forms('beach')
 # answer_b = [['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']]
