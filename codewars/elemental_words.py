@@ -102,55 +102,31 @@
 # a = elemental_forms('snack')
 
 
+from itertools import combinations_with_replacement, permutations
+
+func_output = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
+func_output_lower = ['s', 'n', 'c', 'k', 'sn', 'na', 'ac']
 
 word = 'snack'
-word__ = list(word)
-length_word = len(word)
+length_of_word = len(word)
+word_a_list = ['s', 'n', 'a', 'c', 'k']  # list(word.lower())
+word_a_list_iter = iter(word_a_list)
 
-word_a_list_original = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
-length_word_list = len(word_a_list_original)
-word_d_list_lower = [i.lower() for i in word_a_list_original]
-
-word_c_start = [i.lower() for i in word_d_list_lower if i.lower()[0] in word.lower()[0]]
-index_1 = word_d_list_lower.index(word_c_start[0])
-index_2 = word_d_list_lower.index(word_c_start[1])
-
-word_d_list_lower.pop(index_1)
-word_d_list_lower.pop(index_2 - 1)
-
-
-word_e_possibilities = []
-word_e_forming = ''
-
-for i in word_c_start:
-	_the_letter = word__.index(word_c_start[0])  # TODO needs resetting after some or all iterations
-	word_e_forming += word__[_the_letter]
-	enum_word_d_list = list(enumerate(word_d_list_lower, start=1))
-	counter = 1
-	for idx, j in enum_word_d_list:
-		try:
-			if j == word[idx]:
-				word_e_forming += j
-			else:
-				continue
-		except IndexError:
-			continue
-
-
-
-
-
+combos = list(combinations_with_replacement(func_output, len(func_output)))
+combos_starting_letter = []
+final_output = []
+for i in combos:
+	i_join = ''.join(i)
+	if word in i_join:
+		print(''.join(i))
+		combos_starting_letter.append(''.join(i))
+combos_starting_letter_lower = [i.lower() for i in combos_starting_letter]
+true_o_false = word in combos_starting_letter_lower
 answer = [
 	['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
 	['Sulfur (S)', 'Sodium (Na)', 'Carbon (C)', 'Potassium (K)'],
 	['Tin (Sn)', 'Actinium (Ac)', 'Potassium (K)']
 	]
-
-
-
-
-
-
 
 # print(f"Test case a: {a == re_a=}")
 
