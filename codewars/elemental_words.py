@@ -102,26 +102,17 @@
 # a = elemental_forms('snack')
 
 
-from itertools import combinations_with_replacement, permutations
-
+word = 'snack'
+word_listed = list(word)
 func_output = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
 func_output_lower = ['s', 'n', 'c', 'k', 'sn', 'na', 'ac']
+a_list = []
+for i in range(len(word)):
+	pass
+			
 
-word = 'snack'
-length_of_word = len(word)
-word_a_list = ['s', 'n', 'a', 'c', 'k']  # list(word.lower())
-word_a_list_iter = iter(word_a_list)
 
-combos = list(combinations_with_replacement(func_output, len(func_output)))
-combos_starting_letter = []
-final_output = []
-for i in combos:
-	i_join = ''.join(i)
-	if word in i_join:
-		print(''.join(i))
-		combos_starting_letter.append(''.join(i))
-combos_starting_letter_lower = [i.lower() for i in combos_starting_letter]
-true_o_false = word in combos_starting_letter_lower
+
 answer = [
 	['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
 	['Sulfur (S)', 'Sodium (Na)', 'Carbon (C)', 'Potassium (K)'],
