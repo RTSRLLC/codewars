@@ -106,12 +106,19 @@ word = 'snack'
 word_listed = list(word)
 func_output = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
 func_output_lower = ['s', 'n', 'c', 'k', 'sn', 'na', 'ac']
+first_letters = [i for i in func_output if i[0].lower() == word[0].lower()]  # ['S', 'Sn']
 a_list = []
+out_word_list = []
+out_word = ''
 for i in range(len(word)):
-	pass
-			
-
-
+	w0, w1 = word[i], word[i:i + 2]
+	if word[i] in func_output_lower and word[i] not in out_word_list:
+		if func_output.index(word[i].lower) or func_output.index(word[i].upper()):
+			pass
+		out_word += func_output.pop(func_output.index(word[i]))
+	elif word[i:i + 2] in func_output_lower and word[i:i + 2] not in out_word_list:
+		out_word += func_output.pop(func_output.index(word[i]))
+out_word_list.append(out_word)
 
 answer = [
 	['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
