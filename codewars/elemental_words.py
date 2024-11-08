@@ -123,9 +123,14 @@ func_output_copy = func_output.copy()
 func_output_no_1st_letter = [i for i in func_output_copy if i not in first_letters]
 
 for i in first_letters:
-	new_word = [k for k in word_listed if k.lower() != i.lower()]
+	i_ = i
+	out_word += i
+	new_word = [k.capitalize() for k in word_listed if k.lower() != i.lower()]
+	next_1_2_3_letter_combos = ''.join(new_word[0]).capitalize(), ''.join(new_word[:2]).capitalize(), ''.join(new_word[:3]).capitalize()
 	for j in func_output_no_1st_letter:
-		one, two, three = ''.join(new_word[0]), ''.join(new_word[:2]), ''.join(new_word[:3])
+		if j in next_1_2_3_letter_combos:
+			pass
+
 
 answer = [
 	['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
