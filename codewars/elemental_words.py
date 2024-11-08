@@ -111,25 +111,21 @@ first_letters = [i for i in func_output
 						 i[0].lower() == word[0].lower()
 						 or i[:2].lower() == word[:2].lower()
 						 or i[:3].lower() == word[:3].lower()
-				 	)
+				 )
 				 ]  # ['S', 'Sn']
 
 a_list = []
 out_word_list = []
 out_word = ''
-for i in first_letters:
-	out_word_list.append([i])
-for i in out_word_list:
-	for j in i:
-		out_word += j
-for i in range(len(word)):
-	w0, w1 = word[i], word[i:i + 2]  # for debuggin
-	if word[i] in func_output_lower and word[i] not in out_word:
-		out_word += func_output.pop(func_output.index(word[i]))
-	elif word[i:i + 2] in func_output_lower and word[i:i + 2] not in out_word_list:
-		out_word += func_output.pop(func_output.index(word[i]))
+iter_word = iter(word_listed)
+func_output_copy = func_output.copy()
 
-out_word_list.append(out_word)
+func_output_no_1st_letter = [i for i in func_output_copy if i not in first_letters]
+
+for i in first_letters:
+	new_word = [k for k in word_listed if k.lower() != i.lower()]
+	for j in func_output_no_1st_letter:
+		one, two, three = ''.join(new_word[0]), ''.join(new_word[:2]), ''.join(new_word[:3])
 
 answer = [
 	['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
