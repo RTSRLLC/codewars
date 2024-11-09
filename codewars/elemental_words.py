@@ -1,4 +1,9 @@
 from itertools import permutations
+import time
+
+from codewars.get_closest_points_and_fast import end_time
+
+start_time = time.time()
 
 ELEMENTS = {
 	'H': 'Hydrogen', 'He': 'Helium', 'Li': 'Lithium', 'Be': 'Beryllium', 'B': 'Boron', 'C': 'Carbon', 'N': 'Nitrogen', 'O': 'Oxygen', 'F': 'Fluorine',
@@ -124,7 +129,6 @@ def elemental_forms(word: str) -> list:
 
 	return out_list
 
-
 length = None
 list_word = None
 list_word_iter = None
@@ -151,6 +155,9 @@ print('Test case c:', sorted_c == answer_c)
 
 d = elemental_forms('')
 
+
+end_time = time.time()
+print(f'Execution time: {(end_time - start_time) / 60} minutes')
 
 
 
