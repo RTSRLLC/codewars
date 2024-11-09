@@ -1,22 +1,21 @@
-#
-# ELEMENTS = {
-# 	'H': 'Hydrogen', 'He': 'Helium', 'Li': 'Lithium', 'Be': 'Beryllium', 'B': 'Boron', 'C': 'Carbon', 'N': 'Nitrogen', 'O': 'Oxygen', 'F': 'Fluorine',
-# 	'Ne': 'Neon', 'Na': 'Sodium', 'Mg': 'Magnesium', 'Al': 'Aluminium', 'Si': 'Silicon', 'P': 'Phosphorus', 'S': 'Sulfur', 'Cl': 'Chlorine', 'Ar': 'Argon',
-# 	'K': 'Potassium', 'Ca': 'Calcium', 'Sc': 'Scandium', 'Ti': 'Titanium', 'V': 'Vanadium', 'Cr': 'Chromium', 'Mn': 'Manganese', 'Fe': 'Iron', 'Co': 'Cobalt',
-# 	'Ni': 'Nickel', 'Cu': 'Copper', 'Zn': 'Zinc', 'Ga': 'Gallium', 'Ge': 'Germanium', 'As': 'Arsenic', 'Se': 'Selenium', 'Br': 'Bromine', 'Kr': 'Krypton',
-# 	'Rb': 'Rubidium', 'Sr': 'Strontium', 'Y': 'Yttrium', 'Zr': 'Zirconium', 'Nb': 'Niobium', 'Mo': 'Molybdenum', 'Tc': 'Technetium', 'Ru': 'Ruthenium',
-# 	'Rh': 'Rhodium', 'Pd': 'Palladium', 'Ag': 'Silver', 'Cd': 'Cadmium', 'In': 'Indium', 'Sn': 'Tin', 'Sb': 'Antimony', 'Te': 'Tellurium', 'I': 'Iodine',
-# 	'Xe': 'Xenon', 'Cs': 'Caesium', 'Ba': 'Barium', 'La': 'Lanthanum', 'Ce': 'Cerium', 'Pr': 'Praseodymium', 'Nd': 'Neodymium', 'Pm': 'Promethium',
-# 	'Sm': 'Samarium', 'Eu': 'Europium', 'Gd': 'Gadolinium', 'Tb': 'Terbium', 'Dy': 'Dysprosium', 'Ho': 'Holmium', 'Er': 'Erbium', 'Tm': 'Thulium',
-# 	'Yb': 'Ytterbium', 'Lu': 'Lutetium', 'Hf': 'Hafnium', 'Ta': 'Tantalum', 'W': 'Tungsten', 'Re': 'Rhenium', 'Os': 'Osmium', 'Ir': 'Iridium',
-# 	'Pt': 'Platinum',
-# 	'Au': 'Gold', 'Hg': 'Mercury', 'Tl': 'Thallium', 'Pb': 'Lead', 'Bi': 'Bismuth', 'Po': 'Polonium', 'At': 'Astatine', 'Rn': 'Radon', 'Fr': 'Francium',
-# 	'Ra': 'Radium', 'Ac': 'Actinium', 'Th': 'Thorium', 'Pa': 'Protactinium', 'U': 'Uranium', 'Np': 'Neptunium', 'Pu': 'Plutonium', 'Am': 'Americium',
-# 	'Cm': 'Curium', 'Bk': 'Berkelium', 'Cf': 'Californium', 'Es': 'Einsteinium', 'Fm': 'Fermium', 'Md': 'Mendelevium', 'No': 'Nobelium', 'Lr': 'Lawrencium',
-# 	'Rf': 'Rutherfordium', 'Db': 'Dubnium', 'Sg': 'Seaborgium', 'Bh': 'Bohrium', 'Hs': 'Hassium', 'Mt': 'Meitnerium', 'Ds': 'Darmstadtium',
-# 	'Rg': 'Roentgenium',
-# 	'Cn': 'Copernicium', 'Uut': 'Ununtrium', 'Fl': 'Flerovium', 'Uup': 'Ununpentium', 'Lv': 'Livermorium', 'Uus': 'Ununseptium', 'Uuo': 'Ununoctium'
-# 	}
+ELEMENTS = {
+	'H': 'Hydrogen', 'He': 'Helium', 'Li': 'Lithium', 'Be': 'Beryllium', 'B': 'Boron', 'C': 'Carbon', 'N': 'Nitrogen', 'O': 'Oxygen', 'F': 'Fluorine',
+	'Ne': 'Neon', 'Na': 'Sodium', 'Mg': 'Magnesium', 'Al': 'Aluminium', 'Si': 'Silicon', 'P': 'Phosphorus', 'S': 'Sulfur', 'Cl': 'Chlorine', 'Ar': 'Argon',
+	'K': 'Potassium', 'Ca': 'Calcium', 'Sc': 'Scandium', 'Ti': 'Titanium', 'V': 'Vanadium', 'Cr': 'Chromium', 'Mn': 'Manganese', 'Fe': 'Iron', 'Co': 'Cobalt',
+	'Ni': 'Nickel', 'Cu': 'Copper', 'Zn': 'Zinc', 'Ga': 'Gallium', 'Ge': 'Germanium', 'As': 'Arsenic', 'Se': 'Selenium', 'Br': 'Bromine', 'Kr': 'Krypton',
+	'Rb': 'Rubidium', 'Sr': 'Strontium', 'Y': 'Yttrium', 'Zr': 'Zirconium', 'Nb': 'Niobium', 'Mo': 'Molybdenum', 'Tc': 'Technetium', 'Ru': 'Ruthenium',
+	'Rh': 'Rhodium', 'Pd': 'Palladium', 'Ag': 'Silver', 'Cd': 'Cadmium', 'In': 'Indium', 'Sn': 'Tin', 'Sb': 'Antimony', 'Te': 'Tellurium', 'I': 'Iodine',
+	'Xe': 'Xenon', 'Cs': 'Caesium', 'Ba': 'Barium', 'La': 'Lanthanum', 'Ce': 'Cerium', 'Pr': 'Praseodymium', 'Nd': 'Neodymium', 'Pm': 'Promethium',
+	'Sm': 'Samarium', 'Eu': 'Europium', 'Gd': 'Gadolinium', 'Tb': 'Terbium', 'Dy': 'Dysprosium', 'Ho': 'Holmium', 'Er': 'Erbium', 'Tm': 'Thulium',
+	'Yb': 'Ytterbium', 'Lu': 'Lutetium', 'Hf': 'Hafnium', 'Ta': 'Tantalum', 'W': 'Tungsten', 'Re': 'Rhenium', 'Os': 'Osmium', 'Ir': 'Iridium',
+	'Pt': 'Platinum',
+	'Au': 'Gold', 'Hg': 'Mercury', 'Tl': 'Thallium', 'Pb': 'Lead', 'Bi': 'Bismuth', 'Po': 'Polonium', 'At': 'Astatine', 'Rn': 'Radon', 'Fr': 'Francium',
+	'Ra': 'Radium', 'Ac': 'Actinium', 'Th': 'Thorium', 'Pa': 'Protactinium', 'U': 'Uranium', 'Np': 'Neptunium', 'Pu': 'Plutonium', 'Am': 'Americium',
+	'Cm': 'Curium', 'Bk': 'Berkelium', 'Cf': 'Californium', 'Es': 'Einsteinium', 'Fm': 'Fermium', 'Md': 'Mendelevium', 'No': 'Nobelium', 'Lr': 'Lawrencium',
+	'Rf': 'Rutherfordium', 'Db': 'Dubnium', 'Sg': 'Seaborgium', 'Bh': 'Bohrium', 'Hs': 'Hassium', 'Mt': 'Meitnerium', 'Ds': 'Darmstadtium',
+	'Rg': 'Roentgenium',
+	'Cn': 'Copernicium', 'Uut': 'Ununtrium', 'Fl': 'Flerovium', 'Uup': 'Ununpentium', 'Lv': 'Livermorium', 'Uus': 'Ununseptium', 'Uuo': 'Ununoctium'
+	}
 #
 #
 # def check_singles(the_word: str):
@@ -101,35 +100,44 @@
 #
 # a = elemental_forms('snack')
 
-
 word = 'snack'
 word_listed = list(word)
 func_output = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
-func_output_lower = ['s', 'n', 'c', 'k', 'sn', 'na', 'ac']
-first_letters = [i for i in func_output
-				 if (
-						 i[0].lower() == word[0].lower()
-						 or i[:2].lower() == word[:2].lower()
-						 or i[:3].lower() == word[:3].lower()
-				 )
-				 ]  # ['S', 'Sn']
-
-a_list = []
-out_word_list = []
+first_letters = []
+for i in func_output:
+	if i[0].lower() != word[0].lower() and i[:2].lower() != word[:2].lower() and i[:3].lower() != word[:3].lower():
+		continue
+	first_letters.append(i)
+answer_mine = []
+overall_2_answer_mine = []
+iteration_going_2_overall = []
+func_output_no_1st_letter = [i for i in func_output if i not in first_letters]
 out_word = ''
-iter_word = iter(word_listed)
-func_output_copy = func_output.copy()
-
-func_output_no_1st_letter = [i for i in func_output_copy if i not in first_letters]
-
 for i in first_letters:
-	i_ = i
-	out_word += i
-	new_word = [k.capitalize() for k in word_listed if k.lower() != i.lower()]
-	next_1_2_3_letter_combos = ''.join(new_word[0]).capitalize(), ''.join(new_word[:2]).capitalize(), ''.join(new_word[:3]).capitalize()
-	for j in func_output_no_1st_letter:
-		if j in next_1_2_3_letter_combos:
-			pass
+	out_word += i  # begin the word with the first letter
+	new_word = [k.capitalize() for k in word_listed if k.lower() != i.lower()]  # TODO delete letters as cycled
+	first = 0
+	next_1_2_3_letter_combos = (''.join(new_word[first]).capitalize(),
+								''.join(new_word[first:2]).capitalize(),
+								''.join(new_word[first:3]).capitalize())
+	while_flag = True
+	while True:
+		for idx, j in list(enumerate(func_output_no_1st_letter.copy())):
+			if j in next_1_2_3_letter_combos:
+				out_word += j
+				if not iteration_going_2_overall:
+					temp_list = [f"{ELEMENTS[i]} ({i}), {ELEMENTS[j]} ({j})"]
+				else:
+					temp_list = [f"{ELEMENTS[i]} ({i}), {ELEMENTS[j]} ({j})"]
+				iteration_going_2_overall.append(temp_list.copy())
+				temp_list.clear()  # clear the list after using it
+				out_word = i
+			# TODO shift next_1_2_3_letter_combos to the right
+			if idx + 1 == len(func_output_no_1st_letter):
+				first += 1
+				next_1_2_3_letter_combos = (''.join(new_word[first:first+1]).capitalize(),
+											''.join(new_word[first:first+2]).capitalize(),
+											''.join(new_word[first:first+3]).capitalize())
 
 
 answer = [
