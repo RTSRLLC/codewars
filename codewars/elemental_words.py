@@ -1,3 +1,5 @@
+from itertools import permutations
+
 ELEMENTS = {
 	'H': 'Hydrogen', 'He': 'Helium', 'Li': 'Lithium', 'Be': 'Beryllium', 'B': 'Boron', 'C': 'Carbon', 'N': 'Nitrogen', 'O': 'Oxygen', 'F': 'Fluorine',
 	'Ne': 'Neon', 'Na': 'Sodium', 'Mg': 'Magnesium', 'Al': 'Aluminium', 'Si': 'Silicon', 'P': 'Phosphorus', 'S': 'Sulfur', 'Cl': 'Chlorine', 'Ar': 'Argon',
@@ -16,141 +18,144 @@ ELEMENTS = {
 	'Rg': 'Roentgenium',
 	'Cn': 'Copernicium', 'Uut': 'Ununtrium', 'Fl': 'Flerovium', 'Uup': 'Ununpentium', 'Lv': 'Livermorium', 'Uus': 'Ununseptium', 'Uuo': 'Ununoctium'
 	}
-#
-#
-# def check_singles(the_word: str):
-# 	add_list = list()
-# 	add_list.append(
-# 		[f"{check_symbol(i)} ({i})" for i in list(the_word.upper()) if not f"{check_symbol(i)} ({i})".startswith('Invalid symbol')]
-# 		)
-# 	return add_list[0]
-#
-#
-# def check_doubles(elements: dict, the_word: str) -> list:
-# 	def reset_doubles() -> None:
-# 		global list_word, length, list_word_iter
-# 		list_word = list(the_word.upper())
-# 		length = len(the_word)
-# 		list_word_iter = iter(list_word)
-#
-# 	global list_word, length, list_word_iter
-# 	length = len(the_word)
-# 	list_word = list(the_word.upper())
-# 	list_word_iter = iter(list_word)
-#
-# 	add_list = []
-# 	for let in list_word:
-# 		while length:
-# 			try:
-# 				form_letter = ''.join(let + next(list_word_iter).lower())
-# 				add_list.append(
-# 					f"{check_symbol(form_letter)} ({form_letter})" if elements.get(form_letter, 'Invalid symbol') != 'Invalid symbol' else ''
-# 					)
-# 				length -= 1
-# 			except StopIteration:
-# 				reset_doubles()
-# 		reset_doubles()
-# 	return add_list
-#
-#
-# def check_triples(elements: dict, the_word: str) -> list:
-#
-# 	add_list = []
-# 	three_letter_elements = [i for i in elements.keys() if len(i) == 3]
-# 	for i in three_letter_elements:
-# 		i = i.lower()
-# 		add_list.append(i) if i in the_word.lower() else ''
-# 	if add_list:
-# 		add_list.append(add_list)
-# 	return add_list
-#
-#
-# def check_symbol(symbol: str):
-# 	return ELEMENTS.get(symbol, 'Invalid symbol')
-#
-#
-# def elemental_forms(word: str) -> list:
-# 	global list_word, length, list_word_iter, elements_are, ELEMENTS
-# 	length = len(word)
-# 	list_word = list(word.upper())
-# 	list_word_iter = iter(list_word)
-#
-# 	elements_are = list()
-# 	elements_are.append(check_singles(the_word=word))
-# 	elements_are.append([i for i in check_doubles(elements=ELEMENTS, the_word=word) if i != ''])
-# 	elements_are.append(check_triples(elements=ELEMENTS, the_word=word))
-#
-# 	elements_are = [item for sublist in elements_are for item in sublist if item]
-# 	zip_elements = dict(
-# 		zip(
-# 			["".join(i for i in list(i)[-3:] if i not in ('(', ')')) for i in elements_are],
-# 			elements_are
-# 			)
-# 		)
-# 	eliminate_useless_elements = [t for t in list(zip_elements.keys()) if t.lower() in word.lower()]
-#
-#
-# 	return eliminate_useless_elements
-#
-#
-# length = None
-# list_word = None
-# list_word_iter = None
-# elements_are = None
-#
-# a = elemental_forms('snack')
 
-word = 'snack'
-word_listed = list(word)
-func_output = ['S', 'N', 'C', 'K', 'Sn', 'Na', 'Ac']
-first_letters = []
-for i in func_output:
-	if i[0].lower() != word[0].lower() and i[:2].lower() != word[:2].lower() and i[:3].lower() != word[:3].lower():
-		continue
-	first_letters.append(i)
-answer_mine = []
-overall_2_answer_mine = []
-iteration_going_2_overall = []
-func_output_no_1st_letter = [i for i in func_output if i not in first_letters]
-out_word = ''
-for i in first_letters:
-	out_word += i  # begin the word with the first letter
-	new_word = [k.capitalize() for k in word_listed if k.lower() != i.lower()]  # TODO delete letters as cycled
-	first = 0
-	next_1_2_3_letter_combos = (''.join(new_word[first]).capitalize(),
-								''.join(new_word[first:2]).capitalize(),
-								''.join(new_word[first:3]).capitalize())
-	while_flag = True
-	while True:
-		for idx, j in list(enumerate(func_output_no_1st_letter.copy())):
-			if j in next_1_2_3_letter_combos:
-				out_word += j
-				if not iteration_going_2_overall:
-					temp_list = [f"{ELEMENTS[i]} ({i}), {ELEMENTS[j]} ({j})"]
+
+
+def check_singles(the_word: str):
+	add_list = list()
+	add_list.append(
+		[f"{check_symbol(i)} ({i})" for i in list(the_word.upper()) if not f"{check_symbol(i)} ({i})".startswith('Invalid symbol')]
+		)
+	return add_list[0]
+
+
+def check_doubles(elements: dict, the_word: str) -> list:
+	def reset_doubles() -> None:
+		global list_word, length, list_word_iter
+		list_word = list(the_word.upper())
+		length = len(the_word)
+		list_word_iter = iter(list_word)
+
+	global list_word, length, list_word_iter
+	length = len(the_word)
+	list_word = list(the_word.upper())
+	list_word_iter = iter(list_word)
+
+	add_list = []
+	for let in list_word:
+		while length:
+			try:
+				form_letter = ''.join(let + next(list_word_iter).lower())
+				add_list.append(
+					f"{check_symbol(form_letter)} ({form_letter})" if elements.get(form_letter, 'Invalid symbol') != 'Invalid symbol' else ''
+					)
+				length -= 1
+			except StopIteration:
+				reset_doubles()
+		reset_doubles()
+	return add_list
+
+
+def check_triples(elements: dict, the_word: str) -> list:
+
+	add_list = []
+	three_letter_elements = [i for i in elements.keys() if len(i) == 3]
+	for i in three_letter_elements:
+		i = i.lower()
+		add_list.append(i) if i in the_word.lower() else ''
+	if add_list:
+		add_list.append(add_list)
+	return add_list
+
+
+def check_symbol(symbol: str):
+	return ELEMENTS.get(symbol, 'Invalid symbol')
+
+
+def elemental_forms(word: str) -> list:
+	if word == '':
+		return []
+	global list_word, length, list_word_iter, elements_are, ELEMENTS
+	length = len(word)
+	list_word = list(word.upper())
+	list_word_iter = iter(list_word)
+
+	make_final_entry = lambda x: f"{ELEMENTS[x]} ({x})"
+
+	elements_are = list()
+	elements_are.append(check_singles(the_word=word))
+	elements_are.append([i for i in check_doubles(elements=ELEMENTS, the_word=word) if i != ''])
+	elements_are.append(check_triples(elements=ELEMENTS, the_word=word))
+
+	elements_are = [item for sublist in elements_are for item in sublist if item]
+	zip_elements = dict(
+		zip(
+			["".join(i for i in list(i)[-3:] if i not in ('(', ')')) for i in elements_are],
+			elements_are
+			)
+		)
+	eliminate_useless_elements = [t for t in list(zip_elements.keys()) if t.lower() in word.lower()]
+
+	func_perms = list(permutations(eliminate_useless_elements, len(word)))
+	snack_list = []
+	for i in func_perms:
+		i_join = ''.join(i).lower()
+		if word.lower() in i_join:
+			lowered = i_join.lower()
+			found = lowered.find(word.lower())
+			if ''.join(i)[found:found + len(word)] not in snack_list:
+				snack_list.append(''.join(i)[found:found + len(word)])
+	out_list = []
+	pre_out_list = []
+	for i in snack_list:
+		for idx, let in list(enumerate(i)):
+			if i[idx].islower():
+				continue
+			try:
+				if i[idx].isupper() and i[idx + 1].islower():
+					pre_out_list.append(make_final_entry(let + i[idx + 1]))
 				else:
-					temp_list = [f"{ELEMENTS[i]} ({i}), {ELEMENTS[j]} ({j})"]
-				iteration_going_2_overall.append(temp_list.copy())
-				temp_list.clear()  # clear the list after using it
-				out_word = i
-			# TODO shift next_1_2_3_letter_combos to the right
-			if idx + 1 == len(func_output_no_1st_letter):
-				first += 1
-				next_1_2_3_letter_combos = (''.join(new_word[first:first+1]).capitalize(),
-											''.join(new_word[first:first+2]).capitalize(),
-											''.join(new_word[first:first+3]).capitalize())
+					pre_out_list.append(make_final_entry(let))
+			except IndexError:
+				pre_out_list.append(make_final_entry(let))
+
+		out_list.append(pre_out_list.copy())
+		pre_out_list.clear()
+
+	return out_list
 
 
-answer = [
+length = None
+list_word = None
+list_word_iter = None
+elements_are = None
+
+a = elemental_forms('snack')
+sorted_a = sorted(a)
+answer = sorted([
 	['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
 	['Sulfur (S)', 'Sodium (Na)', 'Carbon (C)', 'Potassium (K)'],
 	['Tin (Sn)', 'Actinium (Ac)', 'Potassium (K)']
-	]
+	])
+print(f"Test case a: {answer == sorted_a=}")
 
-# print(f"Test case a: {a == re_a=}")
+b = elemental_forms('beach')
+sorted_b = sorted(b)
+answer_b = sorted([['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']])
+print('Test case b:', answer_b == sorted_b)
 
-# b = elemental_forms('beach')
-# answer_b = [['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']]
-# print('Test case b:', b == answer_b)
-# c = elemental_forms('BEACH')
-# answer_c = [['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']]
-# print('Test case c:', c == answer_c)
+c = elemental_forms('BEACH')
+sorted_c = sorted(c)
+answer_c = sorted([['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']])
+print('Test case c:', sorted_c == answer_c)
+
+d = elemental_forms('')
+
+
+
+
+
+
+
+
+
