@@ -1,5 +1,6 @@
 from itertools import permutations
 import time
+from typing import Any, Generator
 
 start_time = time.time()
 
@@ -23,87 +24,65 @@ ELEMENTS = {
 	}
 
 
-def check_singles(the_word: str):
-	return [f"{ELEMENTS.get(i, 'Invalid symbol')} ({i})" for i in list(the_word.upper()) if
-			not f"{ELEMENTS.get(i, 'Invalid symbol')} ({i})".startswith('Invalid symbol')]
-
-
-def check_doubles(elements: dict, the_word: str) -> list:
-	def reset_doubles() -> None:
-		nonlocal list_word, length, list_word_iter
-		list_word = list(the_word.upper())
-		length = len(the_word)
-		list_word_iter = iter(list_word)
-
-	length = len(the_word)
-	list_word = list(the_word.upper())
-	list_word_iter = iter(list_word)
-
-	add_list = []
-	for let in list_word:
-		while length:
-			try:
-				form_letter = ''.join(let + next(list_word_iter).lower())
-				add_list.append(
-					f"{ELEMENTS.get(form_letter, 'Invalid symbol')} ({form_letter})" if elements.get(form_letter, 'Invalid symbol') != 'Invalid symbol' else ''
-					)
-				length -= 1
-			except StopIteration:
-				reset_doubles()
-		reset_doubles()
-	return add_list
-
-
-def check_triples(elements: dict, the_word: str) -> list:
-	add_list_test = [i.lower() for i in [i for i in elements.keys() if len(i) == 3] if i.lower() in the_word.lower()]
-	return add_list_test if add_list_test else []
-
-
 def elemental_forms(word: str) -> list:
-	print(f"{word=}")
+	"""
+	Determines all possible combinations of element symbols that can form the given word.
+
+	This function attempts to match the input word with valid chemical element symbols
+	from the periodic table, considering single, double, and triple character symbols.
+
+	Args:
+		word (str): The word to be analyzed for possible element symbol combinations.
+
+	Returns:
+		list: A list of lists, where each inner list contains strings representing
+			  a valid combination of element names and their symbols that can form the word.
+			  If the word is empty, an empty list is returned.
+	"""
 	if word == '':
 		return []
 
-	make_final_entry = lambda x: f"{ELEMENTS[x]} ({x})"
+	results = []
 
-	elements_are = [
-		check_singles(the_word=word), [i for i in check_doubles(elements=ELEMENTS, the_word=word) if i != ''], check_triples(elements=ELEMENTS, the_word=word)
-		]
+	def find_combinations(current_pos, current_combination):
 
-	final_elements = {
-		i[i.lower().find(word.lower()):i.lower().find(word.lower()) + len(word)]
-		for i in [
-			i for i in
-			[''.join(i) for i in permutations(
-				[t for t in
-				 list(
-					 dict(
-						 zip(
-							 ["".join(i for i in list(i)[-3:] if i not in ('(', ')')) for i in
-							  [item for sublist in elements_are for item in sublist if item]],
-							 [item for sublist in elements_are for item in sublist if item]
-							 )).keys())
-				 if t.lower() in word.lower()], len(word))] if word.lower() in i.lower()
-			] if word.lower() in i.lower()}
+		"""
+		Recursively finds all possible combinations of element symbols that can form the given word.
 
-	out_list = []
-	pre_out_list = []
-	for i in final_elements:
-		for idx, let in list(enumerate(i)):
-			if i[idx].islower():
-				continue
-			try:
-				if i[idx].isupper() and i[idx + 1].islower():
-					pre_out_list.append(make_final_entry(let + i[idx + 1]))
-				else:
-					pre_out_list.append(make_final_entry(let))
-			except IndexError:
-				pre_out_list.append(make_final_entry(let))
+		This helper function attempts to match segments of the input word with valid chemical element symbols
+		from the periodic table, considering single, double, and triple character symbols.
 
-		out_list.append(pre_out_list.copy())
-		pre_out_list.clear()
+		Args:
+			current_pos (int): The current position in the word being analyzed.
+			current_combination (list): The current list of element names and symbols forming part of the word.
 
-	return out_list
+		Returns:
+			None: The function appends valid combinations to the `results` list defined in the outer scope.
+		"""
+		# Base case: if we reach the end of the word
+		if current_pos >= len(word):
+			results.append(current_combination.copy())
+			return
+
+		# single-character elements
+		single_letter = word[current_pos].upper()
+		if single_letter in ELEMENTS:
+			find_combinations(current_pos + 1, current_combination + [f"{ELEMENTS[single_letter]} ({single_letter})"])
+
+		# two-character elements
+		if current_pos + 1 < len(word):
+			double_letter = word[current_pos:current_pos + 2].capitalize()
+			if double_letter in ELEMENTS:
+				find_combinations(current_pos + 2, current_combination + [f"{ELEMENTS[double_letter]} ({double_letter})"])
+
+		# three-character elements
+		if current_pos + 2 < len(word):
+			triple_letter = word[current_pos:current_pos + 3].capitalize()
+			if triple_letter in ELEMENTS:
+				find_combinations(current_pos + 3, current_combination + [f"{ELEMENTS[triple_letter]} ({triple_letter})"])
+
+	find_combinations(0, [])
+	return results
 
 
 a = elemental_forms('snack')
@@ -115,19 +94,19 @@ answer = sorted(
 		['Tin (Sn)', 'Actinium (Ac)', 'Potassium (K)']
 		]
 	)
-print(f"Test case a: {answer == sorted_a=}")
-
-b = elemental_forms('beach')
-sorted_b = sorted(b)
-answer_b = sorted([['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']])
-print('Test case b:', answer_b == sorted_b)
-
-c = elemental_forms('BEACH')
-sorted_c = sorted(c)
-answer_c = sorted([['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']])
-print('Test case c:', sorted_c == answer_c)
-
-d = elemental_forms('')
-
-end_time = time.time()
-print(f'Execution time: {(end_time - start_time) * 1000} milliseconds')
+# print(f"Test case a: {answer == sorted_a=}")
+#
+# b = elemental_forms('beach')
+# sorted_b = sorted(b)
+# answer_b = sorted([['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']])
+# print('Test case b:', answer_b == sorted_b)
+#
+# c = elemental_forms('BEACH')
+# sorted_c = sorted(c)
+# answer_c = sorted([['Beryllium (Be)', 'Actinium (Ac)', 'Hydrogen (H)']])
+# print('Test case c:', sorted_c == answer_c)
+#
+# d = elemental_forms('')
+#
+# end_time = time.time()
+# print(f'Execution time: {(end_time - start_time) * 1000} milliseconds')
