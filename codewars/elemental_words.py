@@ -1,8 +1,6 @@
 from itertools import permutations
 import time
 
-from codewars.get_closest_points_and_fast import end_time
-
 start_time = time.time()
 
 ELEMENTS = {
@@ -68,10 +66,9 @@ def elemental_forms(word: str) -> list:
 
 	make_final_entry = lambda x: f"{ELEMENTS[x]} ({x})"
 
-	elements_are = list()
-	elements_are.append(check_singles(the_word=word))
-	elements_are.append([i for i in check_doubles(elements=ELEMENTS, the_word=word) if i != ''])
-	elements_are.append(check_triples(elements=ELEMENTS, the_word=word))
+	elements_are = [
+		check_singles(the_word=word), [i for i in check_doubles(elements=ELEMENTS, the_word=word) if i != ''], check_triples(elements=ELEMENTS, the_word=word)
+		]
 
 	final_elements = {
 		i[i.lower().find(word.lower()):i.lower().find(word.lower()) + len(word)]
