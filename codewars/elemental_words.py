@@ -25,9 +25,9 @@ ELEMENTS = {
 	}
 
 
-
 def check_singles(the_word: str):
-	return [f"{ELEMENTS.get(i, 'Invalid symbol')} ({i})" for i in list(the_word.upper()) if not f"{ELEMENTS.get(i, 'Invalid symbol')} ({i})".startswith('Invalid symbol')]
+	return [f"{ELEMENTS.get(i, 'Invalid symbol')} ({i})" for i in list(the_word.upper()) if
+			not f"{ELEMENTS.get(i, 'Invalid symbol')} ({i})".startswith('Invalid symbol')]
 
 
 def check_doubles(elements: dict, the_word: str) -> list:
@@ -62,7 +62,6 @@ def check_triples(elements: dict, the_word: str) -> list:
 
 
 def elemental_forms(word: str) -> list:
-
 	print(f"{word=}")
 	if word == '':
 		return []
@@ -74,25 +73,25 @@ def elemental_forms(word: str) -> list:
 	elements_are.append([i for i in check_doubles(elements=ELEMENTS, the_word=word) if i != ''])
 	elements_are.append(check_triples(elements=ELEMENTS, the_word=word))
 
-	elements_are = [item for sublist in elements_are for item in sublist if item]
-	zip_elements = dict(
-		zip(
-			["".join(i for i in list(i)[-3:] if i not in ('(', ')')) for i in elements_are],
-			elements_are
-			)
-		)
-	eliminate_useless_elements = [t for t in list(zip_elements.keys()) if t.lower() in word.lower()]
-
-	func_perms = list(permutations(eliminate_useless_elements, len(word)))
-	func_perms_2 = [''.join(i) for i in permutations(eliminate_useless_elements, len(word))]
-	snack_list_3 = [i for i in func_perms_2 if word.lower() in i.lower()]
-	snack_list_4 = {i[i.lower().find(word.lower()):i.lower().find(word.lower()) + len(word)]
-					for i in snack_list_3 if word.lower() in i.lower()}
-
+	final_elements = {
+		i[i.lower().find(word.lower()):i.lower().find(word.lower()) + len(word)]
+		for i in [
+			i for i in
+			[''.join(i) for i in permutations(
+				[t for t in
+				 list(
+					 dict(
+						 zip(
+							 ["".join(i for i in list(i)[-3:] if i not in ('(', ')')) for i in
+							  [item for sublist in elements_are for item in sublist if item]],
+							 [item for sublist in elements_are for item in sublist if item]
+							 )).keys())
+				 if t.lower() in word.lower()], len(word))] if word.lower() in i.lower()
+			] if word.lower() in i.lower()}
 
 	out_list = []
 	pre_out_list = []
-	for i in snack_list_4:
+	for i in final_elements:
 		for idx, let in list(enumerate(i)):
 			if i[idx].islower():
 				continue
@@ -112,11 +111,13 @@ def elemental_forms(word: str) -> list:
 
 a = elemental_forms('snack')
 sorted_a = sorted(a)
-answer = sorted([
-	['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
-	['Sulfur (S)', 'Sodium (Na)', 'Carbon (C)', 'Potassium (K)'],
-	['Tin (Sn)', 'Actinium (Ac)', 'Potassium (K)']
-	])
+answer = sorted(
+	[
+		['Sulfur (S)', 'Nitrogen (N)', 'Actinium (Ac)', 'Potassium (K)'],
+		['Sulfur (S)', 'Sodium (Na)', 'Carbon (C)', 'Potassium (K)'],
+		['Tin (Sn)', 'Actinium (Ac)', 'Potassium (K)']
+		]
+	)
 print(f"Test case a: {answer == sorted_a=}")
 
 b = elemental_forms('beach')
@@ -131,14 +132,5 @@ print('Test case c:', sorted_c == answer_c)
 
 d = elemental_forms('')
 
-
 end_time = time.time()
 print(f'Execution time: {(end_time - start_time) * 1000} milliseconds')
-
-
-
-
-
-
-
-
