@@ -5,40 +5,32 @@ Output: You need to determine the key (a string of uppercase letters) that was u
 
 
 def get_keyword(ciphertext, key_len):
-	# print(f"text:\n{ciphertext}")
-	# print(f"key length:\n{key_len}")
-	let_nums = {v: k for k, v in dict(list(enumerate([i for i in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']))).items()}
-	
-	cypher_list = list(ciphertext)
-	counter = 0
-	for i in range(0, len(list(ciphertext).copy())):
-		counter += 1
-		if key_len - counter == 0:
-			cypher_list.insert(i + 1, '-')
-			counter = 0
-	
-	# cipher_letters = [
-	# 	i if len(i) == key_len
-	# 	else ''.join(j for j in i) + '-' * (key_len - len(i))
-	# 	for i in ''.join(cypher_list).split('-')
-	# ]
-	
-	# cipher_letters = [list(i) for i in [
-	# 	i if len(i) == key_len
-	# 	else ''.join(j for j in i) + '-' * (key_len - len(i))
-	# 	for i in ''.join(cypher_list).split('-')
-	# ]]
-	cipher_letters = list(
-		zip(
-			*[list(i) for i in
-			  [i if len(i) == key_len
-			   else ''.join(j for j in i) + '-' * (key_len - len(i))
-			   for i in ''.join(cypher_list).split('-')
-			   ]
-			  ]
-		)
-	)
-	return cipher_letters
+    # print(f"text:\n{ciphertext}")
+    # print(f"key length:\n{key_len}")
+    let_nums = {v: k for k, v in dict(list(enumerate([i for i in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']))).items()}
+
+    cypher_list = list(ciphertext)
+    counter = 0
+    for i in range(0, len(list(ciphertext).copy())):
+        counter += 1
+        if key_len - counter == 0:
+            cypher_list.insert(i + 1, '-')
+            counter = 0
+
+    # cipher_letters = [
+    # 	i if len(i) == key_len
+    # 	else ''.join(j for j in i) + '-' * (key_len - len(i))
+    # 	for i in ''.join(cypher_list).split('-')
+    # ]
+
+    # cipher_letters = [list(i) for i in [
+    # 	i if len(i) == key_len
+    # 	else ''.join(j for j in i) + '-' * (key_len - len(i))
+    # 	for i in ''.join(cypher_list).split('-')
+    # ]]
+    cipher_letters = list(zip(*[list(i) for i in [i if len(i) == key_len else ''.join(j for j in i) + '-' * (key_len - len(i)) for i in ''.join(cypher_list).split('-')]]))
+
+    return cipher_letters
 
 
 # a_key = "CODEWARS"
