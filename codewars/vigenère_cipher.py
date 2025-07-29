@@ -5,32 +5,70 @@ Output: You need to determine the key (a string of uppercase letters) that was u
 
 
 def get_keyword(ciphertext, key_len):
-    # print(f"text:\n{ciphertext}")
-    # print(f"key length:\n{key_len}")
-    let_nums = {v: k for k, v in dict(list(enumerate([i for i in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']))).items()}
+    # Map letters to numbers (A=0, ..., Z=25) and vice versa
+    let_nums = {v: k for k, v in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZ')}
+    num_lets = {k: v for k, v in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZ')}
 
+    # Split ciphertext into chunks of key_len
     cypher_list = list(ciphertext)
     counter = 0
-    for i in range(0, len(list(ciphertext).copy())):
+    for i in range(len(ciphertext)):
         counter += 1
-        if key_len - counter == 0:
+        if counter == key_len:
             cypher_list.insert(i + 1, '-')
             counter = 0
 
-    # cipher_letters = [
-    # 	i if len(i) == key_len
-    # 	else ''.join(j for j in i) + '-' * (key_len - len(i))
-    # 	for i in ''.join(cypher_list).split('-')
-    # ]
+    # Create chunks, pad with '-', and transpose
+    chunks = ''.join(cypher_list).split('-')
+    chunks = [i if len(i) == key_len else i + '-' * (key_len - len(i)) for i in chunks]
+    cipher_letters = list(zip(*[list(i) for i in chunks]))
 
-    # cipher_letters = [list(i) for i in [
-    # 	i if len(i) == key_len
-    # 	else ''.join(j for j in i) + '-' * (key_len - len(i))
-    # 	for i in ''.join(cypher_list).split('-')
-    # ]]
-    cipher_letters = list(zip(*[list(i) for i in [i if len(i) == key_len else ''.join(j for j in i) + '-' * (key_len - len(i)) for i in ''.join(cypher_list).split('-')]]))
+    # Deduce keyword by frequency analysis
+    keyword = ''
+    for group in cipher_letters:
+        # Collect valid letters (ignore '-')
+        letters = [let for let in group if let != '-']
+        if not letters:
+            # If no letters, default to a neutral key (e.g., 'A')
+            keyword += 'A'
+            continue
 
-    return cipher_letters
+        # Try shifts to maximize English letter frequencies
+        best_shift = 0
+        best_score = -1
+        # English letter frequencies (approximate, normalized)
+        eng_freq = {
+            'E': 0.127, 'T': 0.091, 'A': 0.082, 'O': 0.075, 'I': 0.070,
+            'N': 0.067, 'S': 0.063, 'H': 0.061, 'R': 0.060, 'D': 0.043,
+            'L': 0.040, 'C': 0.028, 'U': 0.028, 'M': 0.024, 'W': 0.023,
+            'F': 0.022, 'G': 0.020, 'Y': 0.020, 'P': 0.019, 'B': 0.015,
+            'V': 0.010, 'K': 0.008, 'J': 0.002, 'X': 0.002, 'Q': 0.001,
+            'Z': 0.001
+        }
+
+        for shift in range(26):
+            score = 0
+            for c in letters:
+                # Decrypt: P = (C - shift) mod 26
+                p_num = (let_nums[c] - shift) % 26
+                p_letter = num_lets[p_num]
+                # Score based on English frequency
+                score += eng_freq.get(p_letter, 0.01)  # Small default for rare letters
+            if score > best_score:
+                best_score = score
+                best_shift = shift
+
+        # Convert shift to key letter
+        # Key letter K satisfies C = (P + K) mod 26, so K = shift
+        keyword += num_lets[best_shift]
+
+    return keyword
+
+# Test with provided example
+given_this = 'HFNIMVOSNA'
+given_length = 6
+result = get_keyword(given_this, given_length)
+print(result)  # Expected: ABCXYZ
 
 
 # a_key = "CODEWARS"
@@ -51,14 +89,3 @@ def get_keyword(ciphertext, key_len):
 # dd = 7
 # ddd = get_keyword(d, dd)
 #
-ee_cipher_text = 'HFNIMVOSNA'
-ee_length = 6
-og_word = "HELLOWORLD"
-
-ee_func = get_keyword(ee_cipher_text, ee_length)
-max_ = max(len(i) for i in ee_func)
-
-ee_answer = "ABCXYZ"
-
-ee_shift = [0, 1, 2, 23, 24, 25, 0, 1, 2, 23]
-negative_shift = [-i for i in ee_shift]
