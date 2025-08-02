@@ -1,29 +1,63 @@
+problem_1 = 1
+
 # - **Two Sum (Easy)**
 #   - Given an array of integers and a target sum, find two numbers in the array that add up to the target.
 #   - Return the indices of the two numbers as an array.
 #   - Assume exactly one valid solution exists, and you cannot use the same element twice.
-import numpy as np
+# import numpy as np
+#
+# targ = 5585  # = 4423 + 1162
+# arr = [8758, 4423, 7993, 4019, 4421, 1162, 7812]
+#
+# for idx, val in enumerate(arr.copy()):
+#     d = abs(targ - val)
+#     if d in arr:
+#         loc = arr.index(d)
+#         print(f"{targ} -> index {arr.index(val)} + index {arr.index(d)} = {arr[idx] + arr[loc]}")
+#         break
+#
+# np_arr = np.array(arr)
+# np_dif = np.abs(np_arr - targ)
+# np_add = np_arr + np_dif
+# zip_it = list(zip(np_arr, np_dif, np_add))
+# for i in zip_it:
+#     if i[2] == targ:
+#         if i[0] in arr and i[1] in arr:
+#             print(f"{targ} -> index {arr.index(i[0])} + index {arr.index(i[1])} = {targ}")
+#             break
 
-targ = 5585
-arr = [8758, 4423, 7993, 4019, 4421, 1162, 7812]
-
-for idx, val in sorted(list(enumerate(arr.copy()))):
-    d = abs(targ - val)
-    n = d in arr
-    if n:
-        loc = arr.index(d)
-        print(f"{targ} -> index {arr.index(val)} + index {arr.index(d)} = {arr[idx] + arr[loc]}")
-        break
-
-
-# num_1 = targ - arr_reduced
-# num_2 = targ - num_1
-# test = num_1 + num_2 == np.array(targ * len(num_1))
-
+problem_2 = 2
 # - **Add Two Numbers (Medium)**
 #   - Given two non-empty linked lists representing non-negative integers (digits stored in reverse order), add the two numbers and return the sum as a linked list.
 #   - Each node contains a single digit, and there are no leading zeros except for the number zero itself.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
+# Create nodes
+node1 = ListNode(2)  # First digit
+node2 = ListNode(4)  # Second digit
+node3 = ListNode(3)  # Third digit
+
+# Link them
+node1.next = node2
+node2.next = node3
+
+# This represents 2 -> 4 -> 3 (number 342)
+list1 = node1
+
+# Create nodes
+node4 = ListNode(5)  # First digit
+node5 = ListNode(6)  # Second digit
+node6 = ListNode(4)  # Third digit
+
+# Link them
+node4.next = node5
+node5.next = node6
+
+# This represents 5 -> 6 -> 4 (number 465)
+list2 = node4
 
 # - **Longest Substring Without Repeating Characters (Medium)**
 #   - Given a string, find the length of the longest substring that contains no repeating characters.
