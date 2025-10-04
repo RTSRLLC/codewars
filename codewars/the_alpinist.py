@@ -1,3 +1,5 @@
+import numpy as np
+
 def basic_test_cases():
     a = "\n".join([
         "000",
@@ -55,14 +57,27 @@ def basic_test_cases():
 
 
 a, b, c, d, e, f, g = basic_test_cases()
-print(f"a: {a}")  # test.assert_equals(path_finder(a), 0)
-print(f"b: {b}")  # test.assert_equals(path_finder(b), 2)
-print(f"c: {c}")  # test.assert_equals(path_finder(c), 4)
-print(f"d: {d}")  # test.assert_equals(path_finder(d), 42)
-print(f"e: {e}")  # test.assert_equals(path_finder(e), 14)
-print(f"f: {f}")  # test.assert_equals(path_finder(f), 0)
-print(f"g: {g}")  # test.assert_equals(path_finder(g), 4)
+# Target Location
 
 
 def path_finder(area):
-    return 0  # total levels climbed
+    b = area
+    bs = [list(i) for i in area.split("\n")]
+    arr = np.array(bs, dtype=int).reshape(len(bs), len(bs))
+    print(arr)
+    return arr  # total levels climbed
+
+aa = path_finder(a)
+print(f"a: 0\n{aa}\n{'*' * 72}")
+bb = path_finder(b)
+print(f"b: 2\n{bb}\n{'*' * 72}")
+cc = path_finder(c)
+print(f"c: 4\n{cc}\n{'*' * 72}")
+dd = path_finder(d)
+print(f"d: 42\n{dd}\n{'*' * 72}")
+ee = path_finder(e)
+print(f"e: 14\n{ee}\n{'*' * 72}")
+ff = path_finder(f)
+print(f"f: 0\n{ff}\n{'*' * 72}")
+gg = path_finder(g)
+print(f"g: 4\n{gg}\n{'*' * 72}")
