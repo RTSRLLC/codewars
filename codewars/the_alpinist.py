@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def basic_test_cases():
     a = "\n".join([
         "000",
@@ -57,31 +58,55 @@ def basic_test_cases():
 
 
 a, b, c, d, e, f, g = basic_test_cases()
+
+
 # Target Location
 
 
 def path_finder(area):
     b = area
     bs = [list(i) for i in area.split("\n")]
-    arr = np.array(bs, dtype=int).reshape(len(bs), len(bs))
+    bs_len = len(bs)
+    arr = np.array(bs, dtype=int).reshape(bs_len, bs_len)
+    if np.sum(arr) == 0:
+        return 0
+
     # print(arr)
     climbs = 0
-    # going along the edges = step-wise
+    # todo: generate all matrix combinations
+    # todo: maybe a vectorized approach? 2* each non
+
+    a = arr[0, :]
+    b = arr[1, :]
+    c = arr[2, :]
+    d = arr[:, 0]
+    e = arr[:, 1]
+    f = arr[:, 2]
+    print(arr)
+    matrix_vals = [(i, j) for i in range(bs_len) for j in range(bs_len)]
+    # for i in range(bs_len):
+    #     for j in range(bs_len):
+    #         matrix_vals.append((i, j))
+    return arr, matrix_vals  # total levels climbed
 
 
-    return arr  # total levels climbed
+# z = np.arange(6).reshape(2,3)
+# for x in np.nditer(z):
+#     print(x, end=' ')
 
-aa = path_finder(a)
-print(f"a: 0\n{aa}\n{'*' * 72}")
-bb = path_finder(b)
+
+# aa = path_finder(a)
+# print(f"a: 0\n{aa}\n{'*' * 72}")
+bb, matvals = path_finder(b)
 print(f"b: 2\n{bb}\n{'*' * 72}")
-cc = path_finder(c)
-print(f"c: 4\n{cc}\n{'*' * 72}")
-dd = path_finder(d)
-print(f"d: 42\n{dd}\n{'*' * 72}")
-ee = path_finder(e)
-print(f"e: 14\n{ee}\n{'*' * 72}")
-ff = path_finder(f)
-print(f"f: 0\n{ff}\n{'*' * 72}")
-gg = path_finder(g)
-print(f"g: 4\n{gg}\n{'*' * 72}")
+print(f"matvals: {matvals}")
+# cc = path_finder(c)
+# print(f"c: 4\n{cc}\n{'*' * 72}")
+# dd = path_finder(d)
+# print(f"d: 42\n{dd}\n{'*' * 72}")
+# ee = path_finder(e)
+# print(f"e: 14\n{ee}\n{'*' * 72}")
+# ff = path_finder(f)
+# print(f"f: 0\n{ff}\n{'*' * 72}")
+# gg = path_finder(g)
+# print(f"g: 4\n{gg}\n{'*' * 72}")
