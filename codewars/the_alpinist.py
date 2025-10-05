@@ -82,11 +82,11 @@ def path_finder(area):
     d = arr[:, 0]
     e = arr[:, 1]
     f = arr[:, 2]
-    print(arr)
-    matrix_vals = [(i, j) for i in range(bs_len) for j in range(bs_len)]
-    # for i in range(bs_len):
-    #     for j in range(bs_len):
-    #         matrix_vals.append((i, j))
+    # print(arr)
+    matrix_vals = []
+    for i in range(bs_len):
+        for j in range(bs_len):
+            matrix_vals.append((i, j))
     return arr, matrix_vals  # total levels climbed
 
 
