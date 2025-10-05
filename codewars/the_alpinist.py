@@ -64,7 +64,11 @@ def path_finder(area):
     b = area
     bs = [list(i) for i in area.split("\n")]
     arr = np.array(bs, dtype=int).reshape(len(bs), len(bs))
-    print(arr)
+    # print(arr)
+    climbs = 0
+    # going along the edges = step-wise
+
+
     return arr  # total levels climbed
 
 aa = path_finder(a)
