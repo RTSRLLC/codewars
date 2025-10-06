@@ -78,8 +78,7 @@ def path_finder(area):
     start = 0, 0
     end = len(bs), len(bs)
 
-
-
+    mx_left, max_right = np.argmax(arr, axis=0), np.argmax(arr, axis=1)
 
 
     stop = ''
