@@ -37,7 +37,7 @@ def basic_test_cases():
     ])  # test.assert_equals(path_finder(e), 14)
 
     f = "\n".join([
-        "777000",
+         "777000",
         "007000",
         "007000",
         "007000",
@@ -60,34 +60,32 @@ def basic_test_cases():
 a, b, c, d, e, f, g = basic_test_cases()
 
 
-# Target Location
-
-
 def path_finder(area):
     b = area
     bs = [list(i) for i in area.split("\n")]
     bs_len = len(bs)
     arr = np.array(bs, dtype=int).reshape(bs_len, bs_len)
+    # print(arr)
     if np.sum(arr) == 0:
         return 0
 
-    # print(arr)
-    climbs = 0
-    # todo: generate all matrix combinations
-    # todo: maybe a vectorized approach? 2* each non
+    coords_integers = np.arange(bs_len ** 2).reshape(bs_len, bs_len)
+    coords_matrix = [(i, j) for i in range(bs_len) for j in range(bs_len)]
 
-    a = arr[0, :]
-    b = arr[1, :]
-    c = arr[2, :]
-    d = arr[:, 0]
-    e = arr[:, 1]
-    f = arr[:, 2]
-    # print(arr)
-    matrix_vals = []
-    for i in range(bs_len):
-        for j in range(bs_len):
-            matrix_vals.append((i, j))
-    return arr, matrix_vals  # total levels climbed
+    climbs = 0
+    score = 0
+
+    start = 0, 0
+    end = len(bs), len(bs)
+
+
+
+
+
+    stop = ''
+
+
+    return arr, matrix_coords  # total levels climbed
 
 
 # z = np.arange(6).reshape(2,3)
