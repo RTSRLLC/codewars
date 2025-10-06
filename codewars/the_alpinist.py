@@ -65,8 +65,7 @@ def path_finder(area):
     bs = [list(i) for i in area.split("\n")]
     bs_len = len(bs)
     arr = np.array(bs, dtype=int).reshape(bs_len, bs_len)
-
-
+    arr_flat = list(enumerate(arr.flatten()))
     # print(arr)
     if np.sum(arr) == 0:
         return 0
@@ -92,17 +91,24 @@ def path_finder(area):
 
 # aa = path_finder(a)
 # print(f"a: 0\n{aa}\n{'*' * 72}")
+
 # bb, matvals = path_finder(b)
 # print(f"b: 2\n{bb}\n{'*' * 72}")
 # print(f"b matvals: {matvals}")
-cc = path_finder(c)
-print(f"c: 4\n{cc}\n{'*' * 72}")
-print(f"c matvals: {matvals}")
-# dd = path_finder(d)
-# print(f"d: 42\n{dd}\n{'*' * 72}")
+
+# cc, matvals = path_finder(c)
+# print(f"c: 4\n{cc}\n{'*' * 72}")
+# print(f"c matvals: {matvals}")
+
+dd, matvals = path_finder(d)
+print(f"d: 42\n{dd}\n{'*' * 72}")
+print(f"d matvals: {matvals}")
+
 # ee = path_finder(e)
 # print(f"e: 14\n{ee}\n{'*' * 72}")
+
 # ff = path_finder(f)
 # print(f"f: 0\n{ff}\n{'*' * 72}")
+
 # gg = path_finder(g)
 # print(f"g: 4\n{gg}\n{'*' * 72}")
