@@ -37,7 +37,7 @@ def basic_test_cases():
     ])  # test.assert_equals(path_finder(e), 14)
 
     f = "\n".join([
-         "777000",
+        "777000",
         "007000",
         "007000",
         "007000",
@@ -65,6 +65,8 @@ def path_finder(area):
     bs = [list(i) for i in area.split("\n")]
     bs_len = len(bs)
     arr = np.array(bs, dtype=int).reshape(bs_len, bs_len)
+
+
     # print(arr)
     if np.sum(arr) == 0:
         return 0
@@ -78,13 +80,9 @@ def path_finder(area):
     start = 0, 0
     end = len(bs), len(bs)
 
-    mx_left, max_right = np.argmax(arr, axis=0), np.argmax(arr, axis=1)
-
-
     stop = ''
 
-
-    return arr, matrix_coords  # total levels climbed
+    return arr, coords_matrix  # total levels climbed
 
 
 # z = np.arange(6).reshape(2,3)
@@ -94,11 +92,12 @@ def path_finder(area):
 
 # aa = path_finder(a)
 # print(f"a: 0\n{aa}\n{'*' * 72}")
-bb, matvals = path_finder(b)
-print(f"b: 2\n{bb}\n{'*' * 72}")
-print(f"matvals: {matvals}")
-# cc = path_finder(c)
-# print(f"c: 4\n{cc}\n{'*' * 72}")
+# bb, matvals = path_finder(b)
+# print(f"b: 2\n{bb}\n{'*' * 72}")
+# print(f"b matvals: {matvals}")
+cc = path_finder(c)
+print(f"c: 4\n{cc}\n{'*' * 72}")
+print(f"c matvals: {matvals}")
 # dd = path_finder(d)
 # print(f"d: 42\n{dd}\n{'*' * 72}")
 # ee = path_finder(e)
