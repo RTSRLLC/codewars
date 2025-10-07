@@ -79,6 +79,24 @@ def path_finder(area):
     if np.sum(arr) == 0:
         return 0
 
+    start = arr[0,0]
+    arr_01 = arr[0,1]
+    arr_10 = arr[1, 0]
+
+    arr_02 = arr[0,2]
+    arr_11 = arr[1, 1]
+    arr_12 = arr[1, 2]
+    arr_20 = arr[2, 0]
+    arr_21 = arr[2, 1]
+    end = arr[2, 2]
+
+    climbs = 0
+    score = 0
+    current_location = start
+    previous_location = None
+    next_loc_choices = None
+
+
 
     stop = ''
 
