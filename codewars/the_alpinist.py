@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 def basic_test_cases():
@@ -90,6 +91,19 @@ def path_finder(area):
     arr_21 = arr[2, 1]
     end = arr[2, 2]
 
+    indices = np.arange(0, bs_len ** 2).reshape(bs_len, bs_len)
+
+
+    list_arr = arr.tolist()
+    flat_arr = arr.flatten()
+    ravel_arr = arr.ravel()
+    enum_arr = list(enumerate(arr.flatten()))
+    squeeze_arr = arr.squeeze()
+
+
+
+
+
     climbs = 0
     score = 0
     current_location = start
@@ -103,9 +117,9 @@ def path_finder(area):
     return arr
 
 
-a = path_finder(a_)
-b = path_finder(b_)
-c = path_finder(c_)
+# a = path_finder(a_)
+# b = path_finder(b_)
+# c = path_finder(c_)
 # d = path_finder(d_)
 # e = path_finder(e_)
 # f = path_finder(f_)
@@ -128,4 +142,12 @@ c = path_finder(c_)
 # w = path_finder('6193202055400530\n2978951088421870\n1728788075740422\n3493353571281571\n5883832600934582\n6764879319684399\n3951323591165362\n8924356397569809\n4337198721574525\n4300839837867718\n5973367290217580\n3615559832783305\n7060237376310028\n6227063147681060\n3808906527826590\n5026928259417646')  # , 52)
 # x = path_finder('91496021559669533\n81904367165372127\n76048945740163189\n97886868015673102\n47444790399445531\n76600261325220918\n86056540450767230\n75775683513771778\n15821885439235017\n36381134658388347\n02180477168680494\n29186437643013438\n75509140379701291\n02540851779711001\n66728206731789413\n59495725692790157\n98502239391643830')  # , 133)
 #
-# stopp = ''
+
+
+alpine_file = '/Users/jshensley/Desktop/PycharmProjects/codewars/input_files/alpinist.xlsx'
+alpine = pd.ExcelFile(alpine_file)
+df_alpine = pd.read_excel(alpine_file, alpine.sheet_names[1])
+df_alpine = df_alpine.astype(str)
+df_alpine = df_alpine.replace('nan', '')
+
+stopp = ''
