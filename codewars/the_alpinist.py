@@ -87,28 +87,24 @@ def path_finder(area):
     if np.sum(arr) == 0:
         return 0
 
-    start = arr[0, 0]
-    arr_01 = arr[0, 1]
-    arr_10 = arr[1, 0]
+    tree = {}
 
-    arr_02 = arr[0, 2]
-    arr_11 = arr[1, 1]
-    arr_12 = arr[1, 2]
-    arr_20 = arr[2, 0]
-    arr_21 = arr[2, 1]
-    end = arr[2, 2]
+    class Node:
+        def __init__(self, value, position):
+            self.value = value
+            self.position = position
 
-    indices = np.arange(0, bs_len ** 2).reshape(bs_len, bs_len)
+        def available_directions(self):
+            pass
 
-    list_arr = arr.tolist()
-    flat_arr = arr.flatten()
-    ravel_arr = arr.ravel()
-    enum_arr = list(enumerate(arr.flatten()))
-    squeeze_arr = arr.squeeze()
+
+
+
+
 
     climbs = 0
     score = 0
-    current_location = start
+    current_location = None
     previous_location = None
     next_loc_choices = None
 
@@ -119,14 +115,14 @@ def path_finder(area):
 
 # a = path_finder(a_)
 # b = path_finder(b_)
-# c = path_finder(c_)
+c = path_finder(c_)
 # d = path_finder(d_)
 # e = path_finder(e_)
 # f = path_finder(f_)
 # g = path_finder(g_)
 # h = path_finder('9')  # , 0)
 # i = path_finder('00\n59')  # , 9)
-j = path_finder('443\n622\n342')  # , 2)
+# j = path_finder('443\n622\n342')  # , 2)
 # k = path_finder('1748\n3363\n3280\n0941')  # , 12)
 # l = path_finder('09547\n18022\n16498\n35390\n91527')  # , 17)
 # m = path_finder('435299\n292595\n494834\n978378\n339644\n015652')  # , 18)
