@@ -1,6 +1,13 @@
 import numpy as np
 import pandas as pd
 
+"""
+To find the minimal number of climb rounds (i.e., the minimum sum of absolute altitude differences along the path), 
+you need to model the grid as a graph where each cell is a node, edges connect to adjacent cells in all four cardinal directions (North, East, South, West), 
+and edge weights are the |altitude differences|. Then, use a shortest-path algorithm like Dijkstra's to compute the minimum-cost path from [0,0] to [N-1, N-1], 
+as this accounts for any beneficial moves, including left or up, without restricting direction.
+"""
+
 
 def basic_test_cases():
     a = "\n".join([
