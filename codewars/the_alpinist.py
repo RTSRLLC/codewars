@@ -147,7 +147,25 @@ def path_finder(area):
 alpine_file = '/Users/jshensley/Desktop/PycharmProjects/codewars/input_files/alpinist.xlsx'
 alpine = pd.ExcelFile(alpine_file)
 df_alpine = pd.read_excel(alpine_file, alpine.sheet_names[1])
-df_alpine = df_alpine.astype(str)
-df_alpine = df_alpine.replace('nan', '')
+df_alpine.dropna(how='all', inplace=True, axis=1)
 
+cols_df_alpine = [
+    (0, 3), (1, 'x'), (2, '3_'),
+    (3, 'h3'), (4, 'e3'), (5, 'r3'), (6, 'e33'), (7, 'e333'),
+
+    (8, 4), (9, 'by'), (10, '4_'), (11, 'i'),
+    (12, 'h4'), (13, 'e4'), (14, 'r4'), (15, 'e4.1'), (16, 'e44'), (17, 'st4'), (18, 'ill4'),
+
+    (19, 5), (20, 'bye'), (21, '5_'), (22, 'iz'), (23, 'z'),
+    (24, 'h5'), (25, 'e5'), (26, 'r5'), (27, 'ee5'), (28, 's5'), (29, 't5'), (30, 'i5'), (31, 'l5'), (32, 'l55')]
+
+
+three_by_three = df_alpine.iloc[:3, :3].to_numpy(dtype='int')
+three_by_3_expansion = df_alpine.iloc[:6, 3:8].to_numpy(dtype='int')
+
+four_by_four = df_alpine.iloc[:5, 8:12].to_numpy(dtype='int')
+four_by_4_expansion = df_alpine.iloc[:20, 12:19].to_numpy(dtype='int')
+
+five_by_five = df_alpine.iloc[:5, 19:24].to_numpy(dtype='int')
+five_by_5_expansion = df_alpine.iloc[:, 24:].to_numpy(dtype='int')
 stopp = ''
