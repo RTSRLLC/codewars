@@ -80,11 +80,11 @@ def path_finder(area):
     if np.sum(arr) == 0:
         return 0
 
-    start = arr[0,0]
-    arr_01 = arr[0,1]
+    start = arr[0, 0]
+    arr_01 = arr[0, 1]
     arr_10 = arr[1, 0]
 
-    arr_02 = arr[0,2]
+    arr_02 = arr[0, 2]
     arr_11 = arr[1, 1]
     arr_12 = arr[1, 2]
     arr_20 = arr[2, 0]
@@ -93,24 +93,17 @@ def path_finder(area):
 
     indices = np.arange(0, bs_len ** 2).reshape(bs_len, bs_len)
 
-
     list_arr = arr.tolist()
     flat_arr = arr.flatten()
     ravel_arr = arr.ravel()
     enum_arr = list(enumerate(arr.flatten()))
     squeeze_arr = arr.squeeze()
 
-
-
-
-
     climbs = 0
     score = 0
     current_location = start
     previous_location = None
     next_loc_choices = None
-
-
 
     stop = ''
 
@@ -126,7 +119,7 @@ def path_finder(area):
 # g = path_finder(g_)
 # h = path_finder('9')  # , 0)
 # i = path_finder('00\n59')  # , 9)
-# j = path_finder('443\n622\n342')  # , 2)
+j = path_finder('443\n622\n342')  # , 2)
 # k = path_finder('1748\n3363\n3280\n0941')  # , 12)
 # l = path_finder('09547\n18022\n16498\n35390\n91527')  # , 17)
 # m = path_finder('435299\n292595\n494834\n978378\n339644\n015652')  # , 18)
@@ -141,31 +134,5 @@ def path_finder(area):
 # v = path_finder('163524713265638\n671023336692281\n812486815651333\n427879130821023\n627519540045131\n225593570343566\n312238694164715\n579272481215212\n652886046544093\n694392047499170\n972056930148993\n764392039477627\n778566271863140\n219830938415775\n400463109825434')  # , 43)
 # w = path_finder('6193202055400530\n2978951088421870\n1728788075740422\n3493353571281571\n5883832600934582\n6764879319684399\n3951323591165362\n8924356397569809\n4337198721574525\n4300839837867718\n5973367290217580\n3615559832783305\n7060237376310028\n6227063147681060\n3808906527826590\n5026928259417646')  # , 52)
 # x = path_finder('91496021559669533\n81904367165372127\n76048945740163189\n97886868015673102\n47444790399445531\n76600261325220918\n86056540450767230\n75775683513771778\n15821885439235017\n36381134658388347\n02180477168680494\n29186437643013438\n75509140379701291\n02540851779711001\n66728206731789413\n59495725692790157\n98502239391643830')  # , 133)
-#
 
-
-alpine_file = '/Users/jshensley/Desktop/PycharmProjects/codewars/input_files/alpinist.xlsx'
-alpine = pd.ExcelFile(alpine_file)
-df_alpine = pd.read_excel(alpine_file, alpine.sheet_names[1])
-df_alpine.dropna(how='all', inplace=True, axis=1)
-
-cols_df_alpine = [
-    (0, 3), (1, 'x'), (2, '3_'),
-    (3, 'h3'), (4, 'e3'), (5, 'r3'), (6, 'e33'), (7, 'e333'),
-
-    (8, 4), (9, 'by'), (10, '4_'), (11, 'i'),
-    (12, 'h4'), (13, 'e4'), (14, 'r4'), (15, 'e4.1'), (16, 'e44'), (17, 'st4'), (18, 'ill4'),
-
-    (19, 5), (20, 'bye'), (21, '5_'), (22, 'iz'), (23, 'z'),
-    (24, 'h5'), (25, 'e5'), (26, 'r5'), (27, 'ee5'), (28, 's5'), (29, 't5'), (30, 'i5'), (31, 'l5'), (32, 'l55')]
-
-
-three_by_three = df_alpine.iloc[:3, :3].to_numpy(dtype='int')
-three_by_3_expansion = df_alpine.iloc[:6, 3:8].to_numpy(dtype='int')
-
-four_by_four = df_alpine.iloc[:5, 8:12].to_numpy(dtype='int')
-four_by_4_expansion = df_alpine.iloc[:20, 12:19].to_numpy(dtype='int')
-
-five_by_five = df_alpine.iloc[:5, 19:24].to_numpy(dtype='int')
-five_by_5_expansion = df_alpine.iloc[:, 24:].to_numpy(dtype='int')
 stopp = ''
