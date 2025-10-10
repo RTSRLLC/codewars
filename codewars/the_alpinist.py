@@ -1,5 +1,5 @@
 import numpy as np
-import pandas as pd
+from itertools import product
 
 """
 To find the minimal number of climb rounds (i.e., the minimum sum of absolute altitude differences along the path), 
@@ -87,20 +87,29 @@ def path_finder(area):
     if np.sum(arr) == 0:
         return 0
 
+    iter_lst = [i for i in range(bs_len)]
+    indices = list(product(iter_lst, repeat=2))
+
+
     tree = {}
 
     class Node:
         def __init__(self, value, position):
             self.value = value
             self.position = position
+            self.children = []
 
         def available_directions(self):
             pass
 
+    tree = {}
+    for i in arr.flatten():
+        print(i)
 
-
-
-
+    a1 = arr[0,0]
+    a2 = arr[0,1]
+    a3 = arr[0,2]
+    a4 = arr[1,0]
 
     climbs = 0
     score = 0
