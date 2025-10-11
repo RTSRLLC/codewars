@@ -106,8 +106,25 @@ def path_finder(area):
     if np.sum(arr) == 0:
         return 0
 
+    calc = lambda left, right, ar:
+    begin = (0, 0)
+    start = arr[begin[0], begin[1]]
+    north = None
+    east = None
+    south = None
+    west = None
+    # ['-1', 'uc'],
+    # ['uc', '-1'],
+    # ['uc', '+1'],
+    # ['+1', 'uc']
+
+
+
     addresses = get_arr_addresses(arr, bs_len)
     # [('start', 0), ('01', 1), ('02', 0), ('10', 1), ('11', 0), ('12', 1), ('20', 0), ('21', 1), ('end', 0)]
+
+    set_moves = [('uc', 0), ('-1', lambda x: x - 1), ('+1', lambda x: x + 1)]
+
     counter = 0
     new_addresses = []
     ls = []
@@ -123,7 +140,6 @@ def path_finder(area):
             counter = 0
 
     arr_addresses = np.array(new_addresses).reshape(bs_len, bs_len)
-    set_moves = [('uc', 0), ('-1', lambda x: x - 1), ('+1', lambda x: x + 1)]
     moves = [
         # 'start',
         ['+1', 'uc'],
