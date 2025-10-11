@@ -107,9 +107,23 @@ def path_finder(area):
         return 0
 
     addresses = get_arr_addresses(arr, bs_len)
+    # [('start', 0), ('01', 1), ('02', 0), ('10', 1), ('11', 0), ('12', 1), ('20', 0), ('21', 1), ('end', 0)]
+    counter = 0
+    new_addresses = []
+    ls = []
+    for i in addresses:
+        ii = ','.join([str(i) for i in i])
+        stop = ''
+        # noinspection PyListCreation
+        ls.append(ii)
+        counter += 1
+        if counter == bs_len:
+            new_addresses.append(ls)
+            ls = []
+            counter = 0
 
-
-
+    arr_addresses = np.array(new_addresses).reshape(bs_len, bs_len)
+    set_moves = [('uc', 0), ('-1', lambda x: x - 1), ('+1', lambda x: x + 1)]
     moves = [
         # 'start',
         ['+1', 'uc'],
@@ -264,6 +278,5 @@ directions_1 = [
 
 set_directions = set(directions)
 set_newer_val = [('uc', 0), ('-1', lambda x: x - 1), ('+1', lambda x: x + 1)]
-
 
 stopp = ''
