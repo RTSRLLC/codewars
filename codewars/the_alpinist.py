@@ -108,6 +108,41 @@ def path_finder(area):
 
     addresses = get_arr_addresses(arr, bs_len)
 
+
+
+    moves = [
+        # 'start',
+        ['+1', 'uc'],
+        ['uc', '+1'],
+        # 01=
+        ['uc', '-1'],
+        ['+1', 'uc'],
+        ['uc', '+1'],
+        # 02=
+        ['uc', '-1'],
+        ['uc', '+1'],
+        # 1,0=
+        ['-1', 'uc'],
+        ['+1', 'uc'],
+        ['uc', '+1'],
+        # 1,1=
+        ['-1', 'uc'],
+        ['uc', '-1'],
+        ['uc', '+1'],
+        ['+1', 'uc'],
+        # 1,2=
+        ['-1', 'uc'],
+        ['uc', '-1'],
+        ['+1', 'uc'],
+        # 2,0=
+        ['-1', 'uc'],
+        ['uc', '+1'],
+        # 2,1=
+        ['-1', 'uc'],
+        ['uc', '-1'],
+        ['uc', '+1']
+    ]
+
     class Node:
         def __init__(self, value, position):
             self.value = value
@@ -180,7 +215,7 @@ directions = [
     'left-1, right=uc',
     'left=uc, right-1',
     'left=uc, right+1',
-    'left=1, right=uc',
+    'left+1, right=uc',
     # 1,2=
     'left-1, right=uc',
     'left=uc, right-1',
@@ -194,18 +229,41 @@ directions = [
     'left=uc, right+1'
 ]
 
+directions_1 = [
+    # 'start',
+    ['+1', 'uc'],
+    ['uc', '+1'],
+    # 01=
+    ['uc', '-1'],
+    ['+1', 'uc'],
+    ['uc', '+1'],
+    # 02=
+    ['uc', '-1'],
+    ['uc', '+1'],
+    # 1,0=
+    ['-1', 'uc'],
+    ['+1', 'uc'],
+    ['uc', '+1'],
+    # 1,1=
+    ['-1', 'uc'],
+    ['uc', '-1'],
+    ['uc', '+1'],
+    ['+1', 'uc'],
+    # 1,2=
+    ['-1', 'uc'],
+    ['uc', '-1'],
+    ['+1', 'uc'],
+    # 2,0=
+    ['-1', 'uc'],
+    ['uc', '+1'],
+    # 2,1=
+    ['-1', 'uc'],
+    ['uc', '-1'],
+    ['uc', '+1']
+]
+
 set_directions = set(directions)
-
-moves_possible = [('uc', 0), ('-1', lambda x: x - 1), ('+1', lambda x: x + 1)]
-
+set_newer_val = [('uc', 0), ('-1', lambda x: x - 1), ('+1', lambda x: x + 1)]
 
 
-
-
-
-
-
-
-
-
-    stopp = ''
+stopp = ''
