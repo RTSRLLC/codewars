@@ -78,38 +78,52 @@ def get_og_string(arr: list, length: int) -> tuple:
     return arr.shape
 
 
+def get_arr_addresses(arr: list, length: int) -> dict:
+    iter_lst = [i for i in range(length)]
+    indices = list(product(iter_lst, repeat=2))
+    length_indices = len(indices)
+    arr_values = []
+    for i in range(length_indices):
+        vals = indices[i]
+        if i == 0:
+            k = 'start'
+        elif i == length_indices - 1:
+            k = 'end'
+        else:
+            k = str(vals[0]) + str(vals[1])
+        v = arr[vals[0], vals[1]]
+        arr_values.append((k, v))
+    return arr_values
+
+
 def path_finder(area):
     b = area
     bs = [list(i) for i in area.split("\n")]
     bs_len = len(bs)
     arr = np.array(bs, dtype=int).reshape(bs_len, bs_len)
+    arr_flat = list(arr.flatten())
     # test = get_og_string(arr, bs_len)
     if np.sum(arr) == 0:
         return 0
 
-    iter_lst = [i for i in range(bs_len)]
-    indices = list(product(iter_lst, repeat=2))
-
-
-    tree = {}
+    addresses = get_arr_addresses(arr, bs_len)
 
     class Node:
         def __init__(self, value, position):
             self.value = value
             self.position = position
-            self.children = []
+            # self.north = north
+            # self.east = position
+            # self.south = south
+            # self.west = west
+            self.choices = []
 
         def available_directions(self):
             pass
 
     tree = {}
-    for i in arr.flatten():
-        print(i)
-
-    a1 = arr[0,0]
-    a2 = arr[0,1]
-    a3 = arr[0,2]
-    a4 = arr[1,0]
+    for add in addresses:
+        tree[add[0]] = Node(add[1], add[0])
 
     climbs = 0
     score = 0
@@ -147,4 +161,51 @@ c = path_finder(c_)
 # w = path_finder('6193202055400530\n2978951088421870\n1728788075740422\n3493353571281571\n5883832600934582\n6764879319684399\n3951323591165362\n8924356397569809\n4337198721574525\n4300839837867718\n5973367290217580\n3615559832783305\n7060237376310028\n6227063147681060\n3808906527826590\n5026928259417646')  # , 52)
 # x = path_finder('91496021559669533\n81904367165372127\n76048945740163189\n97886868015673102\n47444790399445531\n76600261325220918\n86056540450767230\n75775683513771778\n15821885439235017\n36381134658388347\n02180477168680494\n29186437643013438\n75509140379701291\n02540851779711001\n66728206731789413\n59495725692790157\n98502239391643830')  # , 133)
 
-stopp = ''
+directions = [
+    # 'start',
+    'left+1, right=uc',
+    'left=uc, right+1',
+    # 01=
+    'left=uc, right-1',
+    'left+1, right=uc',
+    'left=uc, right+1',
+    # 02=
+    'left=uc, right-1',
+    'left=uc, right+1',
+    # 1,0=
+    'left-1, right=uc',
+    'left+1, right=uc',
+    'left=uc, right+1',
+    # 1,1=
+    'left-1, right=uc',
+    'left=uc, right-1',
+    'left=uc, right+1',
+    'left=1, right=uc',
+    # 1,2=
+    'left-1, right=uc',
+    'left=uc, right-1',
+    'left+1, right=uc',
+    # 2,0=
+    'left-1, right=uc',
+    'left=uc, right+1',
+    # 2,1=
+    'left-1, right=uc',
+    'left=uc, right-1',
+    'left=uc, right+1'
+]
+
+set_directions = set(directions)
+
+moves_possible = [('uc', 0), ('-1', lambda x: x - 1), ('+1', lambda x: x + 1)]
+
+
+
+
+
+
+
+
+
+
+
+    stopp = ''
