@@ -146,16 +146,26 @@ def path_finder(area):
             # ['00', '01', '02', '10', '11', '12', '20', '21', '22']
             # [[0, 1, 0], [1, 0, 1], [0, 1, 0]]
             # {00: 0, 01: 1, 02: 0, 10: 1, 11: 0, 12: 1, 20: 0, 21: 1, 22: 0}
-            for add in self.addresses:
-                add = [int(i) for i in add]
-                val = self.values[add[0], add[1]]
-                if add[0] == 0:  # top row can go east and south
-                    if add[1] == 0:  # except starting position
-                        self.EAST = arr[add[0], add[1] + 1]  # 01
-                        self.SOUTH = arr[add[0] + 1, add[1]]  # 10
-                    else:
-                        self.WEST = arr[add[0] - 1, add[1]]
-                        self.NORTH = arr[add[0], add[1] + 1]
+
+            for k, v in self.nodes.items():
+                kk = k
+                vv = v
+                zero, one = int(k[0]), int(k[1])
+
+
+
+                stop = ''
+
+            # for add in self.addresses:
+            #     add = [int(i) for i in add]
+            #     val = self.values[add[0], add[1]]
+            #     if add[0] == 0:  # top row can go east and south
+            #         if add[1] == 0:  # except starting position
+            #             self.EAST = arr[add[0], add[1] + 1]  # 01
+            #             self.SOUTH = arr[add[0] + 1, add[1]]  # 10
+            #         else:
+            #             self.WEST = arr[add[0] - 1, add[1]]
+            #             self.NORTH = arr[add[0], add[1] + 1]
 
 
 
