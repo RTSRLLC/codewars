@@ -124,22 +124,12 @@ def path_finder(area):
         return 0
 
     class Node:
-        NORTH = None
-        EAST = None
-        SOUTH = None
-        WEST = None
-
         def __init__(self, arr):
             # self.arr = arr
             self.arr = arr
-            self.addresses = self.arr[0].flatten()
+            self.addresses = self.arr[0]
             self.values = self.arr[1].astype(int)
-            self.flat_vals = self.values.flatten()
-            self.nodes = dict(zip(self.addresses, self.flat_vals))
-            self.rows = [i for i in range(self.arr[1].shape[0])]  # can be treated as rows or columns
-            self.cols = [i for i in range(self.arr[1].shape[0])]  # can be treated as rows or columns
-            self.value = None
-            self.position = None
+            self.nodes = dict(zip(self.addresses.flatten(), self.values.flatten()))
             self.tree = {}
 
         def available_directions(self):
@@ -147,25 +137,24 @@ def path_finder(area):
             # [[0, 1, 0], [1, 0, 1], [0, 1, 0]]
             # {00: 0, 01: 1, 02: 0, 10: 1, 11: 0, 12: 1, 20: 0, 21: 1, 22: 0}
 
+            # todo: a diagonal move is where both values increase/decrease by 1
             for k, v in self.nodes.items():
+                dct = {}
                 kk = k
                 vv = v
                 zero, one = int(k[0]), int(k[1])
+                zero_plus_1 = zero + 1
+                zero_minus_1 = zero - 1
+                one_plus_1 = one + 1
+                one_minus_1 = one - 1
+                N = self.values[zero - 1, one]
+                E = self.values[zero, one + 1]
+                S = self.values[zero + 1, one]
+                W = self.values[zero, one - 1]
 
 
 
                 stop = ''
-
-            # for add in self.addresses:
-            #     add = [int(i) for i in add]
-            #     val = self.values[add[0], add[1]]
-            #     if add[0] == 0:  # top row can go east and south
-            #         if add[1] == 0:  # except starting position
-            #             self.EAST = arr[add[0], add[1] + 1]  # 01
-            #             self.SOUTH = arr[add[0] + 1, add[1]]  # 10
-            #         else:
-            #             self.WEST = arr[add[0] - 1, add[1]]
-            #             self.NORTH = arr[add[0], add[1] + 1]
 
 
 
