@@ -83,17 +83,13 @@ def get_arr_addresses(arr: list, length: int) -> dict:
     indices = list(product(iter_lst, repeat=2))
     length_indices = len(indices)
     arr_values = []
+    temp_arr = []
     for i in range(length_indices):
         vals = indices[i]
-        if i == 0:
-            k = 'start'
-        elif i == length_indices - 1:
-            k = 'end'
-        else:
-            k = str(vals[0]) + str(vals[1])
-        v = arr[vals[0], vals[1]]
-        arr_values.append((k, v))
-    return arr_values
+        k = str(vals[0]) + str(vals[1])
+        v = str(arr[vals[0], vals[1]])
+        temp_arr.append(','.join([k, v]))
+    return np.array(temp_arr).reshape(int(np.sqrt(length_indices)), int(np.sqrt(length_indices)))
 
 
 def path_finder(area):
@@ -101,12 +97,78 @@ def path_finder(area):
     bs = [list(i) for i in area.split("\n")]
     bs_len = len(bs)
     arr = np.array(bs, dtype=int).reshape(bs_len, bs_len)
+    addresses = get_arr_addresses(arr, bs_len)
+
+    def reshape_vals_addresses(arr):
+
+        addresses_flat = arr.flatten()
+
+        arr_top = []
+        arr_bottom = []
+        for address in addresses_flat:
+            ls = address.split(',')
+            ls[1] = int(ls[1])
+            arr_top.append(ls[0])
+            arr_bottom.append(ls[1])
+
+        arr_tp = np.array(arr_top).reshape(bs_len, bs_len)
+        arr_bt = np.array(arr_bottom).reshape(bs_len, bs_len)
+        arr_together = np.concatenate((arr_tp, arr_bt)).reshape(-1, bs_len, bs_len)
+        return arr_together
+
+    addresses = reshape_vals_addresses(addresses)
+
     arr_flat = list(arr.flatten())
     # test = get_og_string(arr, bs_len)
     if np.sum(arr) == 0:
         return 0
 
-    calc = lambda left, right, ar:
+    class Node:
+        NORTH = None
+        EAST = None
+        SOUTH = None
+        WEST = None
+
+        def __init__(self, arr):
+            # self.arr = arr
+            self.arr = arr
+            self.addresses = self.arr[0].flatten()
+            self.values = self.arr[1].astype(int)
+            self.rows = [i for i in range(self.arr[1].shape[0])]  # can be treated as rows or columns
+            self.cols = [i for i in range(self.arr[1].shape[0])]  # can be treated as rows or columns
+            self.value = None
+            self.position = None
+            self.tree = {}
+
+        def available_directions(self):
+            # ['00', '01', '02', '10', '11', '12', '20', '21', '22']
+            # [[0, 1, 0], [1, 0, 1], [0, 1, 0]]
+            for add in self.addresses:
+                add = [int(i) for i in add]
+                val = self.values[add[0], add[1]]
+                if add[0] == 0:  # top row can go east and south
+                    if add[1] == 0:  # except starting position
+                        self.EAST = arr[add[0], add[1] + 1]  # 01
+                        self.SOUTH = arr[add[0] + 1, add[1]]  # 10
+                    else:
+                        self.WEST = arr[add[0] - 1, add[1]]
+                        self.NORTH = arr[add[0], add[1] + 1]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    tree = Node(addresses).available_directions()
+
     begin = (0, 0)
     start = arr[begin[0], begin[1]]
     north = None
@@ -118,28 +180,6 @@ def path_finder(area):
     # ['uc', '+1'],
     # ['+1', 'uc']
 
-
-
-    addresses = get_arr_addresses(arr, bs_len)
-    # [('start', 0), ('01', 1), ('02', 0), ('10', 1), ('11', 0), ('12', 1), ('20', 0), ('21', 1), ('end', 0)]
-
-    set_moves = [('uc', 0), ('-1', lambda x: x - 1), ('+1', lambda x: x + 1)]
-
-    counter = 0
-    new_addresses = []
-    ls = []
-    for i in addresses:
-        ii = ','.join([str(i) for i in i])
-        stop = ''
-        # noinspection PyListCreation
-        ls.append(ii)
-        counter += 1
-        if counter == bs_len:
-            new_addresses.append(ls)
-            ls = []
-            counter = 0
-
-    arr_addresses = np.array(new_addresses).reshape(bs_len, bs_len)
     moves = [
         # 'start',
         ['+1', 'uc'],
@@ -172,23 +212,6 @@ def path_finder(area):
         ['uc', '-1'],
         ['uc', '+1']
     ]
-
-    class Node:
-        def __init__(self, value, position):
-            self.value = value
-            self.position = position
-            # self.north = north
-            # self.east = position
-            # self.south = south
-            # self.west = west
-            self.choices = []
-
-        def available_directions(self):
-            pass
-
-    tree = {}
-    for add in addresses:
-        tree[add[0]] = Node(add[1], add[0])
 
     climbs = 0
     score = 0
