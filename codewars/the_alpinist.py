@@ -134,6 +134,8 @@ def path_finder(area):
             self.arr = arr
             self.addresses = self.arr[0].flatten()
             self.values = self.arr[1].astype(int)
+            self.flat_vals = self.values.flatten()
+            self.nodes = dict(zip(self.addresses, self.flat_vals))
             self.rows = [i for i in range(self.arr[1].shape[0])]  # can be treated as rows or columns
             self.cols = [i for i in range(self.arr[1].shape[0])]  # can be treated as rows or columns
             self.value = None
@@ -143,6 +145,7 @@ def path_finder(area):
         def available_directions(self):
             # ['00', '01', '02', '10', '11', '12', '20', '21', '22']
             # [[0, 1, 0], [1, 0, 1], [0, 1, 0]]
+            # {00: 0, 01: 1, 02: 0, 10: 1, 11: 0, 12: 1, 20: 0, 21: 1, 22: 0}
             for add in self.addresses:
                 add = [int(i) for i in add]
                 val = self.values[add[0], add[1]]
