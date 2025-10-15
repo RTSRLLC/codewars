@@ -154,7 +154,7 @@ def path_finder(area):
 
 
 
-                stop = ''
+            stop = ''
 
 
 
