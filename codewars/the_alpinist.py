@@ -92,33 +92,33 @@ def get_arr_addresses(arr: list, length: int) -> dict:
     return np.array(temp_arr).reshape(int(np.sqrt(length_indices)), int(np.sqrt(length_indices)))
 
 
+def reshape_vals_addresses(arr, length: int) -> list:
+    addresses_flat = arr.flatten()
+
+    arr_top = []
+    arr_bottom = []
+    for address in addresses_flat:
+        ls = address.split(',')
+        ls[1] = int(ls[1])
+        arr_top.append(ls[0])
+        arr_bottom.append(ls[1])
+
+    arr_tp = np.array(arr_top).reshape(length, length)
+    arr_bt = np.array(arr_bottom).reshape(length, length)
+    arr_together = np.concatenate((arr_tp, arr_bt)).reshape(-1, length, length)
+    return arr_together
+
+
 def path_finder(area):
-    b = area
-    bs = [list(i) for i in area.split("\n")]
-    bs_len = len(bs)
-    arr = np.array(bs, dtype=int).reshape(bs_len, bs_len)
-    addresses = get_arr_addresses(arr, bs_len)
+    area_list = [list(i) for i in area.split("\n")]
+    bs_len = len(area_list)
 
-    def reshape_vals_addresses(arr):
-
-        addresses_flat = arr.flatten()
-
-        arr_top = []
-        arr_bottom = []
-        for address in addresses_flat:
-            ls = address.split(',')
-            ls[1] = int(ls[1])
-            arr_top.append(ls[0])
-            arr_bottom.append(ls[1])
-
-        arr_tp = np.array(arr_top).reshape(bs_len, bs_len)
-        arr_bt = np.array(arr_bottom).reshape(bs_len, bs_len)
-        arr_together = np.concatenate((arr_tp, arr_bt)).reshape(-1, bs_len, bs_len)
-        return arr_together
-
-    addresses = reshape_vals_addresses(addresses)
-
+    arr = np.array(area_list, dtype=int).reshape(bs_len, bs_len)
     arr_flat = list(arr.flatten())
+
+    addresses = get_arr_addresses(arr, bs_len)
+    addresses = reshape_vals_addresses(addresses, bs_len)
+
     # test = get_og_string(arr, bs_len)
     if np.sum(arr) == 0:
         return 0
@@ -152,76 +152,9 @@ def path_finder(area):
                 S = self.values[zero + 1, one]
                 W = self.values[zero, one - 1]
 
-
-
             stop = ''
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     tree = Node(addresses).available_directions()
-
-    begin = (0, 0)
-    start = arr[begin[0], begin[1]]
-    north = None
-    east = None
-    south = None
-    west = None
-    # ['-1', 'uc'],
-    # ['uc', '-1'],
-    # ['uc', '+1'],
-    # ['+1', 'uc']
-
-    moves = [
-        # 'start',
-        ['+1', 'uc'],
-        ['uc', '+1'],
-        # 01=
-        ['uc', '-1'],
-        ['+1', 'uc'],
-        ['uc', '+1'],
-        # 02=
-        ['uc', '-1'],
-        ['uc', '+1'],
-        # 1,0=
-        ['-1', 'uc'],
-        ['+1', 'uc'],
-        ['uc', '+1'],
-        # 1,1=
-        ['-1', 'uc'],
-        ['uc', '-1'],
-        ['uc', '+1'],
-        ['+1', 'uc'],
-        # 1,2=
-        ['-1', 'uc'],
-        ['uc', '-1'],
-        ['+1', 'uc'],
-        # 2,0=
-        ['-1', 'uc'],
-        ['uc', '+1'],
-        # 2,1=
-        ['-1', 'uc'],
-        ['uc', '-1'],
-        ['uc', '+1']
-    ]
-
-    climbs = 0
-    score = 0
-    current_location = None
-    previous_location = None
-    next_loc_choices = None
-
-    stop = ''
 
     return arr
 
