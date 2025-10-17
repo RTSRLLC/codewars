@@ -127,7 +127,7 @@ def path_finder(area):
         def __init__(self, arr):
             # self.arr = arr
             self.arr = arr
-            self.bs_len = len(arr)
+            self.bs_len = arr.shape[1]
             self.addresses = self.arr[0]
             self.values = self.arr[1].astype(int)
             self.nodes = dict(zip(self.addresses.flatten(), self.values.flatten()))
@@ -139,10 +139,6 @@ def path_finder(area):
             # {00: 0, 01: 1, 02: 0, 10: 1, 11: 0, 12: 1, 20: 0, 21: 1, 22: 0}
             # todo: a diagonal move is where both values increase/decrease by 1
             for k, v in self.nodes.items():
-                print(k)
-                dct = {}
-                kk = k
-                vv = v
                 zero, one = int(k[0]), int(k[1])
                 zero_minus_1 = zero - 1
                 one_plus_1 = one + 1
@@ -151,7 +147,7 @@ def path_finder(area):
                 N, E, S, W = self.directions(zero_minus_1, one_plus_1, zero_plus_1, one_minus_1, self.bs_len - 1)
                 self.tree[k] = (N, E, S, W, v)
 
-            return self.tree
+            return self.tree,self.values
 
         def directions(self, zm1: int, op1: int, zp1: int, om1: int, length: int):
             if zm1 < 0 or zm1 > length:
@@ -172,16 +168,15 @@ def path_finder(area):
                 w = self.values[0, 1 - 1]
             return n, e, s, w
 
-    tree = Node(addresses).available_directions()
+    tree, vals = Node(addresses).available_directions()
 
-    return tree
+    return tree, vals
 
 
 
 # a = path_finder(a_)
 # b = path_finder(b_)
-c = path_finder(c_)
-stop = ''
+# c = path_finder(c_)
 # d = path_finder(d_)
 # e = path_finder(e_)
 # f = path_finder(f_)
@@ -192,7 +187,7 @@ stop = ''
 # k = path_finder('1748\n3363\n3280\n0941')  # , 12)
 # l = path_finder('09547\n18022\n16498\n35390\n91527')  # , 17)
 # m = path_finder('435299\n292595\n494834\n978378\n339644\n015652')  # , 18)
-# n = path_finder('3616870\n4431668\n4523080\n2748996\n8417245\n0953760\n9744257')  # , 20)
+n, vals_n = path_finder('3616870\n4431668\n4523080\n2748996\n8417245\n0953760\n9744257')  # , 20)
 # o = path_finder('75364185\n66365903\n81031340\n60071146\n32658917\n15612476\n03512461\n09121077')  # , 22)
 # p = path_finder('921512262\n073757004\n591992692\n711729536\n944738532\n740436140\n259226763\n624323214\n085117161')  # , 32)
 # q = path_finder('5736466929\n8422663712\n6717662320\n2050556352\n1208418537\n3846948554\n0736303096\n0737050025\n3835791347\n6062559101')  # , 30)
@@ -203,74 +198,3 @@ stop = ''
 # v = path_finder('163524713265638\n671023336692281\n812486815651333\n427879130821023\n627519540045131\n225593570343566\n312238694164715\n579272481215212\n652886046544093\n694392047499170\n972056930148993\n764392039477627\n778566271863140\n219830938415775\n400463109825434')  # , 43)
 # w = path_finder('6193202055400530\n2978951088421870\n1728788075740422\n3493353571281571\n5883832600934582\n6764879319684399\n3951323591165362\n8924356397569809\n4337198721574525\n4300839837867718\n5973367290217580\n3615559832783305\n7060237376310028\n6227063147681060\n3808906527826590\n5026928259417646')  # , 52)
 # x = path_finder('91496021559669533\n81904367165372127\n76048945740163189\n97886868015673102\n47444790399445531\n76600261325220918\n86056540450767230\n75775683513771778\n15821885439235017\n36381134658388347\n02180477168680494\n29186437643013438\n75509140379701291\n02540851779711001\n66728206731789413\n59495725692790157\n98502239391643830')  # , 133)
-
-directions = [
-    # 'start',
-    'left+1, right=uc',
-    'left=uc, right+1',
-    # 01=
-    'left=uc, right-1',
-    'left+1, right=uc',
-    'left=uc, right+1',
-    # 02=
-    'left=uc, right-1',
-    'left=uc, right+1',
-    # 1,0=
-    'left-1, right=uc',
-    'left+1, right=uc',
-    'left=uc, right+1',
-    # 1,1=
-    'left-1, right=uc',
-    'left=uc, right-1',
-    'left=uc, right+1',
-    'left+1, right=uc',
-    # 1,2=
-    'left-1, right=uc',
-    'left=uc, right-1',
-    'left+1, right=uc',
-    # 2,0=
-    'left-1, right=uc',
-    'left=uc, right+1',
-    # 2,1=
-    'left-1, right=uc',
-    'left=uc, right-1',
-    'left=uc, right+1'
-]
-
-directions_1 = [
-    # 'start',
-    ['+1', 'uc'],
-    ['uc', '+1'],
-    # 01=
-    ['uc', '-1'],
-    ['+1', 'uc'],
-    ['uc', '+1'],
-    # 02=
-    ['uc', '-1'],
-    ['uc', '+1'],
-    # 1,0=
-    ['-1', 'uc'],
-    ['+1', 'uc'],
-    ['uc', '+1'],
-    # 1,1=
-    ['-1', 'uc'],
-    ['uc', '-1'],
-    ['uc', '+1'],
-    ['+1', 'uc'],
-    # 1,2=
-    ['-1', 'uc'],
-    ['uc', '-1'],
-    ['+1', 'uc'],
-    # 2,0=
-    ['-1', 'uc'],
-    ['uc', '+1'],
-    # 2,1=
-    ['-1', 'uc'],
-    ['uc', '-1'],
-    ['uc', '+1']
-]
-
-set_directions = set(directions)
-set_newer_val = [('uc', 0), ('-1', lambda x: x - 1), ('+1', lambda x: x + 1)]
-
-stopp = ''
