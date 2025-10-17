@@ -127,6 +127,7 @@ def path_finder(area):
         def __init__(self, arr):
             # self.arr = arr
             self.arr = arr
+            self.bs_len = len(arr)
             self.addresses = self.arr[0]
             self.values = self.arr[1].astype(int)
             self.nodes = dict(zip(self.addresses.flatten(), self.values.flatten()))
@@ -136,25 +137,6 @@ def path_finder(area):
             # ['00', '01', '02', '10', '11', '12', '20', '21', '22']
             # [[0, 1, 0], [1, 0, 1], [0, 1, 0]]
             # {00: 0, 01: 1, 02: 0, 10: 1, 11: 0, 12: 1, 20: 0, 21: 1, 22: 0}
-            def directions(vals: np.ndarray, zm1: int, op1: int, zp1: int, om1: int, length: int):
-                if zm1 < 0 or zm1 > length:
-                    n = None
-                else:
-                    n = self.values[zero - 1, one]
-                if op1 < 0 or op1 > length:
-                    e = None
-                else:
-                    e = self.values[zero, one + 1]
-                if zp1 < 0 or zp1 > length:
-                    s = None
-                else:
-                    s = self.values[zero + 1, one]
-                if om1 < 0 or om1 > length:
-                    w = None
-                else:
-                    w = self.values[zero, one - 1]
-                return n, e, s, w
-
             # todo: a diagonal move is where both values increase/decrease by 1
             for k, v in self.nodes.items():
                 print(k)
@@ -166,19 +148,40 @@ def path_finder(area):
                 one_plus_1 = one + 1
                 zero_plus_1 = zero + 1
                 one_minus_1 = one - 1
-                N, E, S, W = directions(self.values, zero_minus_1, one_plus_1, zero_plus_1, one_minus_1, bs_len - 1)
+                N, E, S, W = self.directions(zero_minus_1, one_plus_1, zero_plus_1, one_minus_1, self.bs_len - 1)
                 self.tree[k] = (N, E, S, W, v)
 
-            stop = ''
+            return self.tree
+
+        def directions(self, zm1: int, op1: int, zp1: int, om1: int, length: int):
+            if zm1 < 0 or zm1 > length:
+                n = None
+            else:
+                n = self.values[0 - 1, 1]
+            if op1 < 0 or op1 > length:
+                e = None
+            else:
+                e = self.values[0, 1 + 1]
+            if zp1 < 0 or zp1 > length:
+                s = None
+            else:
+                s = self.values[0 + 1, 1]
+            if om1 < 0 or om1 > length:
+                w = None
+            else:
+                w = self.values[0, 1 - 1]
+            return n, e, s, w
 
     tree = Node(addresses).available_directions()
 
-    return arr
+    return tree
+
 
 
 # a = path_finder(a_)
 # b = path_finder(b_)
 c = path_finder(c_)
+stop = ''
 # d = path_finder(d_)
 # e = path_finder(e_)
 # f = path_finder(f_)
