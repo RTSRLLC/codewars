@@ -136,21 +136,38 @@ def path_finder(area):
             # ['00', '01', '02', '10', '11', '12', '20', '21', '22']
             # [[0, 1, 0], [1, 0, 1], [0, 1, 0]]
             # {00: 0, 01: 1, 02: 0, 10: 1, 11: 0, 12: 1, 20: 0, 21: 1, 22: 0}
+            def directions(vals: np.ndarray, zm1: int, op1: int, zp1: int, om1: int, length: int):
+                if zm1 < 0 or zm1 > length:
+                    n = None
+                else:
+                    n = self.values[zero - 1, one]
+                if op1 < 0 or op1 > length:
+                    e = None
+                else:
+                    e = self.values[zero, one + 1]
+                if zp1 < 0 or zp1 > length:
+                    s = None
+                else:
+                    s = self.values[zero + 1, one]
+                if om1 < 0 or om1 > length:
+                    w = None
+                else:
+                    w = self.values[zero, one - 1]
+                return n, e, s, w
 
             # todo: a diagonal move is where both values increase/decrease by 1
             for k, v in self.nodes.items():
+                print(k)
                 dct = {}
                 kk = k
                 vv = v
                 zero, one = int(k[0]), int(k[1])
-                zero_plus_1 = zero + 1
                 zero_minus_1 = zero - 1
                 one_plus_1 = one + 1
+                zero_plus_1 = zero + 1
                 one_minus_1 = one - 1
-                N = self.values[zero - 1, one]
-                E = self.values[zero, one + 1]
-                S = self.values[zero + 1, one]
-                W = self.values[zero, one - 1]
+                N, E, S, W = directions(self.values, zero_minus_1, one_plus_1, zero_plus_1, one_minus_1, bs_len - 1)
+                self.tree[k] = (N, E, S, W, v)
 
             stop = ''
 
