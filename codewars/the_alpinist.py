@@ -86,9 +86,9 @@ def get_arr_addresses(arr: list, length: int) -> dict:
     temp_arr = []
     for i in range(length_indices):
         vals = indices[i]
-        k = str(vals[0]) + str(vals[1])
+        k = str(vals[0]) + ',' + str(vals[1])
         v = str(arr[vals[0], vals[1]])
-        temp_arr.append(','.join([k, v]))
+        temp_arr.append(':'.join([k, v]))
     return np.array(temp_arr).reshape(int(np.sqrt(length_indices)), int(np.sqrt(length_indices)))
 
 
@@ -98,7 +98,7 @@ def reshape_vals_addresses(arr, length: int) -> list:
     arr_top = []
     arr_bottom = []
     for address in addresses_flat:
-        ls = address.split(',')
+        ls = address.split(':')
         ls[1] = int(ls[1])
         arr_top.append(ls[0])
         arr_bottom.append(ls[1])
@@ -134,44 +134,69 @@ def path_finder(area):
             self.tree = {}
 
         def available_directions(self):
-            # ['00', '01', '02', '10', '11', '12', '20', '21', '22']
-            # [[0, 1, 0], [1, 0, 1], [0, 1, 0]]
-            # {00: 0, 01: 1, 02: 0, 10: 1, 11: 0, 12: 1, 20: 0, 21: 1, 22: 0}
-            # todo: a diagonal move is where both values increase/decrease by 1
-            for k, v in self.nodes.items():
-                zero, one = int(k[0]), int(k[1])
-                zero_minus_1 = zero - 1
-                one_plus_1 = one + 1
-                zero_plus_1 = zero + 1
-                one_minus_1 = one - 1
-                N, E, S, W = self.directions(zero_minus_1, one_plus_1, zero_plus_1, one_minus_1, self.bs_len - 1)
-                self.tree[k] = (N, E, S, W, v)
+            compass_key = ('north', 'n_climb', 'south', 's_climb', 'east', 'e_climb', 'west', 'w_climb')
+            for location, location_val in self.nodes.items():
+                loc_split = [int(i) for i in location.split(',')]
+                print(loc_split)
+                zero, one = loc_split[0], loc_split[1]
+                compass_val = self.directions(location, zero, one, self.bs_len - 1)
+                comp_dict = dict(zip(compass_key, compass_val))
+                comp_dict['og_cell_value'] = location_val
+                self.tree[location] = comp_dict
+            return self.tree, self.values
 
-            return self.tree,self.values
+        def directions(self,
+                       location,
+                       zero_: int,
+                       one_,
+                       length: int
+                       ):
+            see_loc = location
+            val = self.values[zero_, one_]
+            # if see_loc[:2] == '10':
+            #     stop = ''
 
-        def directions(self, zm1: int, op1: int, zp1: int, om1: int, length: int):
-            if zm1 < 0 or zm1 > length:
+            # north: row - 1, col
+            zm1 = zero_ - 1
+            if zm1 < 0:
                 n = None
+                n_minus_val = None
             else:
-                n = self.values[0 - 1, 1]
-            if op1 < 0 or op1 > length:
+                n = self.values[zero_ - 1, one_]
+                n_minus_val = abs(n - val)
+
+            # east: row, col + 1
+            op1 = one_ + 1
+            if op1 > length:
                 e = None
+                e_minus_val = None
             else:
-                e = self.values[0, 1 + 1]
-            if zp1 < 0 or zp1 > length:
+                e = self.values[zero_, one_ + 1]
+                e_minus_val = abs(e - val)
+
+            # south: row + 1, col
+            zp1 = zero_ + 1
+            if zero_ + 1 > length:
                 s = None
+                s_minus_val = None
             else:
-                s = self.values[0 + 1, 1]
-            if om1 < 0 or om1 > length:
+                s = self.values[zero_ + 1, one_]
+                s_minus_val = abs(s - val)
+
+            # west: row, col - 1
+            om1 = one_ - 1
+            if om1 < 0:
                 w = None
+                w_minus_val = None
             else:
-                w = self.values[0, 1 - 1]
-            return n, e, s, w
+                w = self.values[zero_, one_ - 1]
+                w_minus_val = abs(w - val)
+
+            return n, n_minus_val, e, e_minus_val, s, s_minus_val, w, w_minus_val
 
     tree, vals = Node(addresses).available_directions()
 
     return tree, vals
-
 
 
 # a = path_finder(a_)
@@ -187,11 +212,11 @@ def path_finder(area):
 # k = path_finder('1748\n3363\n3280\n0941')  # , 12)
 # l = path_finder('09547\n18022\n16498\n35390\n91527')  # , 17)
 # m = path_finder('435299\n292595\n494834\n978378\n339644\n015652')  # , 18)
-n, vals_n = path_finder('3616870\n4431668\n4523080\n2748996\n8417245\n0953760\n9744257')  # , 20)
+# n, vals_n = path_finder('3616870\n4431668\n4523080\n2748996\n8417245\n0953760\n9744257')  # , 20)
 # o = path_finder('75364185\n66365903\n81031340\n60071146\n32658917\n15612476\n03512461\n09121077')  # , 22)
 # p = path_finder('921512262\n073757004\n591992692\n711729536\n944738532\n740436140\n259226763\n624323214\n085117161')  # , 32)
 # q = path_finder('5736466929\n8422663712\n6717662320\n2050556352\n1208418537\n3846948554\n0736303096\n0737050025\n3835791347\n6062559101')  # , 30)
-# r = path_finder('45528081661\n88622773986\n17444154736\n11717290525\n47172210354\n09831904008\n60674793342\n56190958822\n80638279343\n55224665968\n60321088764')  # , 24)
+r = path_finder('45528081661\n88622773986\n17444154736\n11717290525\n47172210354\n09831904008\n60674793342\n56190958822\n80638279343\n55224665968\n60321088764')  # , 24)
 # s = path_finder('092158983775\n282369592936\n652460767036\n647041461643\n881083979874\n081990597155\n060078506934\n284703957557\n393772671318\n041581032822\n877612523318\n450481712521')  # , 35)
 # t = path_finder('4076390941965\n8838398866436\n1770111200297\n9369375707100\n7347601401344\n3969216683905\n8345069535192\n8051547548370\n1439668837856\n3993915787436\n4755139506265\n4431682647927\n7044750419779')  # , 33)
 # u = path_finder('26123923976121\n41230567257124\n56656453868372\n57264482617208\n59487358016952\n79957518597542\n00855390033477\n15756964394626\n62200210535437\n65717734838667\n62363952695719\n84397086821770\n18269568382152\n28766969660573')  # , 37)
