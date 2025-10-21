@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from itertools import product
 
 """
@@ -134,15 +135,15 @@ def path_finder(area):
             self.tree = {}
 
         def available_directions(self):
-            compass_key = ('north', 'n_climb', 'south', 's_climb', 'east', 'e_climb', 'west', 'w_climb')
+            # compass_key = ('north', 'n_diff', 'east', 'e_diff', 'south', 's_diff', 'west', 'w_diff')
             for location, location_val in self.nodes.items():
                 loc_split = [int(i) for i in location.split(',')]
-                print(loc_split)
+                # print(loc_split)
                 zero, one = loc_split[0], loc_split[1]
                 compass_val = self.directions(location, zero, one, self.bs_len - 1)
-                comp_dict = dict(zip(compass_key, compass_val))
-                comp_dict['og_cell_value'] = location_val
-                self.tree[location] = comp_dict
+                # comp_dict = dict(zip(compass_key, compass_val))
+                # comp_dict['og_cell_value'] = location_val
+                self.tree[location] = compass_val
             return self.tree, self.values
 
         def directions(self,
@@ -153,8 +154,7 @@ def path_finder(area):
                        ):
             see_loc = location
             val = self.values[zero_, one_]
-            # if see_loc[:2] == '10':
-            #     stop = ''
+            loc_val = '_'.join([location, str(val)])
 
             # north: row - 1, col
             zm1 = zero_ - 1
@@ -163,7 +163,7 @@ def path_finder(area):
                 n_minus_val = None
             else:
                 n = self.values[zero_ - 1, one_]
-                n_minus_val = abs(n - val)
+                n_minus_val = f"currloc_{loc_val}:nval_{str(n)}:ndiff_{str(abs(n - val))}:nloc_{str(zero_ - 1)},{str(one_)}"
 
             # east: row, col + 1
             op1 = one_ + 1
@@ -172,16 +172,16 @@ def path_finder(area):
                 e_minus_val = None
             else:
                 e = self.values[zero_, one_ + 1]
-                e_minus_val = abs(e - val)
+                e_minus_val = f"currloc_{loc_val}:eval_{str(e)}:ediff_{str(abs(e - val))}:eloc_{str(zero_)},{str(one_ + 1)}"
 
             # south: row + 1, col
             zp1 = zero_ + 1
-            if zero_ + 1 > length:
+            if zp1 > length:
                 s = None
                 s_minus_val = None
             else:
                 s = self.values[zero_ + 1, one_]
-                s_minus_val = abs(s - val)
+                s_minus_val = f"currloc_{loc_val}:sval_{str(s)}:sdiff_{str(abs(s - val))}:sloc_{str(zero_ + 1)},{str(one_)}"
 
             # west: row, col - 1
             om1 = one_ - 1
@@ -190,9 +190,10 @@ def path_finder(area):
                 w_minus_val = None
             else:
                 w = self.values[zero_, one_ - 1]
-                w_minus_val = abs(w - val)
+                w_minus_val = f"currloc_{loc_val}:wval_{str(w)}:wdiff_{str(abs(w - val))}:wloc_{str(zero_)},{str(one_ - 1)}"
 
-            return n, n_minus_val, e, e_minus_val, s, s_minus_val, w, w_minus_val
+            # ('north', 'n_diff', 'east', 'e_diff', 'south', 's_diff', 'west', 'w_diff')
+            return n_minus_val, e_minus_val, s_minus_val, w_minus_val
 
     tree, vals = Node(addresses).available_directions()
 
@@ -217,6 +218,16 @@ def path_finder(area):
 # p = path_finder('921512262\n073757004\n591992692\n711729536\n944738532\n740436140\n259226763\n624323214\n085117161')  # , 32)
 # q = path_finder('5736466929\n8422663712\n6717662320\n2050556352\n1208418537\n3846948554\n0736303096\n0737050025\n3835791347\n6062559101')  # , 30)
 r = path_finder('45528081661\n88622773986\n17444154736\n11717290525\n47172210354\n09831904008\n60674793342\n56190958822\n80638279343\n55224665968\n60321088764')  # , 24)
+df_r = pd.DataFrame.from_records(r[0])
+cols_df_r = [0,0, 0,1, 0,10, 0,2, 0,3, 0,4, 0,5, 0,6, 0,7, 0,8, 0,9, 1,0, 1,1, 1,10, 1,2, 1,3, 1,4, 1,5, 1,6, 1,7, 1,8, 1,9, 10,0, 10,1, 10,10, 10,2, 10,3, 10,4, 10,5, 10,6, 10,7, 10,8, 10,9, 2,0, 2,1, 2,10, 2,2, 2,3, 2,4, 2,5, 2,6, 2,7, 2,8, 2,9, 3,0, 3,1, 3,10, 3,2, 3,3, 3,4, 3,5, 3,6, 3,7, 3,8, 3,9, 4,0, 4,1, 4,10, 4,2, 4,3, 4,4, 4,5, 4,6, 4,7, 4,8, 4,9, 5,0, 5,1, 5,10, 5,2, 5,3, 5,4, 5,5, 5,6, 5,7, 5,8, 5,9, 6,0, 6,1, 6,10, 6,2, 6,3, 6,4, 6,5, 6,6, 6,7, 6,8, 6,9, 7,0, 7,1, 7,10, 7,2, 7,3, 7,4, 7,5, 7,6, 7,7, 7,8, 7,9, 8,0, 8,1, 8,10, 8,2, 8,3, 8,4, 8,5, 8,6, 8,7, 8,8, 8,9, 9,0, 9,1, 9,10, 9,2, 9,3, 9,4, 9,5, 9,6, 9,7, 9,8, 9,9]
+
+start = r[0].get('0,0')
+vals = []
+for i in start:
+    if i is not None:
+        vals.append(i.split(':'))
+
+
 # s = path_finder('092158983775\n282369592936\n652460767036\n647041461643\n881083979874\n081990597155\n060078506934\n284703957557\n393772671318\n041581032822\n877612523318\n450481712521')  # , 35)
 # t = path_finder('4076390941965\n8838398866436\n1770111200297\n9369375707100\n7347601401344\n3969216683905\n8345069535192\n8051547548370\n1439668837856\n3993915787436\n4755139506265\n4431682647927\n7044750419779')  # , 33)
 # u = path_finder('26123923976121\n41230567257124\n56656453868372\n57264482617208\n59487358016952\n79957518597542\n00855390033477\n15756964394626\n62200210535437\n65717734838667\n62363952695719\n84397086821770\n18269568382152\n28766969660573')  # , 37)
