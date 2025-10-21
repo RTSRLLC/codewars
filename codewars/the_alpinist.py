@@ -226,6 +226,12 @@ vals = []
 for i in start:
     if i is not None:
         vals.append(i.split(':'))
+for i in vals:
+    for j in i:
+        val = j if 'diff' in j else None
+        if val is not None:
+            split_val = int(val.split('_')[1])
+            stop = ''
 
 
 # s = path_finder('092158983775\n282369592936\n652460767036\n647041461643\n881083979874\n081990597155\n060078506934\n284703957557\n393772671318\n041581032822\n877612523318\n450481712521')  # , 35)
