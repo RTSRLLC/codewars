@@ -213,7 +213,12 @@ def navigation(row: pd.Series):
     r_vals =  [i for i in r.values if i is not None]
     r_split = [i.split(':') for i in r_vals]
     r_flat = [j for i in r_split for j in i]
-    r_diff = min([int(i.split('_')[1]) for i in r_flat if 'diff' in i])
+    r_diff = [i.split('_') for i in r_flat if 'diff' in i]
+    # so i want to go south but need a way to track position for the history
+    # flatten it because the value before the number will be the new destination
+    # todo: import re here to get answers?
+    # remember that python will do inequalities on strings.
+
 
 
     stop = ''
