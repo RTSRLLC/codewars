@@ -213,7 +213,7 @@ def navigation(row: pd.Series):
     r_vals =  [i for i in r.values if i is not None]
     r_split = [i.split(':') for i in r_vals]
     r_flat = [j for i in r_split for j in i]
-
+    r_diff = min([int(i.split('_')[1]) for i in r_flat if 'diff' in i])
 
 
     stop = ''
