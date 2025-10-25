@@ -10,6 +10,62 @@ as this accounts for any beneficial moves, including left or up, without restric
 """
 
 
+def basic_test_cases():
+    a = "\n".join([
+        "000",
+        "000",
+        "000"
+    ])  # test.assert_equals(path_finder(a), 0)
+
+    b = "\n".join([
+        "010",
+        "010",
+        "010"
+    ])  # test.assert_equals(path_finder(b), 2)
+
+    c = "\n".join([
+        "010",
+        "101",
+        "010"
+    ])  # test.assert_equals(path_finder(c), 4)
+
+    d = "\n".join([
+        "0707",
+        "7070",
+        "0707",
+        "7070"
+    ])  # test.assert_equals(path_finder(d), 42)
+
+    e = "\n".join([
+        "700000",
+        "077770",
+        "077770",
+        "077770",
+        "077770",
+        "000007"
+    ])  # test.assert_equals(path_finder(e), 14)
+
+    f = "\n".join([
+        "777000",
+        "007000",
+        "007000",
+        "007000",
+        "007000",
+        "007777"
+    ])  # test.assert_equals(path_finder(f), 0)
+
+    g = "\n".join([
+        "000000",
+        "000000",
+        "000000",
+        "000010",
+        "000109",
+        "001010"
+    ])  # test.assert_equals(path_finder(g), 4)
+
+    return a, b, c, d, e, f, g
+
+
 class Node:
     def __init__(self, arr):
         # self.arr = arr
@@ -76,62 +132,6 @@ class Node:
 
         # ('north', 'n_diff', 'east', 'e_diff', 'south', 's_diff', 'west', 'w_diff')
         return n_minus_val, e_minus_val, s_minus_val, w_minus_val
-
-
-def basic_test_cases():
-    a = "\n".join([
-        "000",
-        "000",
-        "000"
-    ])  # test.assert_equals(path_finder(a), 0)
-
-    b = "\n".join([
-        "010",
-        "010",
-        "010"
-    ])  # test.assert_equals(path_finder(b), 2)
-
-    c = "\n".join([
-        "010",
-        "101",
-        "010"
-    ])  # test.assert_equals(path_finder(c), 4)
-
-    d = "\n".join([
-        "0707",
-        "7070",
-        "0707",
-        "7070"
-    ])  # test.assert_equals(path_finder(d), 42)
-
-    e = "\n".join([
-        "700000",
-        "077770",
-        "077770",
-        "077770",
-        "077770",
-        "000007"
-    ])  # test.assert_equals(path_finder(e), 14)
-
-    f = "\n".join([
-        "777000",
-        "007000",
-        "007000",
-        "007000",
-        "007000",
-        "007777"
-    ])  # test.assert_equals(path_finder(f), 0)
-
-    g = "\n".join([
-        "000000",
-        "000000",
-        "000000",
-        "000010",
-        "000109",
-        "001010"
-    ])  # test.assert_equals(path_finder(g), 4)
-
-    return a, b, c, d, e, f, g
 
 
 def get_og_string(arr: list, length: int) -> tuple:
@@ -206,19 +206,35 @@ df_b.index = ['north', 'east', 'south', 'west']
 
 def navigation(row: pd.Series):
     # these are all the options available for a location
+    import re
     r = row
-
     start = r.index[0]
 
-    r_vals =  [i for i in r.values if i is not None]
-    r_split = [i.split(':') for i in r_vals]
-    r_flat = [j for i in r_split for j in i]
-    r_diff = [i.split('_') for i in r_flat if 'diff' in i]
-    # so i want to go south but need a way to track position for the history
-    # flatten it because the value before the number will be the new destination
-    # todo: import re here to get answers?
-    # remember that python will do inequalities on strings.
+    # re.findall(pattern, string, flags=0)
+    regex = r'^currloc_(\d+),(\d+)_(\d+):([nesw])val_(\d+):([nesw])diff_(\d+):([nesw])loc_(\d+),(\d+)$'
 
+    r_vals = [i for i in r.values if i is not None]
+
+    print(r_vals)
+    # (groups 1-3: currloc; 4-5: val; 6-7: diff; 8-10: loc)
+    grps = [re.findall(regex, i) for i in r_vals]
+    # 'currloc_0,0_0    :eval_1:  ediff_1:  eloc_0,1'
+    # [('0', '0', '0', 'e', '1', 'e', '1', 'e', '0', '1')]
+    # [(0, '0'), (1, '0'), (2, '0'), (3, 'e'), (4, '1'), (5, 'e'), (6, '1'), (7, 'e'), (8, '0'), (9, '1')]
+
+    current = grps[0][0][:3]
+    dir_val = grps[0][0][3:5]
+    dir_diff = grps[0][0][5:7]
+    dir_loc = grps[0][0][7:9]
+
+    ex = int(grps[0][0][6])
+
+    exx = []
+    for i in grps:
+        for j in i:
+            exx.append([j[5], int(j[6])])
+    # intuitively it goes outer to inner just like the group
+    dir_go = [min([[j[5], int(j[6])] for i in grps for j in i], key=lambda x: x[1])][0][0]
 
 
     stop = ''
@@ -228,8 +244,6 @@ def navigation(row: pd.Series):
 
 # noinspection PyNoneFunctionAssignment
 navigate = df_b.apply(navigation)
-
-
 
 # start = b[0].get('0,0')
 #
@@ -246,7 +260,6 @@ navigate = df_b.apply(navigation)
 #             if split_val < low_val:
 #                 low_val = split_val
 #                 low_loc = split_it[0]
-
 
 
 stop = ''
