@@ -218,9 +218,9 @@ def navigation(row: pd.Series):
     print(r_vals)
     # (groups 1-3: currloc; 4-5: val; 6-7: diff; 8-10: loc)
     grps = [re.findall(regex, i) for i in r_vals]
-    # 'currloc_0,0_0    :eval_1:  ediff_1:  eloc_0,1'
-    # [('0', '0', '0', 'e', '1', 'e', '1', 'e', '0', '1')]
-    # [(0, '0'), (1, '0'), (2, '0'), (3, 'e'), (4, '1'), (5, 'e'), (6, '1'), (7, 'e'), (8, '0'), (9, '1')]
+    #        'currloc_0,0_0                   :eval_1:              ediff_1:                 eloc_0,1'
+    #         '0', '0', '0',                  'e', '1',            'e', '1',               'e', '0', '1'
+    # [(0, '0'), (1, '0'), (2, '0') == (3, 'e'), (4, '1') == (5, 'e'), (6, '1') == (7, 'e'), (8, '0'), (9, '1')]
 
     current = grps[0][0][:3]
     dir_val = grps[0][0][3:5]
@@ -235,6 +235,10 @@ def navigation(row: pd.Series):
             exx.append([j[5], int(j[6])])
     # intuitively it goes outer to inner just like the group
     dir_go = [min([[j[5], int(j[6])] for i in grps for j in i], key=lambda x: x[1])][0][0]
+
+
+
+
 
 
     stop = ''
