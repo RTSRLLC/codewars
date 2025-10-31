@@ -42,18 +42,21 @@ for d in set_it:
     hrs = df_['hrs']
 
     df_ = lag_roll(df_, hrs, 'hrs')
-
     df_.loc[:, 'mins'] = (hrs * 60).round(4)
 
     df_ = lag_roll(df_, hrs, 'mins')
-
     df_.loc[:, 'secs'] = (hrs * 3600).round(4)
 
     df_ = lag_roll(df_, hrs, 'secs')
-
     df_ = df_.fillna(0)
 
     if df_final is None:
         df_final = df_
     else:
         df_final = pd.concat([df_final, df_], axis=0)
+
+df_final.set_index('distance', inplace=True)
+
+
+
+pawleys = df_final.loc[200]
