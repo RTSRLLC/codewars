@@ -1,3 +1,4 @@
+import heapq
 import numpy as np
 import pandas as pd
 from itertools import product
@@ -235,8 +236,17 @@ def path_finder(area):
 b_ = '010\n010\n010'
 tree, arr = path_finder(b_)
 
-df_b = pd.DataFrame.from_records(b[0])
+df_b = pd.DataFrame.from_records(tree)
 df_b.index = ['north', 'east', 'south', 'west']
+
+
+def heapsort(iterable):
+    h = []
+    for value in iterable:
+        heapq.heappush(h, value)
+    return [heapq.heappop(h) for i in range(len(h))]
+
+heap_sort = heapsort([1, 3, 5, 7, 9, 2, 4, 6, 8, 0])
 
 
 stop = ''
