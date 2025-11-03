@@ -175,36 +175,7 @@ def reshape_vals_addresses(arr, length: int) -> list:
     return arr_together
 
 
-def path_finder(area):
-    area_list = [list(i) for i in area.split("\n")]
-    bs_len = len(area_list)
-
-    arr = np.array(area_list, dtype=int).reshape(bs_len, bs_len)
-
-    # test = get_og_string(arr, bs_len)
-    if np.sum(arr) == 0:
-        return 0
-
-    addresses = get_arr_addresses(arr, bs_len)
-    addresses = reshape_vals_addresses(addresses, bs_len)
-
-    tree, vals = Node(addresses).available_directions()
-
-    return tree, vals
-
-
-# a_, b_, c_, d_, e_, f_, g_ = basic_test_cases()
-
-# a = path_finder(a_)
-
-b_ = '010\n010\n010'
-b = path_finder(b_)
-
-df_b = pd.DataFrame.from_records(b[0])
-df_b.index = ['north', 'east', 'south', 'west']
-
-
-def navigation(row: pd.Series):
+def regex_navigation(row: pd.Series):
     # these are all the options available for a location
     import re
     r = row
@@ -236,34 +207,36 @@ def navigation(row: pd.Series):
     # intuitively it goes outer to inner just like the group
     dir_go = [min([[j[5], int(j[6])] for i in grps for j in i], key=lambda x: x[1])][0][0]
 
-
-
-
-
-
-    stop = ''
-
     return None
 
 
-# noinspection PyNoneFunctionAssignment
-navigate = df_b.apply(navigation)
+def path_finder(area):
+    area_list = [list(i) for i in area.split("\n")]
+    bs_len = len(area_list)
 
-# start = b[0].get('0,0')
-#
-# start_vals = [i.split(':') for i in start if i is not None]
-#
-# low_val = np.inf
-# low_loc = None
-# for i in start_vals:
-#     for j in i:
-#         val = j if 'diff' in j else None
-#         if val is not None:
-#             split_it = j.split('_')
-#             split_val = int(split_it[1])
-#             if split_val < low_val:
-#                 low_val = split_val
-#                 low_loc = split_it[0]
+    arr = np.array(area_list, dtype=int).reshape(bs_len, bs_len)
+
+    # test = get_og_string(arr, bs_len)
+    if np.sum(arr) == 0:
+        return 0
+
+    addresses = get_arr_addresses(arr, bs_len)
+    addresses = reshape_vals_addresses(addresses, bs_len)
+
+    tree, vals = Node(addresses).available_directions()
+
+    return tree, arr
+
+
+# a_, b_, c_, d_, e_, f_, g_ = basic_test_cases()
+
+# a = path_finder(a_)
+
+b_ = '010\n010\n010'
+tree, arr = path_finder(b_)
+
+df_b = pd.DataFrame.from_records(b[0])
+df_b.index = ['north', 'east', 'south', 'west']
 
 
 stop = ''
