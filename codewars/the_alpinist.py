@@ -1,4 +1,5 @@
-import heapq
+import re
+import heapq as hq
 import numpy as np
 import pandas as pd
 from itertools import product
@@ -176,41 +177,6 @@ def reshape_vals_addresses(arr, length: int) -> list:
     return arr_together
 
 
-def regex_navigation(row: pd.Series):
-    # these are all the options available for a location
-    import re
-    r = row
-    start = r.index[0]
-
-    # re.findall(pattern, string, flags=0)
-    regex = r'^currloc_(\d+),(\d+)_(\d+):([nesw])val_(\d+):([nesw])diff_(\d+):([nesw])loc_(\d+),(\d+)$'
-
-    r_vals = [i for i in r.values if i is not None]
-
-    print(r_vals)
-    # (groups 1-3: currloc; 4-5: val; 6-7: diff; 8-10: loc)
-    grps = [re.findall(regex, i) for i in r_vals]
-    #        'currloc_0,0_0                   :eval_1:              ediff_1:                 eloc_0,1'
-    #         '0', '0', '0',                  'e', '1',            'e', '1',               'e', '0', '1'
-    # [(0, '0'), (1, '0'), (2, '0') == (3, 'e'), (4, '1') == (5, 'e'), (6, '1') == (7, 'e'), (8, '0'), (9, '1')]
-
-    current = grps[0][0][:3]
-    dir_val = grps[0][0][3:5]
-    dir_diff = grps[0][0][5:7]
-    dir_loc = grps[0][0][7:9]
-
-    ex = int(grps[0][0][6])
-
-    exx = []
-    for i in grps:
-        for j in i:
-            exx.append([j[5], int(j[6])])
-    # intuitively it goes outer to inner just like the group
-    dir_go = [min([[j[5], int(j[6])] for i in grps for j in i], key=lambda x: x[1])][0][0]
-
-    return None
-
-
 def path_finder(area):
     area_list = [list(i) for i in area.split("\n")]
     bs_len = len(area_list)
@@ -236,18 +202,39 @@ def path_finder(area):
 b_ = '010\n010\n010'
 tree, arr = path_finder(b_)
 
+# for reference
 df_b = pd.DataFrame.from_records(tree)
 df_b.index = ['north', 'east', 'south', 'west']
 
+# re.findall(pattern, string, flags=0)
+regex = r'^currloc_(\d+),(\d+)_(\d+):([nesw])val_(\d+):([nesw])diff_(\d+):([nesw])loc_(\d+),(\d+)$'
 
-def heapsort(iterable):
-    h = []
-    for value in iterable:
-        heapq.heappush(h, value)
-    return [heapq.heappop(h) for i in range(len(h))]
 
-heap_sort = heapsort([1, 3, 5, 7, 9, 2, 4, 6, 8, 0])
 
+
+
+
+
+
+# (groups 1-3: currloc; 4-5: val; 6-7: diff; 8-10: loc)
+# grps = [re.findall(regex, i) for i in r_vals]
+#        'currloc_0,0_0                   :eval_1:              ediff_1:                 eloc_0,1'
+#         '0', '0', '0',                  'e', '1',            'e', '1',               'e', '0', '1'
+# [(0, '0'), (1, '0'), (2, '0') == (3, 'e'), (4, '1') == (5, 'e'), (6, '1') == (7, 'e'), (8, '0'), (9, '1')]
+
+# current = grps[0][0][:3]
+# dir_val = grps[0][0][3:5]
+# dir_diff = grps[0][0][5:7]
+# dir_loc = grps[0][0][7:9]
+
+
+# heap = []  creates an empty heap
+# heappush(heap, item)  pushes a new item on the heap
+# item = heappop(heap)  pops the smallest item from the heap
+# item = heap[0]  smallest item on the heap without popping it
+# heapify(x)  transforms list into a heap, in-place, in linear time
+# item = heappushpop(heap, item)  pushes a new item and then returns the smallest item; the heap size is unchanged
+# item = heapreplace(heap, item)  pops and returns smallest item, and adds new item; the heap size is unchanged
 
 stop = ''
 
