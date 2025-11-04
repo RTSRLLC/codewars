@@ -203,8 +203,8 @@ b_ = '010\n010\n010'
 tree, arr = path_finder(b_)
 
 # for reference
-df_b = pd.DataFrame.from_records(tree)
-df_b.index = ['north', 'east', 'south', 'west']
+df_tree = pd.DataFrame.from_records(tree)
+df_tree.index = ['north', 'east', 'south', 'west']
 
 # re.findall(pattern, string, flags=0)
 regex = r'^currloc_(\d+),(\d+)_(\d+):([nesw])val_(\d+):([nesw])diff_(\d+):([nesw])loc_(\d+),(\d+)$'
