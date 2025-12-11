@@ -1,10 +1,5 @@
-# number upper lower
-
 import string
 import random
-
-
-
 
 lets = list(string.ascii_letters)
 punctuation = [
@@ -21,12 +16,14 @@ random.shuffle(numbers)
 final = lets + punctuation + numbers
 random.shuffle(final)
 
-new_pass = ''
-for i in range(17):
-    char = random.choice(final)
-    if len(new_pass) == 0:
-        new_pass += char
-        continue
-    if char == new_pass[-1]:
-        continue
-    new_pass += char
+def generate_password(digits: int):
+    while True:
+        new_pass = ''.join(random.choice(final) for _ in range(digits))
+        if (any(i.isupper() for i in new_pass) and
+            any(j.islower() for j in new_pass) and
+            any(k in punctuation for k in new_pass) and
+            any(z in numbers for z in new_pass)):
+            return new_pass
+
+pass_wrd = generate_password(27)
+print(pass_wrd)
