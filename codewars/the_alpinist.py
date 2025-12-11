@@ -209,13 +209,6 @@ df_tree.index = ['north', 'east', 'south', 'west']
 # re.findall(pattern, string, flags=0)
 regex = r'^currloc_(\d+),(\d+)_(\d+):([nesw])val_(\d+):([nesw])diff_(\d+):([nesw])loc_(\d+),(\d+)$'
 
-
-
-
-
-
-
-
 # (groups 1-3: currloc; 4-5: val; 6-7: diff; 8-10: loc)
 # grps = [re.findall(regex, i) for i in r_vals]
 #        'currloc_0,0_0                   :eval_1:              ediff_1:                 eloc_0,1'
