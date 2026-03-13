@@ -28,10 +28,10 @@ df_data_tree.columns = cols_ordered
 
 values_bool = [j[2] for j in un_vals]
 
-# level_0 = str(values_bool[0][0])
-# level_1 = [str(i) for i in values_bool[1]]
-# level_2 = [str(i) for i in values_bool[2]]
-# level_3 = [str(i) for i in values_bool[3]]
+level_0 = str(values_bool[0][0])
+level_1 = [str(i) for i in values_bool[1]]
+level_2 = [str(i) for i in values_bool[2]]
+level_3 = [str(i) for i in values_bool[3]]
 
 
 
