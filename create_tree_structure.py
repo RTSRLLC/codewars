@@ -1,53 +1,40 @@
 import pandas as pd
 import numpy as np
 from itertools import combinations, permutations
+import warnings
+
+from pandas.core.config_init import performance_warnings
 
 file = '/Users/jshensley/Desktop/PycharmProjects/codewars/input_files/create_tree_python.xlsx'
 df = pd.read_excel(file)
-
-df_data_tree = df[['plpln_dup', 'sku_dup', 'pscrtn_dup']]
-
-date_ser = df.plaedt == df.psdlm
-df_data_tree.insert(0, 'date_dup', date_ser)
-df.insert(2, 'date_dup', date_ser)
+df.insert(2, 'date_dup', df.plaedt == df.psdlm)
 
 # todo: goal: create a dataframe with unique combinations of the columns values
-# number cols to ensure they remain ordered and create a reference for tracking changes
-cols = df_data_tree.columns
-cols_ordered = []
-un_vals = []
-num = 0
-for col in cols:
-    name = f"{num}_{col}"
-    cols_ordered.append(name)
-    un_vals.append(
-        (name, f"length: {df_data_tree[col].nunique()}", (name, df_data_tree[col].unique().tolist()))
-        )
-    num += 1
-df_data_tree.columns = cols_ordered
+cols = ['plaedt', 'psdlm', 'date_dup', 'plpln', 'plpln_dup', 'sku', 'sku_dup','pscrtn', 'pscrtn_dup']
+un1_date = df.date_dup.unique().tolist()
+un2_plpln = df.plpln_dup.unique().tolist()
+un3_sku_dup = df.sku_dup.unique().tolist()
+un4_pscrtn_dup = df.pscrtn_dup.unique().tolist()
 
-values_bool = [j[2] for j in un_vals]
+d = {
+    1: [False, False, False, False],
+    2: [False, False, False, True],
 
-level_0 = str(values_bool[0][0])
-level_1 = [str(i) for i in values_bool[1]]
-level_2 = [str(i) for i in values_bool[2]]
-level_3 = [str(i) for i in values_bool[3]]
+    3: [False, False, True, False],
+    4: [False, False, True, True],
 
+    5: [False, True, False, False],
+    6: [False, True, False, True],
+    7: [False, True, True, False],
+    8: [False, True, True, True],
+    }
 
-
-
+tree = {}
+start = False
+length = 4
 
 
-
-
-
-
-
-
-
-
-
-
+# keep track of index
 
 
 
