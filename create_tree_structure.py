@@ -9,19 +9,48 @@ from dataclasses import dataclass, field
 from pandas.core.config_init import performance_warnings
 
 
-def node_identification(df: pd.DataFrame) -> dict:
-    """ get unique values in duplicated columns for future Node class creation """
-    # id dup cols  ... must be in order ... i believe they will be since it iterates left to right
-    cols = [i for i in df.columns if '_dup' in i]
+def address_creation(df: list):
+    """ create the tree address needed for the tree structure. """
 
-    # get unique vals in dup cols for class Node
-    nodes = {}  # [(1, [False]), (2, [False, True]), (3, [False, True]), (4, [False, True])]
-    num = 1
-    for col in cols:
-        d = sorted(df[col].unique())  # sorted ensures False come before True
-        nodes[str(num)] = {"node_val": d, "num_values": len(d)}
-        num += 1
-    return nodes
+    def node_identification(df_: pd.DataFrame) -> dict:
+        """ get unique values in duplicated columns for future Node class creation """
+        # id dup cols  ... must be in order ... i believe they will be since it iterates left to
+        # right
+        cols = [i for i in df_.columns if '_dup' in i]
+
+        # get unique vals in dup cols for class Node
+        nodes = {}  # [(1, [False]), (2, [False, True]), (3, [False, True]), (4, [False, True])]
+        num = 1
+        for col in cols:
+            d = sorted(df_[col].unique())  # sorted ensures False come before True
+            nodes[str(num)] = {"node_val": d, "num_values": len(d)}
+            num += 1
+
+        return nodes
+
+    def number_needed_levels(n: int) -> list:
+        """ generate the needed tree levels. all trees start with top node and branch out
+         with factor n * 2 for the number of needed levels. """
+        levels = [1, 2]
+        for y in range(1, n - 1):
+            levels.append(levels[y] * 2)
+        return enumerate(levels, start=1)
+
+    # extract T/F values for tree creation
+    nodes_2_be = node_identification(df)
+
+    # get how many nodes will be each level
+    len_nodes_2_be = len(nodes_2_be)
+    num_levels_nodes = number_needed_levels(n=len_nodes_2_be)
+
+    addresses = []
+    for level, nodes in num_levels_nodes:
+        needed = [None] * nodes
+        for i in range(len(needed)):
+            needed[i] = int(str(level) + str(i + 1))
+        addresses.append(needed)
+
+    return addresses, nodes_2_be
 
 
 # 1 open df
@@ -51,11 +80,10 @@ class Node:
     l_marg_dist: int = 0
 
 
-nodes_2_be = node_identification(df)
+addresses_4_tree, nodes_2_be = address_creation(df)
 
-# {0: {'Node': [False], 'num_values': 1}, 1: {'Node': [False, True], 'num_values': 2},
-# 2: {'Node': [False, True], 'num_values': 2}, 3: {'Node': [False, True], 'num_values': 2}}
 
+# todo: zip nodes_2_be keys with addresses_4_tree list as a tuple
 tree = {}
 address = ''
 for level, node_2_be in nodes_2_be.items():
@@ -63,20 +91,6 @@ for level, node_2_be in nodes_2_be.items():
     curr_node = node_2_be.get('node_val')
     num_nodes = node_2_be.get('num_values')
 
-    for b in range(1, len(curr_node) + 1):
-        address += str(b)
-        if not tree:
-            node_address = int(address)
-            node_new = Node(node_val=curr_node[int(b - 1)], node_address=node_address, parent_add=node_address)
-            tree[node_address] = node_new
-
-        else:
-
-
-
-
-
-            stop = ''
 
 # number of leaves = 8
 
