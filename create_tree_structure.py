@@ -1,10 +1,7 @@
-from multiprocessing.connection import default_family
-
-import pandas as pd
 import numpy as np
-from itertools import combinations, permutations
-import warnings
+import pandas as pd
 from dataclasses import dataclass, field
+from multiprocessing.connection import default_family
 
 from pandas.core.config_init import performance_warnings
 
@@ -90,19 +87,3 @@ for level, node_2_be in nodes_2_be.items():
     address = level
     curr_node = node_2_be.get('node_val')
     num_nodes = node_2_be.get('num_values')
-
-
-# number of leaves = 8
-
-d = {
-    1: [False, False, False, False],
-    2: [False, False, False, True],
-
-    3: [False, False, True, False],
-    4: [False, False, True, True],
-
-    5: [False, True, False, False],
-    6: [False, True, False, True],
-    7: [False, True, True, False],
-    8: [False, True, True, True],
-    }
