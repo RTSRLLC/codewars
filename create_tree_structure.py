@@ -72,7 +72,7 @@ class Node:
     """
     node_val: bool
     node_address: int
-    parent_add: int
+    parent_add: int = None
     child_add: dict = field(default_factory=dict)  # {"left": None, "right": None}
     l_marg_dist: int = 0
 
@@ -80,10 +80,39 @@ class Node:
 addresses_4_tree, nodes_2_be = address_creation(df)
 
 
-# todo: zip nodes_2_be keys with addresses_4_tree list as a tuple
-tree = {}
-address = ''
-for level, node_2_be in nodes_2_be.items():
-    address = level
-    curr_node = node_2_be.get('node_val')
-    num_nodes = node_2_be.get('num_values')
+# node tree prep
+def make_tree(addresses: list, node_vals: dict)-> dict:
+    """
+    create a concise dict with keys = addresses in tree and values =
+    """
+    nodes_2_be_zip = [i.get('node_val') for i in node_vals.values()]
+    node_vals = list(zip(addresses, nodes_2_be_zip))
+
+    node_vals_copy = node_vals.copy()
+    tree = {}
+    for item in node_vals_copy:  # is a tuple
+        length = len(item[0])
+        if length == 1:
+            tree[item[0][0]] = Node(node_val=item[1][0], node_address=item[0][0], parent_add=None)
+        elif length == 2:
+            zip_ = list(zip(item[0], item[1]))
+            for z in zip_:
+                tree[z[0]] = Node(node_val=z[1], node_address=z[0], parent_add=-1)
+        else:
+            # make F, T same length as addresses
+            tree_valz = item[1] * 2
+            zip_ = list(zip(item[0], tree_valz))
+            for z in zip_:
+                tree[z[0]] = Node(node_val=z[1], node_address=z[0], parent_add=-1)
+
+
+            stop = ''
+
+        # tree[add] = branches
+
+    return tree
+
+
+tree  = make_tree(addresses_4_tree, nodes_2_be)
+
+# todo: doing parents and children in another function
