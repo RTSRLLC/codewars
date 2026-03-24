@@ -100,15 +100,10 @@ def make_tree(addresses: list, node_vals: dict)-> dict:
                 tree[z[0]] = Node(node_val=z[1], node_address=z[0], parent_add=-1)
         else:
             # make F, T same length as addresses
-            tree_valz = item[1] * 2
+            tree_valz = item[1] * int(len(item[0]) / 2)
             zip_ = list(zip(item[0], tree_valz))
             for z in zip_:
                 tree[z[0]] = Node(node_val=z[1], node_address=z[0], parent_add=-1)
-
-
-            stop = ''
-
-        # tree[add] = branches
 
     return tree
 
