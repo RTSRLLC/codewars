@@ -3,8 +3,6 @@ import pandas as pd
 from dataclasses import dataclass, field
 from multiprocessing.connection import default_family
 
-from pandas.core.config_init import performance_warnings
-
 
 def address_creation(df: list):
     """ create the tree address needed for the tree structure. """
@@ -50,38 +48,7 @@ def address_creation(df: list):
     return addresses, nodes_2_be
 
 
-# 1 open df
-file = '/Users/jshensley/Desktop/PycharmProjects/codewars/input_files/create_tree_python.xlsx'
-df = pd.read_excel(file)
-
-# 2 create date dup column...there are already other dup cols from source
-df.insert(2, 'date_dup', df.plaedt == df.psdlm)
-
-
-@dataclass
-class Node:
-    """
-    A bool class representing a node in the tree structure.
-    Attributes:
-        node_val: boolean, True or False
-        node_address: (num 1, num 2) =- (tree level, level position). 1 = top-most parent.
-            34 = 3 levels down, 4th node from left.
-        parent_add: address of parent if exists. if no parent, None.
-        child_add: follows same formula as above if there are children. If bottom level, is None.
-        l_marg_dist: int
-    """
-    node_val: bool
-    node_address: int
-    parent_add: int = None
-    child_add: dict = field(default_factory=dict)  # {"left": None, "right": None}
-    l_marg_dist: int = 0
-
-
-addresses_4_tree, nodes_2_be = address_creation(df)
-
-
-# node tree prep
-def make_tree(addresses: list, node_vals: dict)-> dict:
+def make_tree(addresses: list, node_vals: dict) -> dict:
     """
     create a concise tree dict with keys = tree address and values = Node for that location
     """
@@ -108,6 +75,36 @@ def make_tree(addresses: list, node_vals: dict)-> dict:
     return tree
 
 
-tree  = make_tree(addresses_4_tree, nodes_2_be)
+# 1 open df
+file = '/Users/jshensley/Desktop/PycharmProjects/codewars/input_files/create_tree_python.xlsx'
+df = pd.read_excel(file)
+
+# 2 create date dup column...there are already other dup cols from source
+df.insert(2, 'date_dup', df.plaedt == df.psdlm)
+
+
+@dataclass
+class Node:
+    """
+    A bool class representing a node in the tree structure.
+    Attributes:
+        node_val: boolean, True or False
+        node_address: (num 1, num 2) =- (tree level, level position). 1 = top-most parent.
+            34 = 3 levels down, 4th node from left.
+        parent_add: address of parent if exists. if no parent, None.
+        child_add: follows same formula as above if there are children. If bottom level, is None.
+        l_marg_dist: int
+    """
+    node_val: bool
+    node_address: int
+    parent_add: int = None
+    child_add: dict = field(default_factory=dict)  # {"left": None, "right": None}
+    l_marg_dist: int = 0
+
+# create needed address based on the data and the needed node values
+addresses_4_tree, nodes_2_be = address_creation(df)
+
+# make the initial tree
+tree = make_tree(addresses_4_tree, nodes_2_be)
 
 # todo: doing parents and children in another function
