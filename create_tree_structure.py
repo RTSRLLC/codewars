@@ -83,7 +83,7 @@ addresses_4_tree, nodes_2_be = address_creation(df)
 # node tree prep
 def make_tree(addresses: list, node_vals: dict)-> dict:
     """
-    create a concise dict with keys = addresses in tree and values =
+    create a concise tree dict with keys = tree address and values = Node for that location
     """
     nodes_2_be_zip = [i.get('node_val') for i in node_vals.values()]
     node_vals = list(zip(addresses, nodes_2_be_zip))
