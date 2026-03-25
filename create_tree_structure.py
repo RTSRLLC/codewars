@@ -132,22 +132,20 @@ tree = make_tree(addresses_4_tree, nodes_2_be)
 # (11, F)
 ## generate levels
 tree_levels_needed = sorted({i // 10 for i in tree.keys()})
-tree_levels_needed = [[i] for i in tree_levels_needed]
+tree_levels_needed = {k: None for k in tree_levels_needed}
 
 tree_nodes_needed = nodes_per_level(max_=8)
 
 length_node_value = len(tree.get(11))
 length_final_level = (tree_nodes_needed[-1] + tree_nodes_needed[-1] - 1) * length_node_value
+level_middle = length_final_level / 2
 
-top_level_middle_position = length_final_level / 2
-if str(top_level_middle_position).split('.')[-1] != '0':
-    top_level_middle_position = int(top_level_middle_position + 1)
-    length_final_level = top_level_middle_position * 2
+# get level starting positions
+for k in tree_levels_needed.keys():
+    if str(level_middle).split('.')[-1] != '0':
+        level_middle = int(level_middle + 1)
+        length_final_level = level_middle * 2  # change final level length if middle is non-Z rational #
+    level_strt_pos = level_middle - int(length_node_value / 2)
+    tree_levels_needed[k] = {'node_start': level_strt_pos}#tree_levels_needed[1] + [level_1_strt_pos]
 
-level_1_strt_pos = top_level_middle_position - int(length_node_value / 2)
-t = tree_levels_needed[0]
-tree_levels_needed[0] = tree_levels_needed[0] + [level_1_strt_pos]
-
-level_2_strt_pos = level_1_strt_pos / 2
-if str(level_2_strt_pos).split('.')[-1] != '0':
-    level_2_strt_pos = int(level_2_strt_pos + 1)
+    level_middle = level_strt_pos / 2
