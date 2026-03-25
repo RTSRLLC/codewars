@@ -75,6 +75,21 @@ def make_tree(addresses: list, node_vals: dict) -> dict:
     return tree
 
 
+def nodes_per_level(max_: int):
+    """
+    generate the the needed nodes in the tree structure.
+    Args:
+        max_ (int): the maximum number of levels needed.
+    Returns:
+        list containing the number of nodes per level. List length = num levels
+    """
+    min_needed = [1]
+    for i in min_needed:
+        v = i * 2
+        min_needed.append(v) if v <= max_ else v
+    return min_needed
+
+
 # 1 open df
 file = '/Users/jshensley/Desktop/PycharmProjects/codewars/input_files/create_tree_python.xlsx'
 df = pd.read_excel(file)
@@ -83,7 +98,7 @@ df = pd.read_excel(file)
 df.insert(2, 'date_dup', df.plaedt == df.psdlm)
 
 
-@dataclass
+@dataclass(order=True)
 class Node:
     """
     A bool class representing a node in the tree structure.
@@ -101,10 +116,38 @@ class Node:
     child_add: dict = field(default_factory=dict)  # {"left": None, "right": None}
     l_marg_dist: int = 0
 
+    def __len__(self):
+        return len(self.__repr__())
+
+    def __repr__(self):
+        return f"({self.node_address}, {str(self.node_val)[0]})"
+
+
 # create needed address based on the data and the needed node values
 addresses_4_tree, nodes_2_be = address_creation(df)
 
 # make the initial tree
 tree = make_tree(addresses_4_tree, nodes_2_be)
 
-# todo: doing parents and children in another function
+# (11, F)
+## generate levels
+tree_levels_needed = sorted({i // 10 for i in tree.keys()})
+tree_levels_needed = [[i] for i in tree_levels_needed]
+
+tree_nodes_needed = nodes_per_level(max_=8)
+
+length_node_value = len(tree.get(11))
+length_final_level = (tree_nodes_needed[-1] + tree_nodes_needed[-1] - 1) * length_node_value
+
+top_level_middle_position = length_final_level / 2
+if str(top_level_middle_position).split('.')[-1] != '0':
+    top_level_middle_position = int(top_level_middle_position + 1)
+    length_final_level = top_level_middle_position * 2
+
+level_1_strt_pos = top_level_middle_position - int(length_node_value / 2)
+t = tree_levels_needed[0]
+tree_levels_needed[0] = tree_levels_needed[0] + [level_1_strt_pos]
+
+level_2_strt_pos = level_1_strt_pos / 2
+if str(level_2_strt_pos).split('.')[-1] != '0':
+    level_2_strt_pos = int(level_2_strt_pos + 1)
