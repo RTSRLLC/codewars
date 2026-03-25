@@ -144,8 +144,58 @@ level_middle = length_final_level / 2
 for k in tree_levels_needed.keys():
     if str(level_middle).split('.')[-1] != '0':
         level_middle = int(level_middle + 1)
-        length_final_level = level_middle * 2  # change final level length if middle is non-Z rational #
+        length_final_level = level_middle * 2  # change final level length if middle is non-Z
+
     level_strt_pos = level_middle - int(length_node_value / 2)
-    tree_levels_needed[k] = {'node_start': level_strt_pos}#tree_levels_needed[1] + [level_1_strt_pos]
+    tree_levels_needed[k] = {'node_start': level_strt_pos}  # -1 for python 0-indexing
 
     level_middle = level_strt_pos / 2
+
+ex_level = [
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+    26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+    50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
+    74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97,
+    98, 99, 100, 101, 102, 103, 104, 105
+    ]
+ex_level = [str(i) for i in ex_level]
+ex_level = ''.join(ex_level)
+
+one__ = "-------------------------------------------------(11, F)" # replace with tree.get() when done
+one__ += "-" * 49
+one__ = one__.replace('-', ' ')
+p1_idx = one__.index('(')  # 49 - len(two)
+
+two__ = "----------------------(21, F)"  # replace with tree.get() when done
+two__ = two__.replace('-', ' ')
+p2_idx = two__.index('(')
+middles_spaces_two = p1_idx - len(two__)
+two_end = '_' * middles_spaces_two + '|' * 7 + '_' * middles_spaces_two
+two__ += two_end + repr(tree.get(22))
+
+three = "-------(31, F)"  # replace with tree.get() when done
+three = three.replace('-', ' ')
+p3_idx = three.index('(')
+middles_spaces_three = p2_idx - len(three)
+three_end = (
+    '_' * middles_spaces_three + '|' * 7 + '_' * middles_spaces_three + repr(tree.get(32)) +  # left side
+    ' ' * (middles_spaces_three - 3) + '       ' +  ' ' * (middles_spaces_three - 3) + # middle
+    repr(tree.get(33)) + '_' * middles_spaces_three + '|' * 7 + '_' * middles_spaces_three + repr(tree.get(34))  # right side
+)
+three += three_end
+
+
+four_ = "(41, F)"  # replace with tree.get() when done
+four_ = four_.replace('-', ' ')
+p4_idx = four_.index('(')
+four_end = (
+    '|' * 7 + repr(tree.get(42)) + ' ' * 9 + repr(tree.get(43)) + '|' * 7 + repr(tree.get(44))  # left side
+    + ' ' * 3  # middle
+    + repr(tree.get(45)) + '|' * 7 + repr(tree.get(46)) + ' ' * 9 + repr(tree.get(47)) + '|' * 7 + repr(tree.get(48))
+)
+four_ += four_end
+
+print(one__)
+print(two__)
+print(three)
+print(four_)
